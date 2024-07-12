@@ -1,0 +1,214 @@
+#!/bin/env bash
+# 设置颜色变量
+black="\e[30m"
+red="\033[31m"
+green="\033[32m"
+yellow="\033[33m"
+blue="\033[34m"
+purple="\033[35m"
+cyan="\033[36m"
+white="\033[37m"
+background="\033[0m"
+
+function MenuSize(){
+HEIGHT=$(($(tput lines) - 10))
+WIDTH=$(($(tput cols) - 10))
+OPTION=$((${HEIGHT} - 8))
+if (( $HEIGHT <= 8 ));then
+  echo -e ${blue}[${red}*${blue}] ${cyan}您的屏幕高度过低.${background}
+  exit
+fi
+if (( $WIDTH <= 0 ));then
+  echo -e ${blue}[${red}*${blue}] ${cyan}您的屏幕宽度度过窄.${background}
+  exit
+fi
+}
+
+function MsgboxSize(){
+HEIGHT=$(($(tput lines) - 30))
+WIDTH=$(($(tput cols) - 10))
+if (( $HEIGHT <= 0 ));then
+  echo -e ${blue}[${red}*${blue}] ${cyan}您的屏幕高度过低.${background}
+  exit
+fi
+if (( $WIDTH <= 0 ));then
+  echo -e ${blue}[${red}*${blue}] ${cyan}您的屏幕宽度度过窄.${background}
+  exit
+fi
+}
+
+BotRun(){
+case $1 in
+tmux)
+  case $2 in
+    start)
+      if tmux new -s $3 -d "$4" > /dev/null 2>&1
+      then
+        return 0
+      else
+        return 1
+      fi
+    ;;
+    stop)
+      if tmux kill-session -t $3 > /dev/null 2>&1
+      then
+        return 0
+      else
+        return 1
+      fi
+    ;;
+    restart)
+      if tmux kill-session -t $3 && tmux new -s $3 -d "$4" > /dev/null 2>&1
+      then
+        return 0
+      else
+        return 1
+      fi
+    ;;
+    log)
+      if tmux attach -t $3 > /dev/null 2>&1 
+      then
+        return 0
+      else
+        return 1
+      fi
+    ;;
+    list)
+      if tmux ls | grep -q $3
+      then
+        return 0
+      else
+        return 1
+      fi
+    ;;
+  esac
+;;
+screen)
+  case $2 in
+    start)
+      if screen -S $3 -d -m bash -c "$4"
+      then
+        return 0
+      else
+        return 1
+      fi
+      ;;
+    stop)
+      Session=$(screen -ls | grep $3 | awk '{print $1}')
+      if screen -X -S ${Session} quit
+      then
+        return 0
+      else
+        return 1
+      fi
+      ;;
+    restart)
+      Session=$(screen -ls | grep $3 | awk '{print $1}')
+      if screen -X -S ${Session} quit && screen -S ${Session} -d -m bash -c "$4"
+      then
+        return 0
+      else
+        return 1
+      fi
+      ;;
+    log)
+      Session=$(screen -ls | grep $3 | awk '{print $1}')
+      if screen -r ${Session}
+      then
+        return 0
+      else
+        return 1
+      fi
+      ;;
+    list)
+      if screen -ls | grep -q $3
+      then
+        return 0
+      esle
+        return 1
+      fi
+      ;;
+  esac
+;;
+pm2)
+  case $2 in
+    start)
+      if pm2 start --name $3 "$4"
+      then
+        return 0
+      else
+        return 1
+      fi
+    stop)
+      if pm2 stop $3
+      then
+        return 0
+      else
+        return 1
+      fi
+    ;;
+    restart)
+      if pm2 stop $3 && pm2 start --name $3 "$4"
+      then
+        return 0
+      else
+        return 1
+      fi
+    ;;
+    log)
+      if pm2 logs $3 | sed '/PM2/d'
+      then
+        return 0
+      else
+        return 1
+      fi
+    ;;
+    list)
+      if pm2 list
+      then
+        return 0
+      else
+        return 1
+      fi
+    ;;
+  esac
+;;
+esac
+}
+
+function Download(){
+file="$1"
+URL="$2"
+i=0
+if wget --help | grep -q show-progress 
+then
+  echo -e ${blue}[${green}*${blue}] ${cyan}正在下载 ${yellow}${file}${cyan}${background}
+  until wget -q --show-progress -O ${file} -c ${URL}
+  do
+    if [ ${i} == 3 ]
+    then
+      echo -e ${blue}[${red}*${blue}] ${cyan}错误次数过多 ${yellow}退出${background}
+      exit 3
+    fi
+    let i++
+    echo -e ${blue}[${red}*${blue}] ${cyan}下载失败 ${yellow}三秒后重试${background}
+    sleep 3s
+  done
+  echo -e ${blue}[${green}*${blue}] ${cyan}下载完成.${background}
+else
+  echo -e ${blue}[${green}*${blue}] ${cyan}正在下载 ${yellow}${file}${cyan}${background}
+  if curl --help | grep progress-bar
+  then
+    curl --progress-bar -C - -o ${file} ${URL}
+  else
+    curl -C - -o ${file} ${URL}
+  fi
+  echo -e ${blue}[${green}*${blue}] ${cyan}下载完成.${background}
+fi
+}
+
+# 设置默认根目录
+AFHOME=/root/AFMCSS
+
+# 默认启动软件
+StartSoftware=tmux

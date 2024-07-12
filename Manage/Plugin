@@ -1,0 +1,248 @@
+#!/bin/env bash
+black="\e[30m"
+red="\033[31m"
+green="\033[32m"
+yellow="\033[33m"
+blue="\033[34m"
+purple="\033[35m"
+cyan="\033[36m"
+white="\033[37m"
+background="\033[0m"
+
+GithubMirror="https://mirror.ghproxy.com/"
+
+function MenuSize(){
+HEIGHT=$(($(tput lines) - 10))
+WIDTH=$(($(tput cols) - 10))
+OPTION=$((${HEIGHT} - 8))
+if (( $HEIGHT <= 8 ));then
+  echo -e ${blue}[${red}*${blue}] ${cyan}您的屏幕高度过低.${background}
+  exit
+fi
+if (( $WIDTH <= 0 ));then
+  echo -e ${blue}[${red}*${blue}] ${cyan}您的屏幕宽度度过窄.${background}
+  exit
+fi
+}
+
+function MsgboxSize(){
+HEIGHT=$(($(tput lines) - 30))
+WIDTH=$(($(tput cols) - 10))
+if (( $HEIGHT <= 0 ));then
+  echo -e ${blue}[${red}*${blue}] ${cyan}您的屏幕高度过低.${background}
+  exit
+fi
+if (( $WIDTH <= 0 ));then
+  echo -e ${blue}[${red}*${blue}] ${cyan}您的屏幕宽度度过窄.${background}
+  exit
+fi
+}
+
+InstallGitPlugin(){
+MsgboxSizeif
+whiptail --title "AF-BOT"  \
+--yes-button "ghproxy" \
+--no-button "github" \
+--yesno "请选择插件来源\n中国大陆建议使用ghproxy" \
+${HEIGHT} ${WIDTH} \
+3>&1 1>&2 2>&3
+then
+  PluginURl="https://mirror.arcticfox.top/https://raw.githubusercontent.com/ArcticFox520/Yunzai-Bot-Script/main/Manage/Plugin.yaml"
+  for GitPlugin in $(curl ${PluginURl} | yq )
+else
+  PluginURl="https://raw.githubusercontent.com/ArcticFox520/Yunzai-Bot-Script/main/Manage/Plugin.yaml"
+fi
+
+}
+
+
+
+
+function Main(){
+Number=$(${TUISoftware} \
+--title "白狐" \
+--menu "白狐的QQ群:705226976" \
+${HEIGHT} ${WIDTH} ${OPTION} \
+"1" "安装GIT插件" \
+"2" "安装JS插件" \
+"3" "更新GIT插件" \
+"4" "删除GIT插件" \
+"5" "删除JS插件" \
+"0" "返回/退出" \
+3>&1 1>&2 2>&3)
+case ${Number} in
+1)
+  InstallGitPlugin
+  ;;
+2)
+  InstallJSPlugin
+  ;;
+3)
+  UpdateGitPlugin
+  ;;
+4)
+  DeleteGitPlugin
+  ;;
+5)
+  DeleteJSPlugin
+  ;;
+0)
+  exit
+  ;;
+esac
+}
+
+CheckPath(){
+if [ -d "./plugins" ];then
+  PluginPath="."
+  cd ${PluginPath}
+elif [ -d "../plugins" ];then
+  PluginPath=".."
+  cd ${PluginPath}
+else
+  MenuSize
+  Number=$(${TUISoftware} \
+  --title "白狐 QQ群:705226976" \
+  --menu "请选择您要为哪一个bot管理插件" \
+  ${HEIGHT} ${WIDTH} ${OPTION} \
+  "1" "Miao-Yunzai" \
+  "2" "TRSS-Yunzai" \
+  "3" "切换CLI菜单" \
+  "0" "退出" \
+  3>&1 1>&2 2>&3)
+  case ${Number} in 
+  1)
+    BotName="Miao-Yunzai"
+  ;;
+  2)
+    BotName="TRSS-Yunzai"
+  ;;
+  esac
+  if [ -d "/root/${BotName}/node_modules" ];then
+    PluginPath="/root/${BotName}"
+    cd ${PluginPath}
+  elif [ -d "/root/.fox@bot/${BotName}/node_modules" ];then
+    PluginPath="/root/.fox@bot/${BotName}"
+    cd ${PluginPath}
+  elif [ -d "/home/lighthouse/ubuntu/${BotName}/node_modules" ];then
+    PluginPath="/home/lighthouse/ubuntu/${BotName}"
+    cd ${PluginPath}
+  elif [ -d "/home/lighthouse/centos/${BotName}/node_modules" ];then
+    PluginPath="/home/lighthouse/centos/${BotName}"
+    cd ${PluginPath}
+  elif [ -d "/home/lighthouse/debian/${BotName}/node_modules" ];then
+    PluginPath="/home/lighthouse/debian/${BotName}"
+    cd ${PluginPath}
+  elif [ -d "/root/TRSS_AllBot/${BotName}/node_modules" ];then
+    PluginPath="/root/TRSS_AllBot/${BotName}"
+    cd ${PluginPath}
+  else
+    MsgboxSize
+    ${TUISoftware} --title "AF-BOT" \
+    --msgbox "自动判断路径失败 \n请进入${BotName}目录后 使用本脚本" ${HEIGHT} ${WIDTH}
+    exit
+  fi
+fi
+}
+LinuxInstallPkg(){
+if [ $(command -v apt) ];then
+    pkg_install="apt install -y"
+elif [ $(command -v pacman) ];then
+    pkg_install="pacman -Syy --noconfirm --needed"
+fi
+
+function pkg_install(){
+i=0
+echo -e ${yellow}未安装${pkg} 开始安装${background}
+if [ ! -z "$1" ];then
+    pkg="$1"
+fi
+until ${pkg_install} ${pkg}
+do
+    if [ "${i}" == "3" ]
+        then
+            echo -e ${red}错误次数过多 退出${background}
+            exit
+    fi
+    i=$((${i}+1))
+    echo -en ${red}命令执行失败 ${green}3秒后重试${background}
+    sleep 3s
+    echo
+done
+}
+pkg_list=$("curl" "git")
+for package in ${pkg_list[@]}
+do
+  if [ -x "$(command -v pacman)" ];then
+    if ! pacman -Qs "${package}" > /dev/null 2>&1;then
+      pkg="${package} ${pkg}"
+    fi
+  elif [ -x "$(command -v apt)" ];then
+    if ! dpkg -s "${package}" > /dev/null 2>&1;then
+      pkg="${package} ${pkg}"
+    fi
+  fi
+done
+if [ ! -z "${pkg}" ]; then
+  if [ -x "$(command -v pacman)" ];then
+    if ! pacman -Qs "${package}" > /dev/null 2>&1;then
+        pkg_install
+    fi
+  elif [ -x "$(command -v apt)" ];then
+    if ! dpkg -s "${package}" > /dev/null 2>&1;then
+        apt update
+        pkg_install
+    fi
+  fi
+fi
+
+if 
+}
+NotLinux(){
+  if [ ! -x "$(command -v curl)" ];then
+    echo -e ${cyan}检测到未安装${red}curl${background}
+    exit
+  fi
+  if [ ! -x "$(command -v git)" ];then
+    echo -e ${cyan}检测到未安装${red}git${background}
+    exit
+  fi
+  
+}
+PnpmInstall(){
+if [ ! -x "$(command -v pnpm)" ];then
+  echo -e ${cyan}检测到未安装pnpm 开始安装${background}
+  if [ ! -x "$(command -v npm)" ];then
+    echo -e ${red}未安装npm${background}
+    exit
+  fi
+  npm install -g pnpm --registry=https://registry.npmmirror.com
+fi
+}
+SelectPage(){
+if [ -x "$(command -v whiptail)" ];then
+  TUISoftware=whiptail
+  ChoosePage=TUI_Page
+elif [ -x "$(command -v dialog)" ];then
+  TUISoftware=dialog
+  ChoosePage=TUI_Page
+fi
+}
+if [ -e "/etc/issue" ];then
+    LinuxInstallPkg
+    PnpmInstall
+    SelectPage
+    CheckPath
+    Main
+elif [ -e "/etc/os-release" ];then
+    LinuxInstallPkg
+    PnpmInstall
+    SelectPage
+    CheckPath
+    Main
+else
+    NotLinux
+    SelectPage
+    CheckPath
+    Main
+fi

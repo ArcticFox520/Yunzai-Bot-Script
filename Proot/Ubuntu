@@ -121,6 +121,7 @@ then
 fi
 
 for Download_URL in ${URL[@]}
+do
   for Download_Source in ${Site[@]}
   do
     date=$(curl ${Download_URL} | grep -oP '(?<=title=")[^"]+(?=">)' | tail -n 1)

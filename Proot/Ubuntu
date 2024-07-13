@@ -1,7 +1,7 @@
 #!/bin/env bash
 # 此脚本欢迎各位脚本作者借鉴,但请勿删除作者标识
 # 此脚本作者 ArcticFox Q群 705226976
-
+cd $HOME
 black="\e[30m"
 red="\033[31m"
 green="\033[32m"
@@ -14,7 +14,7 @@ background="\033[0m"
 
 Linux="ubuntu"
 Version="jammy"
-GithubMirror="https://mirror.ghproxy.com/"
+GithubMirror="https://github.arcticfox.top"
 
 case `dpkg --print-architecture` in
 aarch64)
@@ -31,9 +31,9 @@ esac
 FOLDER="${Linux}-${Version}"
 RootfsName="rootfs-${Linux}-${Linux}.tar.xz"
 
-TUNA_URL="https://mirrors.tuna.tsinghua.edu.cn/lxc-images/images/${Linux}/${jammy}/${Arch}/default/"
-BFSU_URL="https://mirrors.bfsu.edu.cn/lxc-images/images/${Linux}/${jammy}/${Arch}/default/"
-NJU_URL="https://mirror.nju.edu.cn/lxc-images/images/${Linux}/${jammy}/${Arch}/default/"
+TUNA_URL="https://mirrors.tuna.tsinghua.edu.cn/lxc-images/images/${Linux}/${Version}/${Arch}/default/"
+BFSU_URL="https://mirrors.bfsu.edu.cn/lxc-images/images/${Linux}/${Version}/${Arch}/default/"
+NJU_URL="https://mirror.nju.edu.cn/lxc-images/images/${Linux}/${Version}/${Arch}/default/"
 
 if [ -d $HOME/AF-Proot/${FOLDER} ]
 then
@@ -136,32 +136,36 @@ do
   done
 done
 
-if [ -e $HOME/AF-Proot/rootfs-ubuntu-jammy.tar.xz ]
+if [ -e $HOME/AF-Proot/${RootfsName} ]
 then
   cd $HOME/AF-Proot
-  echo -e ${blue}[${green}*${blue}] 正在解压.${background}
-  if ! proot --link2symlink tar -xJf $HOME/AF-Proot/${RootfsName} -C $HOME/AF-Proot/${FOLDER} | pv -s $(du -sb $HOME/AF-Proot/${RootfsName} | awk '{print $1}') | > /dev/null ||:
-  then
-    echo -e ${blue}[${red}*${blue}] 解压失败.${background}
-    exit
-  fi
+  echo -e ${blue}[${green}*${blue}]${cyan} 正在解压 [进度条可能会卡在100% 请耐心等待]${background}
+  pv $HOME/AF-Proot/${RootfsName} | proot --link2symlink tar -xJf - -C $HOME/AF-Proot/${FOLDER} ||:
 else
   exit
 fi
 
-if git clone --depth=1 -b main ${GithubMirror}https://github.com/ArcticFox520/Yunzai-Bot-Script
+if [ -d $HOME/Yunzai-Bot-Script ]
 then
-  mv Yunzai-Bot-Script/Proot AF-Proot/proc
+  rm -rf $HOME/Yunzai-Bot-Script
+fi
+
+if git clone --depth=1 ${GithubMirror}/https://github.com/ArcticFox520/Yunzai-Bot-Script $HOME/Yunzai-Bot-Script
+then
+  mv $HOME/Yunzai-Bot-Script/Proot $HOME/AF-Proot/proc
+  rm -rf $HOME/Yunzai-Bot-Script
 else
   echo -e ${blue}[${red}*${blue}] 文件拉取失败.${background}
   exit
 fi
 # 创建启动脚本
 start=start-${Linux}-${Version}.sh
+rm $HOME/.bashrc
 touch $HOME/.bashrc
-sed -i "1a\$HOME/AF-Proot/$HOME/AF-Proot/start-${Linux}-${Version}.sh" .bashrc
+sed -i "1a\exec -c $HOME/AF-Proot/$HOME/AF-Proot/start-${Linux}-${Version}.sh" $HOME/.bashrc
 cat > $start <<- FOX
 #!/bin/bash
+echo -e "${blue}[${yellow}*${blue}] ${cyan}正在启动 ${Linux}-${Version}${background}"
 cd \$(dirname \$0)
 pulseaudio --start
 ## Chroot : pulseaudio --start --system
@@ -169,16 +173,16 @@ unset LD_PRELOAD
 command="proot"
 command+=" --link2symlink"
 command+=" -0"
-command+=" -r $HOME/AF-Proot/Ubuntu-Jammy"
+command+=" -r $HOME/AF-Proot/${Linux}-${Version}"
 command+=" -b /dev"
 command+=" -b /proc"
-command+=" -b $HOME/AF-Proot/Ubuntu-Jammy/root:/dev/shm"
+command+=" -b $HOME/AF-Proot/${Linux}-${Version}/root:/dev/shm"
 command+=" -b /sdcard:/sdcard"
-command+=" -b $HOME/AF-Proot/proc/loadavg:/proc/loadavg"
+command+=" -b $HOME/AF-Proot/proc/.hushlogin:/root/.hushlogin"
+command+=" -b $HOME/AF-Proot/proc/locdavg:/proc/locdavg"
 command+=" -b $HOME/AF-Proot/proc/stat:/proc/stat"
 command+=" -b $HOME/AF-Proot/proc/uptime:/proc/uptime"
 command+=" -b $HOME/AF-Proot/proc/version:/proc/version"
-command+=" -b /proc/sys/*"
 command+=" -w /root"
 command+=" /usr/bin/env -i"
 command+=" HOME=/root"
@@ -193,5 +197,5 @@ else
     \$command -c "\$com"
 fi
 FOX
-mv -f start-${Linux}-${Version}.sh $HOME/AF-Proot/start-${Linux}-${Version}.sh
-
+chmod +x "$HOME/AF-Proot/start-${Linux}-${Version}.sh"
+exec

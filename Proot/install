@@ -59,6 +59,7 @@ echo -e ${green}已修改为 ${yellow}阿里DNS${background}
 OldSourcesURL="ports.ubuntu.com"
 NewSourcesURL="mirrors.aliyun.com"
 
+echo -e 执行系统优化步骤
 # 更换源
 sed -i "s|${OldSourcesURL}|${NewSourcesURL}|g" /etc/apt/sources.list
 
@@ -68,11 +69,12 @@ apt -y update
 echo -e ${green}apt ${yellow}-y ${blue}upgrade${background}
 apt -y upgrade
 
-if ! grep -q 'https' sources.list
+if ! grep -q 'https' /etc/apt/sources.list
 then
   # 启用https
   echo -e ${white}正在将${green}http源替换为${purple}https源${background}
   sed -i "s|http|https|g" /etc/apt/sources.list
+  apt -y update
 fi
 
 echo -e ${green}apt ${yellow}-y ${blue}dist-upgrade${background}
@@ -132,7 +134,7 @@ for DownloadName in ${FileName[@]}
 do
   DownloadURL="${PPA_URL}${DownloadName}"
   echo -e $DownloadURL
-  if Download ${DownloadName} ${DownloadURL}
+  if ! Download ${DownloadName} ${DownloadURL}
   then
     exit
   fi
@@ -196,6 +198,7 @@ Download NodeJS.tar.xz ${NodeJS_URL}
 
 mkdir NodeJS
 pv NodeJS.tar.xz | tar -Jxf - -C NodeJS
+rm -rf /usr/local/NodeJS > /dev/null 2>&1
 mv NodeJS/$(ls NodeJS) /usr/local/NodeJS
 rm -rf NodeJS.tar.xz NodeJS
 mkdir -p /root/.local/share/pnpm
@@ -205,4 +208,5 @@ export PATH=$PATH:/usr/local/Node/bin
 export PATH=$PATH:/root/.local/share/pnpm
 export PNPM_HOME=/root/.local/share/pnpm
 ' >> /etc/profile
+
 

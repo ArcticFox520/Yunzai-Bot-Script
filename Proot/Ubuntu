@@ -14,13 +14,13 @@ background="\033[0m"
 
 Linux="ubuntu"
 Version="jammy"
-GithubMirror="https://github.arcticfox.top"
+GithubMirror="https://gh.arcticfox.top"
 
-if [ "$(uname -o)" = "Android" ]; then
+if [ ! "$(uname -o)" = "Android" ]
+then
 	echo -e ${blue}[${red}*${blue}] ${cyan}错误 ${yellow}此脚本仅能够在termux运行${background}
 fi
 
-echo -e ${green}正在获取 ${yellow}Chromium下载链接${background}
 case `dpkg --print-architecture` in
 aarch64|arm64)
 	Arch="arm64"
@@ -151,7 +151,7 @@ if [ -e $HOME/AF-Proot/${RootfsName} ]
 then
   cd $HOME/AF-Proot
   echo -e ${blue}[${green}*${blue}]${cyan} 正在解压 [进度条可能会卡在100% 请耐心等待]${background}
-  pv $HOME/AF-Proot/${RootfsName} | proot --link2symlink tar -xJf - -C $HOME/AF-Proot/${FOLDER} ||:
+  pv $HOME/AF-Proot/${RootfsName} | proot --link2symlink tar -xJf - -C $HOME/AF-Proot/${FOLDER} > /dev/null 2>&1 ||:
 else
   exit
 fi

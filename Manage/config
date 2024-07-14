@@ -139,6 +139,7 @@ pm2)
       else
         return 1
       fi
+    ;;
     stop)
       if pm2 stop $3
       then

@@ -25,15 +25,8 @@ case `dpkg --print-architecture` in
 aarch64|arm64)
 	Arch="arm64"
 	;;
-x86_64|x64|amd64)
-	Arch="amd64"
-	;;
-arm|armel|armhf|armhfp|armv7|armv7l|armv7a|armv8l)
-  echo -e ${yellow}注意 ${cyan} Arm架构仅作保留,但不完全适配.${background}
-  Arch="armhf"
-  ;;
 *)
-	echo -e ${red}暂不支持的架构 ${cyan}$(dpkg --print-architecture)${background}
+	echo -e ${red}本脚本仅适配 Arm64${background}
 	exit
 esac
 FOLDER="${Linux}-${Version}"
@@ -43,7 +36,7 @@ TUNA_URL="https://mirrors.tuna.tsinghua.edu.cn/lxc-images/images/${Linux}/${Vers
 BFSU_URL="https://mirrors.bfsu.edu.cn/lxc-images/images/${Linux}/${Version}/${Arch}/default/"
 NJU_URL="https://mirror.nju.edu.cn/lxc-images/images/${Linux}/${Version}/${Arch}/default/"
 
-echo -e ${blue}[${red}*${blue}] ${yellow}开始安装 ${cyan} ${FOLDER}${background}
+echo -e ${blue}[${green}*${blue}] ${cyan}开始安装 ${yellow} ${FOLDER}${background}
 
 if [ -d $HOME/AF-Proot/${FOLDER} ]
 then
@@ -194,9 +187,6 @@ command+=" -b /proc"
 command+=" -b $HOME/AF-Proot/${Linux}-${Version}/root:/dev/shm"
 command+=" -b /sdcard:/sdcard"
 command+=" -b $HOME/AF-Proot/.hushlogin:/root/.hushlogin"
-command+=" -b $HOME/AF-Proot/proc/locdavg:/proc/locdavg"
-command+=" -b $HOME/AF-Proot/proc/uptime:/proc/uptime"
-command+=" -b $HOME/AF-Proot/proc/version:/proc/version"
 command+=" -b $HOME/AF-Proot/proc/buddyinfo:/proc/buddyinfo"
 command+=" -b $HOME/AF-Proot/proc/cgroups:/proc/cgroups"
 command+=" -b $HOME/AF-Proot/proc/consoles:/proc/consoles"

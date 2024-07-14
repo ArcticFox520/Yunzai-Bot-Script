@@ -11,7 +11,7 @@ purple="\033[35m"
 cyan="\033[36m"
 white="\033[37m"
 background="\033[0m"
-
+echo
 Linux="ubuntu"
 Version="jammy"
 GithubMirror="https://gh.arcticfox.top"
@@ -164,7 +164,8 @@ fi
 if git clone --depth=1 ${GithubMirror}/https://github.com/ArcticFox520/Yunzai-Bot-Script $HOME/Yunzai-Bot-Script
 then
   mv $HOME/Yunzai-Bot-Script/Proot/install $HOME/AF-Proot/${Linux}-${Version}/root/install
-  mv -f $HOME/Yunzai-Bot-Script/Proot/proc/* $HOME/AF-Proot/proc/*
+  mkdir /data/data/com.termux/files/home/AF-Proot/proc/
+  mv -f $HOME/Yunzai-Bot-Script/Proot/proc/* $HOME/AF-Proot/proc/
   mv -f $HOME/Yunzai-Bot-Script/Proot/.hushlogin $HOME/AF-Proot/.hushlogin
   rm -rf $HOME/Yunzai-Bot-Script
 else

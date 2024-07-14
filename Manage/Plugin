@@ -9,7 +9,7 @@ cyan="\033[36m"
 white="\033[37m"
 background="\033[0m"
 
-GithubMirror="https://mirror.ghproxy.com/"
+GithubMirror="https://gh.arcticfox.top"
 
 function MenuSize(){
 HEIGHT=$(($(tput lines) - 10))
@@ -47,11 +47,30 @@ whiptail --title "AF-BOT"  \
 ${HEIGHT} ${WIDTH} \
 3>&1 1>&2 2>&3
 then
-  PluginURl="https://mirror.arcticfox.top/https://raw.githubusercontent.com/ArcticFox520/Yunzai-Bot-Script/main/Manage/Plugin.yaml"
-  for GitPlugin in $(curl ${PluginURl} | yq )
+  PluginURl="${GithubMirror}/https://raw.githubusercontent.com/ArcticFox520/Yunzai-Bot-Script/main/Manage/plugin.yaml"
 else
-  PluginURl="https://raw.githubusercontent.com/ArcticFox520/Yunzai-Bot-Script/main/Manage/Plugin.yaml"
+  PluginURl="https://raw.githubusercontent.com/ArcticFox520/Yunzai-Bot-Script/main/Manage/plugin.yaml"
 fi
+GitPlugin=$(curl -sL ${PluginURl} | yq .GitPlugin)
+# $(ls plugins -I example -I genshin -I other -I system)
+for i in ${GitPlugin}
+do
+  if [ -d ./plugins/${i} ]
+  then
+    InstallStatus="[已安装]"
+  else
+    InstallStatus="[未安装]"
+  fi
+  Options="${Options} ${i} ${InstallStatus}"
+done
+MenuSize
+Number=$(whiptail \
+--title "AF-YZ" \
+--menu "插件管理" \
+${HEIGHT} ${WIDTH} ${OPTION} ${Options} \
+3>&1 1>&2 2>&3)
+
+
 
 }
 

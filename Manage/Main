@@ -668,10 +668,7 @@ case ${Number} in
   fi
 ;;
 6)
-  MsgboxSize
-  whiptail --title "AF-YZ" \
-  --msgbox "还没写" \
-  ${HEIGHT} ${WIDTH}
+  curl -sL ${GithubMirror}https://raw.githubusercontent.com/ArcticFox520/Yunzai-Bot-Script/main/Manage/Plugin | bash
   BotManage
 ;;
 7)

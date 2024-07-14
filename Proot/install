@@ -9,6 +9,8 @@ cyan="\033[36m"
 white="\033[37m"
 background="\033[0m"
 
+GithubMirror="https://mirror.ghproxy.com"
+
 function Download(){
 file="$1"
 URL="$2"
@@ -230,4 +232,9 @@ do
 done
 echo -e ${green}PM2 ${yellow}安装完成${background}
 
+echo -e ${green}正在安装 ${yellow}yq${background}
+URL="${GithubMirror}/https://github.com/mikefarah/yq/releases/download/v4.44.2/yq_linux_arm64"
+Download yq ${URL}
+mv yq /usr/local/bin/yq
+echo -e ${green}安装完成${background}
 

@@ -1,11 +1,13 @@
 RecommendGitpPlugin:
   miao-plugin
+  xiaoyao-cvs-plugin
   liangshi-calc
   Atlas
   Guoba-Plugin
 
 GitPlugin:
   miao-plugin
+  xiaoyao-cvs-plugin
   liangshi-calc
   Atlas
   Guoba-Plugin
@@ -38,27 +40,29 @@ GitPlugin:
   Shiranai-Plugin
   Cookie-plugin
   xianyu-plugin
-
-  
-  
-  
-  
-  
-  
+ 
 miao-plugin:
   Author: "喵喵"
   Introduction: "提供包括角色面板、角色查询等角色相关功能。"
   Repository:
-    - Gitee: https://gitee.com/yoimiya-kokomi/miao-plugin.git
-    - Github: https://github.com/yoimiya-kokomi/miao-plugin.git
+    - Gitee: https://gitee.com/yoimiya-kokomi/miao-plugin
+    - Github: https://github.com/yoimiya-kokomi/miao-plugin
   PackageName: miao-plugin
-  
+
+xiaoyao-cvs-plugin:
+  Author: "逍遥"
+  Introduction: "逍遥自行制作的原神图鉴。"
+  Repository:
+    - Gitee: https://gitee.com/Ctrlcvs/xiaoyao-cvs-plugin.git
+    - Github: https://github.com/Ctrlcvs/xiaoyao-cvs-plugin.git
+  PackageName: No
+
 liangshi-calc:
   Author: "梁氏"
   Introduction: "为角色面板功能提供全方位拓展"
   Repository:
-    - Gitee: https://gitee.com/liangshi233/liangshi-calc.git
-    - Github: https://github.com/liangshi233/liangshi-calc.git
+    - Gitee: https://gitee.com/liangshi233/liangshi-calc
+    - Github: https://github.com/liangshi233/liangshi-calc
   PackageName: liangshi-calc
 
 Atlas:
@@ -73,15 +77,15 @@ Guoba-Plugin:
   Author: "牧星长"
   Introduction: "提供后台管理界面。"
   Repository:
-    - Gitee: https://gitee.com/guoba-yunzai/guoba-plugin.git
-    - Github: https://github.com/guoba-yunzai/guoba-plugin.git
+    - Gitee: https://gitee.com/guoba-yunzai/guoba-plugin
+    - Github: https://github.com/guoba-yunzai/guoba-plugin
   PackageName: guoba-plugin
 
 miaoyu-plugin:
   Author: "小狐狸空空酱"
   Introduction: "本插件提供一部分查询功能并适配云崽v3/v4，需要搭配Miaoyuapi使用！"
   Repository:
-    - Gitee: https://gitee.com/kongkongjiang/miaoyu-plugin.git
+    - Gitee: https://gitee.com/kongkongjiang/miaoyu-plugin
     - Github: No
   PackageName: miaoyu-plugin
   
@@ -89,7 +93,7 @@ egg-plugin:
   Author: "Fantasy"
   Introduction: "通过使用opencv进行人脸识别从而实现一键换头的功能"
   Repository:
-    - Gitee: https://gitee.com/fantasy-hx/egg-plugin.git
+    - Gitee: https://gitee.com/fantasy-hx/egg-plugin
     - Github: No
   PackageName: egg-plugin
 
@@ -106,15 +110,15 @@ waves-plugin:
   Introduction: "支持查询游戏内数据，推送波片信息以及库街区自动签到的鸣潮插件。"
   Repository:
     - Gitee: No
-    - Github: https://github.com/erzaozi/waves-plugin.git
+    - Github: https://github.com/erzaozi/waves-plugin
   PackageName: waves-plugin
   
 arknights-plugin:
   Author: "gxy12345"
   Introduction: "提供明日方舟森空岛社区自动签到、干员练度查询、公招查询、MAA远程控制终端。"
   Repository:
-    - Gitee: https://gitee.com/windoge/arknights-plugin.git
-    - Github: https://github.com/gxy12345/arknights-plugin.git
+    - Gitee: https://gitee.com/windoge/arknights-plugin
+    - Github: https://github.com/gxy12345/arknights-plugin
   PackageName: arknights-plugin
 
 imgS-plugin:
@@ -122,7 +126,7 @@ imgS-plugin:
   Introduction: "能以图搜插画、搜动漫角色、搜番剧、搜Coser、搜本子的聚合以图搜图插件。"
   Repository:
     - Gitee: No
-    - Github: https://github.com/erzaozi/imgS-plugin.git
+    - Github: https://github.com/erzaozi/imgS-plugin
   PackageName: imgS-plugin
 
 skland-plugin:
@@ -130,7 +134,7 @@ skland-plugin:
   Introduction: "通过森空岛查询游戏信息，推送理智以及社区自动签到的明日方舟插件。"
   Repository:
     - Gitee: No
-    - Github: https://github.com/erzaozi/skland-plugin.git
+    - Github: https://github.com/erzaozi/skland-plugin
   PackageName: skland-plugin
   
 sunoai-plugin:
@@ -138,7 +142,7 @@ sunoai-plugin:
   Introduction: "一个AI作曲插件，使用 SunoAI 接口，实现在QQ内使用 SunoAI V3 生成音乐"
   Repository:
     - Gitee: No
-    - Github: https://github.com/erzaozi/sunoai-plugin.git
+    - Github: https://github.com/erzaozi/sunoai-plugin
   PackageName: sunoai-plugin
   
 vits-plugin:
@@ -146,15 +150,15 @@ vits-plugin:
   Introduction: "在线VITS插件，免部署，使用网络上各种各样的在线接口。"
   Repository:
     - Gitee: No
-    - Github: https://github.com/erzaozi/vits-plugin.git
+    - Github: https://github.com/erzaozi/vits-plugin
   PackageName: vits-plugin
 
 logier-plugin:
   Author: "logier"
   Introduction: "表情包仓库、运势算卦、AI塔罗牌、资讯推送。"
   Repository:
-    - Gitee: https://gitee.com/logier/logier-plugins.git
-    - Github: https://github.com/logier/logier-plugins.git
+    - Gitee: https://gitee.com/logier/logier-plugins
+    - Github: https://github.com/logier/logier-plugins
   PackageName: No
 
 nai-plugin:
@@ -162,31 +166,31 @@ nai-plugin:
   Introduction: "一个AI绘图插件，使用 NovelAI 接口，实现在QQ内使用 nai-diffusion-3 生成图片。"
   Repository:
     - Gitee: No
-    - Github: https://github.com/CikeyQi/nai-plugin.git
+    - Github: https://github.com/CikeyQi/nai-plugin
   PackageName: nai-plugin
 
 Yunzai-Kuro-Plugin:
   Author: "TomyJan"
   Introduction: "提供 库洛游戏 相关功能, 具体介绍见 功能介绍。"
   Repository:
-    - Gitee: https://gitee.com/TomyJan/Yunzai-Kuro-Plugin.git
-    - Github: https://github.com/TomyJan/Yunzai-Kuro-Plugin.git
+    - Gitee: https://gitee.com/TomyJan/Yunzai-Kuro-Plugin
+    - Github: https://github.com/TomyJan/Yunzai-Kuro-Plugin
   PackageName: Yunzai-Kuro-Plugin
   
 useless-plugin:
   Author: "曉K"
   Introduction: "提供通过云崽随机发送云崽圈子一些人不寻常、逆天、乐子、搞笑、有趣等等的发言的功能"
   Repository:
-    - Gitee: https://gitee.com/SmallK111407/useless-plugin.git
-    - Github: https://github.com/SmallK111407/useless-plugin.git
+    - Gitee: https://gitee.com/SmallK111407/useless-plugin
+    - Github: https://github.com/SmallK111407/useless-plugin
   PackageName: useless-plugin
 
 TianRu-plugin:
   Author: "天如"
   Introduction: "获取“提瓦特小助手”抽卡记录，执行各种语言代码，模拟指定QQ执行指令，生成二维码，将数字变成114514组合的恶臭数字....等各种小功能"
   Repository:
-    - Gitee: https://gitee.com/HDTianRu/TianRu-plugin.git
-    - Github: https://github.com/HDTianRu/TianRu-plugin.git
+    - Gitee: https://gitee.com/HDTianRu/TianRu-plugin
+    - Github: https://github.com/HDTianRu/TianRu-plugin
   PackageName: TianRu-plugin
   
 PhigrosLibrary-plugin:
@@ -194,38 +198,38 @@ PhigrosLibrary-plugin:
   Introduction: "查询Phigros B19并生成成绩图，以及一些其他的娱乐功能"
   Repository:
     - Gitee: No
-    - Github: https://github.com/Walkersifolia/PhigrosLibrary-plugin.git
+    - Github: https://github.com/Walkersifolia/PhigrosLibrary-plugin
   PackageName: No
 
 ql-plugin:
   Author: "xwy"
   Introduction: "随机二三次元图片，含限制级，清凉图插件重构版"
   Repository:
-    - Gitee: https://gitee.com/xwy231321/ql-plugin.git
-    - Github: https://github.com/xwy231321/ql-plugin.git
+    - Gitee: https://gitee.com/xwy231321/ql-plugin
+    - Github: https://github.com/xwy231321/ql-plugin
   PackageName: ql-plugin
   
 cunyx-plugin:
   Author: "最好喝的小米粥"
   Introduction: "云崽机器人的寸幼萱插件(cunyx-plugin)"
   Repository:
-    - Gitee: https://gitee.com/cunyx/cunyx-plugin.git
-    - Github: https://github.com/cunyx-xiaomizhou/cunyx-plugin.git
+    - Gitee: https://gitee.com/cunyx/cunyx-plugin
+    - Github: https://github.com/cunyx-xiaomizhou/cunyx-plugin
   PackageName: cunyx-plugin
   
 y-tian-plugin:
   Author: "阴天"
   Introduction: "一个小功能集成的插件包,集AI、娱乐、功能性于一体，让你的机器人变得更为全面且多功能。"
   Repository:
-    - Gitee: https://gitee.com/wan13877501248/y-tian-plugin.git
-    - Github: https://github.com/yuanplussfive/y-tian-plugin.git
+    - Gitee: https://gitee.com/wan13877501248/y-tian-plugin
+    - Github: https://github.com/yuanplussfive/y-tian-plugin
   PackageName: y-tian-plugin
 
 Tlon-Sky:
   Author: "Tloml-Starry"
   Introduction: "提供光遇相关功能。"
   Repository:
-    - Gitee: https://gitee.com/Tloml-Starry/Tlon-Sky.git
+    - Gitee: https://gitee.com/Tloml-Starry/Tlon-Sky
     - Github: No 
   PackageName: No
   
@@ -233,24 +237,24 @@ liulian-plugin:
   Author: "会飞的芒果猫,萧枘"
   Introduction: "提供原神地下地图、B站推送、插件管理等一些拓展功能及原神/星铁猜角色、娶群友、随机表情、星座运势、话痨统计、天气、多群广播消息等群聊功能。"
   Repository:
-    - Gitee: https://gitee.com/huifeidemangguomao/liulian-plugin.git
-    - Github: https://github.com/flyingmangocat/liulian-plugin.git
+    - Gitee: https://gitee.com/huifeidemangguomao/liulian-plugin
+    - Github: https://github.com/flyingmangocat/liulian-plugin
   PackageName: liulian-plugin
 
 TRSS-Plugin:
   Author: "时雨"
   Introduction: "图片修复、图片背景去除、原神语音合成、系统信息、二维码生成、米哈游登录、Markdown、代码高亮、远程命令、文件操作、云盘操作。"
   Repository:
-    - Gitee: https://gitee.com/TimeRainStarSky/TRSS-Plugin.git
-    - Github: https://github.com/TimeRainStarSky/TRSS-Plugin.git
+    - Gitee: https://gitee.com/TimeRainStarSky/TRSS-Plugin
+    - Github: https://github.com/TimeRainStarSky/TRSS-Plugin
   PackageName: TRSS-Plugin
 
 xiaofei-plugin:
   Author: "小飞"
   Introduction: "多选点歌、天气查询、原神注册时间查询。"
   Repository:
-    - Gitee: https://gitee.com/xfdown/xiaofei-plugin.git
-    - Github: https://github.com/xfdown/xiaofei-plugin.git
+    - Gitee: https://gitee.com/xfdown/xiaofei-plugin
+    - Github: https://github.com/xfdown/xiaofei-plugin
   PackageName: xiaofei-plugin
 
 l-plugin:
@@ -258,31 +262,31 @@ l-plugin:
   Introduction: "塔罗牌，抽签，骰子，今天吃什么，tex图片等"
   Repository:
     - Gitee: No
-    - Github: https://github.com/liuly0322/l-plugin.git
+    - Github: https://github.com/liuly0322/l-plugin
   PackageName: l-plugin
   
 earth-k-plugin:
   Author: "地球生物,曉K"
   Introduction: "提供了猜语音、打我、练习记忆力小游戏，获取游戏内过场动画及角色PV，AI画图，卜卦，图片可视化点歌/视频/小说/漫画，原史（原神角色/圣遗物/武器/NPC等背景故事等）等功能"
   Repository:
-    - Gitee: https://gitee.com/SmallK111407/earth-k-plugin.git
-    - Github: https://github.com/SmallK111407/earth-k-plugin.git
+    - Gitee: https://gitee.com/SmallK111407/earth-k-plugin
+    - Github: https://github.com/SmallK111407/earth-k-plugin
   PackageName: earth-plugin
 
 trss-xianxin-plugin:
   Author: "闲心,snowtafir"
   Introduction: "一个集米游社cos、米游社wiki攻略、B站up动态推送(支持长图模式)、神秘指令、群战小游戏、五子棋、21点等功能的插件"
   Repository:
-    - Gitee: https://gitee.com/snowtafir/xianxin-plugin.git
-    - Github: https://github.com/snowtafir/xianxin-plugin.git
+    - Gitee: https://gitee.com/snowtafir/xianxin-plugin
+    - Github: https://github.com/snowtafir/xianxin-plugin
   PackageName: trss-xianxin-plugin
 
 flower-plugin:
   Author: "听语惊花"
   Introduction: "百连、单抽、文字狱、转生、隐形拉黑等"
   Repository:
-    - Gitee: https://gitee.com/Nwflower/flower-plugin.git
-    - Github: https://github.com/Nwflower/flower-plugin.git
+    - Gitee: https://gitee.com/Nwflower/flower-plugin
+    - Github: https://github.com/Nwflower/flower-plugin
   PackageName: flower-plugin
 
 Shiranai-Plugin:
@@ -290,14 +294,14 @@ Shiranai-Plugin:
   Introduction: "一个Miao-Yunzai&Trss-Yunzai&Karin的扩展插件，提供对 Bot 的一些娱乐功能。"
   Repository:
     - Gitee: No
-    - Github: https://github.com/XasYer/Shiranai-Plugin.git
+    - Github: https://github.com/XasYer/Shiranai-Plugin
   PackageName: Shiranai-Plugin
   
 Cookie-plugin:
-  Author: "Cookie-plugin"
+  Author: "Tloml-Starry"
   Introduction: "提供曲奇点点乐游戏."
   Repository:
-    - Gitee: https://gitee.com/Tloml-Starry/Cookie-plugin.git
+    - Gitee: https://gitee.com/Tloml-Starry/Cookie-plugin
     - Github: No
   PackageName: No
 
@@ -305,6 +309,6 @@ xianyu-plugin:
   Author: "酸菜咸鱼"
   Introduction: "提供一些棋类游戏。"
   Repository:
-    - Gitee: https://gitee.com/suancaixianyu/xianyu-plugin.git
+    - Gitee: https://gitee.com/suancaixianyu/xianyu-plugin
     - Github: No
   PackageName: No

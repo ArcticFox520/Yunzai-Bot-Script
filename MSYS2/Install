@@ -1,0 +1,86 @@
+#!/bin/env bash
+black="\e[30m"
+red="\033[31m"
+green="\033[32m"
+yellow="\033[33m"
+blue="\033[34m"
+purple="\033[35m"
+cyan="\033[36m"
+white="\033[37m"
+background="\033[0m"
+
+GithubMirror="https://mirror.ghproxy.com"
+
+function Download(){
+file="$1"
+URL="$2"
+local i=0
+if wget --help | grep -q show-progress 
+then
+  echo -e ${blue}[${green}*${blue}] ${cyan}正在下载 ${yellow}${file}${cyan}${background}
+  until wget -q --show-progress -O ${file} -c ${URL}
+  do
+    if [ ${i} == 3 ]
+    then
+      echo -e ${blue}[${red}*${blue}] ${cyan}错误次数过多 ${yellow}退出${background}
+      return 1
+    fi
+    i=$((${i}+1))
+    echo -e ${blue}[${red}*${blue}] ${cyan}下载失败 ${yellow}三秒后重试${background}
+    sleep 3s
+  done
+  echo -e ${blue}[${green}*${blue}] ${cyan}下载完成.${background}
+  return 0
+else
+  echo -e ${blue}[${green}*${blue}] ${cyan}正在下载 ${yellow}${file}${cyan}${background}
+  until wget -O ${file} -c ${URL}
+  do
+    if [ ${i} == 3 ]
+    then
+      echo -e ${blue}[${red}*${blue}] ${cyan}错误次数过多 ${yellow}退出${background}
+      return 1
+    fi
+    i=$((i+1))
+    echo -e ${blue}[${red}*${blue}] ${cyan}下载失败 ${yellow}三秒后重试${background}
+    sleep 3s
+  done
+  echo -e ${blue}[${green}*${blue}] ${cyan}下载完成.${background}
+  return 0
+fi
+}
+
+echo -e ${green}正在更新 ${yellow}Pacman${background}
+pacman -Suy --noconfirm
+echo -e ${green}更新完成${background}
+
+pkg_install="pacman -S --noconfirm"
+function pkg_install(){
+local i=0
+echo -e ${yellow}安装软件 ${pkg}${background}
+until ${pkg_install} ${pkg}
+do
+    if [ ${i} -eq 3 ]
+        then
+            echo -e ${red}错误次数过多 退出${background}
+            exit
+    fi
+    i=$((${i}+1))
+    echo -en ${red}命令执行失败 ${green}3秒后重试${background}
+    sleep 3s
+    echo
+done
+}
+pkg_list=("tar" "xz-utils" "gzip" "pv" "wget" "curl" "pulseaudio" "proot" "git")
+for package in ${pkg_list[@]}
+do
+  if [ -x "$(command -v pacman)" ];then
+    if ! dpkg -s "${package}" > /dev/null 2>&1;then
+        pkg="${package} ${pkg}"
+    fi
+  fi
+done
+if [ ! -z "${pkg}" ];then
+  if [ -x "$(command -v pacman)" ];then
+    pkg_install
+  fi
+fi

@@ -268,35 +268,19 @@ case ${Number} in
   curl -sL ${JSURL} > plugins/example/${JSFile}
 ;;
 2)
-  if [[ ${js} = *gitee* ]]
-  then
-      if [[ ${js} = *raw* ]]
-          then
-             curl ${js} > ${jsname}
-      elif [[ ${js} = *blob* ]]
-          then
-             js=$(echo ${js} | sed "s/blob/raw/g")
-             curl ${js} > ${jsname}
-      fi
-elif [[ ${js} = *github* ]]
-  then
-      if [[ ${js} = *raw* ]]
-          then
-              curl "https://${GitHubMirror}/${js}" > ${jsname}
-      elif [[ ${js} = *blob* ]]
-          then
-              js=$(echo ${js} | sed "s|blob/||g" | sed "s|github|raw.githubusercontent|g" )
-              curl "https://${GitHubMirror}/${js}" > ${jsname}
-      fi
-fi
   echo -en ${green}请输入链接: ${background};read JSURL
   JSFile=`echo $js | awk -F/ '{print $NF}'`
-  if echo ${JSURL} | grep git
+  if [[ ${JSURL} = *git* ]] && [[ ${JSURL} = *.js]]
   then
-    if echo ${JSURL} | grep gitee
+    if  [[ ${JSURL} = *github* ]]
     then
-    
-    elif echo ${JSURL} | grep gitee
+      JSURL=$(echo ${JSURL} | sed "s|blob/||g" | sed "s|github|raw.githubusercontent|g")
+      curl -sL ${GitHubMirror}/${JSURL} > plugins/example/${JSFile}
+    elif  [[ ${JSURL} = *gitee* ]]
+    then
+        JSURL=$(echo ${JSURL} | sed 's|blob|raw|g')
+        curl -sL ${JSURL} > plugins/example/${JSFile}
+    fi
   else
     echo -e ${red}错误 链接不来至于Git仓库${background}
     echo -en ${cyan}回车返回${background};read

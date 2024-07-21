@@ -230,7 +230,7 @@ do
   echo -e ${cyan}安装失败 ${yellow}三秒后重试${background}
   sleep 3s
 done
-echo -e ${green}PM2 ${yellow}安装完成${background}
+echo -e ${green}安装完成${background}
 
 echo -e ${green}正在安装 ${yellow}yq${background}
 URL="${GithubMirror}/https://github.com/mikefarah/yq/releases/download/v4.44.2/yq_linux_arm64"
@@ -238,3 +238,11 @@ Download yq ${URL}
 mv yq /usr/local/bin/yq
 echo -e ${green}安装完成${background}
 
+echo -e ${green}正在安装 ${yellow}ffmpeg${background}
+ffmpeg_URL=https://registry.npmmirror.com/-/binary/ffmpeg-static/b6.0
+Download ffmpeg ${ffmpeg_URL}/ffmpeg-linux-arm64
+Download ffprobe ${ffmpeg_URL}/ffprobe-linux-arm64
+chmod +x ffmpeg ffprobe
+mv -f ffmpeg /usr/local/bin/ffmpeg
+mv -f ffprobe /usr/local/bin/ffprobe
+echo -e ${green}安装完成${background}

@@ -156,7 +156,7 @@ fi
 
 if git clone --depth=1 ${GithubMirror}/https://github.com/ArcticFox520/Yunzai-Bot-Script $HOME/Yunzai-Bot-Script
 then
-  mv $HOME/Yunzai-Bot-Script/Proot/install $HOME/AF-Proot/${Linux}-${Version}/root/install
+  mv $HOME/Yunzai-Bot-Script/Proot/Install $HOME/AF-Proot/${Linux}-${Version}/root/Install
   mkdir /data/data/com.termux/files/home/AF-Proot/proc/
   mv -f $HOME/Yunzai-Bot-Script/Proot/proc/* $HOME/AF-Proot/proc/
   mv -f $HOME/Yunzai-Bot-Script/Proot/.hushlogin $HOME/AF-Proot/.hushlogin
@@ -233,4 +233,4 @@ fi
 FOX
 chmod +x "$HOME/AF-Proot/start-${Linux}-${Version}.sh"
 neofetch --ascii_distro ${Linux}
-exec $HOME/AF-Proot/start-ubuntu-jammy.sh 'bash install'
+exec $HOME/AF-Proot/start-ubuntu-jammy.sh 'bash Install'

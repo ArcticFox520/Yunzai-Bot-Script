@@ -49,38 +49,136 @@ else
 fi
 }
 
-echo -e ${green}正在更新 ${yellow}Pacman${background}
-pacman -Suy --noconfirm
+echo -e ${green}正在修改 ${yellow}DNS配置${background}
+rm /etc/resolv.conf
+echo 'nameserver 223.5.5.5
+nameserver 223.6.6.6
+nameserver 2400:3200::1
+nameserver 2400:3200:baba::1' > /etc/resolv.conf
+cat /etc/resolv.conf
+echo -e ${green}已修改为 ${yellow}阿里DNS${background}
+
+echo -e ${green}正在修改 ${yellow}Pacman仓库源${background}
+
+cat > mirrorlist.msys <<- FOX
+##
+## MSYS2 repository mirrorlist
+##
+
+## Primary
+## msys2.org
+Server = https://mirrors.bfsu.edu.cn/msys2/msys/$arch/
+Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/msys/$arch/
+Server = https://mirror.nju.edu.cn/msys2/msys/$arch/
+Server = https://mirrors.aliyun.com/msys2/msys/$arch
+Server = https://mirror.msys2.org/msys/$arch/
+Server = https://repo.msys2.org/msys/$arch/
+FOX
+
+cat > mirrorlist.mingw64 <<- FOX
+##
+## 32-bit Mingw-w64 repository mirrorlist
+##
+
+## Primary
+## msys2.org
+Server = https://mirrors.bfsu.edu.cn/msys2/msys/x86_64/
+Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/msys/x86_64/
+Server = https://mirror.nju.edu.cn/msys2/msys2/msys/x86_64/
+Server = https://mirrors.aliyun.com/msys2/msys/x86_64/
+Server = https://mirror.msys2.org/msys/x86_64/
+Server = https://repo.msys2.org/msys/x86_64/
+FOX
+
+cat > mirrorlist.mingw32 <<- FOX
+##
+## 32-bit Mingw-w64 repository mirrorlist
+##
+
+## Primary
+## msys2.org
+Server = https://mirrors.bfsu.edu.cn/msys2/msys/i686/
+Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/msys/i686/
+Server = https://mirror.nju.edu.cn/msys2/msys/i686/
+Server = https://mirrors.aliyun.com/msys2/msys/i686
+Server = https://mirror.msys2.org/msys/i686/
+Server = https://repo.msys2.org/msys/i686/
+FOX
+
+cat > mirrorlist.clang64 <<- FOX
+## Primary
+Server = https://mirrors.bfsu.edu.cn/msys2/mingw/clang64/
+Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/clang64/
+Server = https://mirror.nju.edu.cn/msys2/mingw/clang64/
+Server = https://mirrors.aliyun.com/msys2/mingw/clang64/
+Server = https://mirror.msys2.org/mingw/clang64/
+Server = https://repo.msys2.org/mingw/clang64/
+FOX
+
+cat > mirrorlist.clang32 <<- FOX
+## Primary
+Server = https://mirrors.bfsu.edu.cn/msys2/mingw/clang32/
+Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/clang32/
+Server = https://mirror.nju.edu.cn/msys2/mingw/clang32/
+Server = https://mirrors.aliyun.com/msys2/mingw/clang32/
+Server = https://mirror.msys2.org/mingw/clang32/
+Server = https://repo.msys2.org/mingw/clang32/
+FOX
+
+cat > mirrorlist.ucrt64 <<- FOX
+## Primary
+Server = https://mirrors.bfsu.edu.cn/msys2/mingw/ucrt64/
+Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/ucrt64/
+Server = https://mirror.nju.edu.cn/msys2/mingw/ucrt64/
+Server = https://mirrors.aliyun.com/msys2/mingw/ucrt64/
+Server = https://mirror.msys2.org/mingw/ucrt64/
+Server = https://repo.msys2.org/mingw/ucrt64/
+FOX
+
+mv mirrorlist.msys /etc/pacman.d/mirrorlist.msys
+mv mirrorlist.mingw64 /etc/pacman.d/mirrorlist.mingw64
+mv mirrorlist.mingw32 /etc/pacman.d/mirrorlist.mingw32
+mv mirrorlist.clang64 /etc/pacman.d/mirrorlist.clang64
+mv mirrorlist.clang32 /etc/pacman.d/mirrorlist.clang32
+mv mirrorlist.ucrt64 /etc/pacman.d/mirrorlist.ucrt64
+cat /etc/pacman.d/mirrorlist.msys
+echo -e ${green}修改完成${background}
+
+echo -e ${green}正在更新 ${yellow}MSYS2${background}
+pacman -Syyu --noconfirm
 echo -e ${green}更新完成${background}
 
-pkg_install="pacman -S --noconfirm"
-function pkg_install(){
-local i=0
-echo -e ${yellow}安装软件 ${pkg}${background}
-until ${pkg_install} ${pkg}
-do
-    if [ ${i} -eq 3 ]
-        then
-            echo -e ${red}错误次数过多 退出${background}
-            exit
-    fi
-    i=$((${i}+1))
-    echo -en ${red}命令执行失败 ${green}3秒后重试${background}
-    sleep 3s
+echo -e ${green}正在安装 ${yellow}依赖软件${background}
+pacman -S --needed --noconfirm tar gzip xz tmux screen curl wget pv git redis jq chromium ffmpeg
+echo -e ${green}安装完成${background}
+
+if [ ! -x "$(command -v pnpm)" ];then
+    echo -e ${green}正在安装 ${yellow}PNPM${background}
+    a=0
+    npm config set registry ${NPMMirror}
+    npm config set registry ${NPMMirror}
+    npm install -g npm@latest
+    until npm install -g pnpm@latest
+    do
+      if [ "${a}" == "3" ];then
+        echo -e ${red}错误次数过多 退出${background}
+        exit
+      fi
+      echo -e ${red}pnpm安装失败 ${green}正在重试${background}
+      a=$(($a+1))
+    done
     echo
-done
-}
-pkg_list=("tar" "xz-utils" "gzip" "pv" "wget" "curl" "pulseaudio" "proot" "git")
-for package in ${pkg_list[@]}
-do
-  if [ -x "$(command -v pacman)" ];then
-    if ! dpkg -s "${package}" > /dev/null 2>&1;then
-        pkg="${package} ${pkg}"
-    fi
-  fi
-done
-if [ ! -z "${pkg}" ];then
-  if [ -x "$(command -v pacman)" ];then
-    pkg_install
-  fi
 fi
+echo -e ${yellow}正在为pnpm更换默认源${background}
+pnpm config set registry ${NPMMirror}
+pnpm config set registry ${NPMMirror}
+
+until pnpm install -g pm2@latest
+do
+  if [ "${a}" == "3" ];then
+    echo -e ${red}错误次数过多 退出${background}
+    exit
+  fi
+  echo -e ${red}pnpm安装失败 ${green}正在重试${background}
+  a=$(($a+1))
+done

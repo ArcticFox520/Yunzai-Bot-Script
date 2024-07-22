@@ -60,20 +60,20 @@ echo -e ${green}已修改为 ${yellow}阿里DNS${background}
 
 echo -e ${green}正在修改 ${yellow}Pacman仓库源${background}
 
-cat > mirrorlist.msys <<- FOX
+echo '
 ##
 ## MSYS2 repository mirrorlist
 ##
 
 ## Primary
 ## msys2.org
-Server = https://mirrors.bfsu.edu.cn/msys2/msys/$arch/
-Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/msys/$arch/
-Server = https://mirror.nju.edu.cn/msys2/msys/$arch/
+Server = https://mirrors.bfsu.edu.cn/msys2/msys/$arch
+Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/msys/$arch
+Server = https://mirror.nju.edu.cn/msys2/msys/$arch
 Server = https://mirrors.aliyun.com/msys2/msys/$arch
-Server = https://mirror.msys2.org/msys/$arch/
-Server = https://repo.msys2.org/msys/$arch/
-FOX
+Server = https://mirror.msys2.org/msys/$arch
+Server = https://repo.msys2.org/msys/$arch
+' > mirrorlist.msys
 
 cat > mirrorlist.mingw64 <<- FOX
 ##
@@ -82,12 +82,12 @@ cat > mirrorlist.mingw64 <<- FOX
 
 ## Primary
 ## msys2.org
-Server = https://mirrors.bfsu.edu.cn/msys2/msys/x86_64/
-Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/msys/x86_64/
-Server = https://mirror.nju.edu.cn/msys2/msys2/msys/x86_64/
-Server = https://mirrors.aliyun.com/msys2/msys/x86_64/
-Server = https://mirror.msys2.org/msys/x86_64/
-Server = https://repo.msys2.org/msys/x86_64/
+Server = https://mirrors.bfsu.edu.cn/msys2/msys/x86_64
+Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/msys/x86_64
+Server = https://mirror.nju.edu.cn/msys2/msys2/msys/x86_64
+Server = https://mirrors.aliyun.com/msys2/msys/x86_64
+Server = https://mirror.msys2.org/msys/x86_64
+Server = https://repo.msys2.org/msys/x86_64
 FOX
 
 cat > mirrorlist.mingw32 <<- FOX
@@ -97,42 +97,42 @@ cat > mirrorlist.mingw32 <<- FOX
 
 ## Primary
 ## msys2.org
-Server = https://mirrors.bfsu.edu.cn/msys2/msys/i686/
-Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/msys/i686/
-Server = https://mirror.nju.edu.cn/msys2/msys/i686/
+Server = https://mirrors.bfsu.edu.cn/msys2/msys/i686
+Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/msys/i686
+Server = https://mirror.nju.edu.cn/msys2/msys/i686
 Server = https://mirrors.aliyun.com/msys2/msys/i686
-Server = https://mirror.msys2.org/msys/i686/
-Server = https://repo.msys2.org/msys/i686/
+Server = https://mirror.msys2.org/msys/i686
+Server = https://repo.msys2.org/msys/i686
 FOX
 
 cat > mirrorlist.clang64 <<- FOX
 ## Primary
-Server = https://mirrors.bfsu.edu.cn/msys2/mingw/clang64/
-Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/clang64/
-Server = https://mirror.nju.edu.cn/msys2/mingw/clang64/
-Server = https://mirrors.aliyun.com/msys2/mingw/clang64/
-Server = https://mirror.msys2.org/mingw/clang64/
-Server = https://repo.msys2.org/mingw/clang64/
+Server = https://mirrors.bfsu.edu.cn/msys2/mingw/clang64
+Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/clang64
+Server = https://mirror.nju.edu.cn/msys2/mingw/clang64
+Server = https://mirrors.aliyun.com/msys2/mingw/clang64
+Server = https://mirror.msys2.org/mingw/clang64
+Server = https://repo.msys2.org/mingw/clang64
 FOX
 
 cat > mirrorlist.clang32 <<- FOX
 ## Primary
-Server = https://mirrors.bfsu.edu.cn/msys2/mingw/clang32/
-Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/clang32/
-Server = https://mirror.nju.edu.cn/msys2/mingw/clang32/
-Server = https://mirrors.aliyun.com/msys2/mingw/clang32/
-Server = https://mirror.msys2.org/mingw/clang32/
-Server = https://repo.msys2.org/mingw/clang32/
+Server = https://mirrors.bfsu.edu.cn/msys2/mingw/clang32
+Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/clang32
+Server = https://mirror.nju.edu.cn/msys2/mingw/clang32
+Server = https://mirrors.aliyun.com/msys2/mingw/clang32
+Server = https://mirror.msys2.org/mingw/clang32
+Server = https://repo.msys2.org/mingw/clang32
 FOX
 
 cat > mirrorlist.ucrt64 <<- FOX
 ## Primary
-Server = https://mirrors.bfsu.edu.cn/msys2/mingw/ucrt64/
-Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/ucrt64/
-Server = https://mirror.nju.edu.cn/msys2/mingw/ucrt64/
-Server = https://mirrors.aliyun.com/msys2/mingw/ucrt64/
-Server = https://mirror.msys2.org/mingw/ucrt64/
-Server = https://repo.msys2.org/mingw/ucrt64/
+Server = https://mirrors.bfsu.edu.cn/msys2/mingw/ucrt64
+Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/ucrt64
+Server = https://mirror.nju.edu.cn/msys2/mingw/ucrt64
+Server = https://mirrors.aliyun.com/msys2/mingw/ucrt64
+Server = https://mirror.msys2.org/mingw/ucrt64
+Server = https://repo.msys2.org/mingw/ucrt64
 FOX
 
 mv mirrorlist.msys /etc/pacman.d/mirrorlist.msys

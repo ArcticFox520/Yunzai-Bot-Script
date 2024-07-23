@@ -43,6 +43,12 @@
   - 重装依赖文件
 
 ---
+## LICENSE
+- [MIT License](https://github.com/ArcticFox520/Yunzai-Bot-Script/blob/main/LICENSE)
+-  [用户协议](https://github.com/ArcticFox520/Yunzai-Bot-Script/blob/main/用户协议.txt)
+> 注: 如果 MIT License 开源协议 和 本项目 用户协议 `有冲突部分`，以本项目用户协议为准。
+
+---
 ## 致谢
 | Nickname | Github | Gitee  | Contribution |
 | :--------: | :--------: | :--------: | :--------: |

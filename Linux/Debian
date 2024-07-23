@@ -24,7 +24,7 @@ x86_64|x64|amd64)
 esac
 
 echo -e ${green}正在安装 ${yellow}必要依赖${background}
-apt install -y tar gzip xz-utils tmux screen curl wget pv git redis-server jq fonts-wqy*
+apt install -y tar gzip xz-utils tmux screen curl wget pv git redis-server
 echo -e ${green}安装完成${background}
 
 echo -e ${green}正在安装 ${yellow}Chromium${background}

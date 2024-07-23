@@ -4,9 +4,10 @@
 > 宗旨: 化繁为简、轻装上阵。
 
 ## 介绍 Introduction
-> 本项目会尽可能原生适配多钟系统，但我更推荐使用容器化解决方法。
+> 本项目会尽可能原生适配多种系统，但我更推荐使用容器化解决方法。
 ---
 > 适配进度
+- 主要 Main
   - Ubuntu
     - [ ] Ubuntu 24.04 (Noble Numbat)
     - [x] Ubuntu 22.04 (Jammy Jellyfish)
@@ -19,6 +20,7 @@
     - [ ] CentOS 9-Stream
     - [ ] CentOS 8-Stream
   - [ ] Arch Linux
+- 次要 Minor
   - [ ] Manjaro
   - [ ] Alpine Linux
   - [ ] OpenSUSE

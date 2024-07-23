@@ -8,8 +8,23 @@
 ---
 > 适配进度
   - Ubuntu
-    - 22.04 LTS (Jammy Jellyfish)
-  - MSYS2
+    - [ ] Ubuntu 24.04 (Noble Numbat)
+    - [x] Ubuntu 22.04 (Jammy Jellyfish)
+    - [ ] Ubuntu 20.04 (Focal Fossa)
+  - Debian
+    - [ ] Debian (Sid)
+    - [ ] Debian 12 (Bookworm)
+    - [ ] Debian 11 (Bullseye)
+  - CentOS
+    - [ ] CentOS 9-Stream
+    - [ ] CentOS 8-Stream
+  - [ ] Arch Linux
+  - [ ] Manjaro
+  - [ ] Alpine Linux
+  - [ ] OpenSUSE
+  - [ ] Fedora
+  - [ ] Kali Rolling
+  - [x] MSYS2
 
 ## 功能 Function
 > 功能列表

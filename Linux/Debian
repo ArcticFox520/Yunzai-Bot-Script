@@ -1,0 +1,32 @@
+#!/bin/env bash
+black="\e[30m"
+red="\033[31m"
+green="\033[32m"
+yellow="\033[33m"
+blue="\033[34m"
+purple="\033[35m"
+cyan="\033[36m"
+white="\033[37m"
+background="\033[0m"
+
+GithubMirror="https://gh.arcticfox.top"
+
+case `dpkg --print-architecture` in
+aarch64|arm64)
+	Arch="arm64"
+	;;
+x86_64|x64|amd64)
+	Arch="amd64"
+	;;
+*)
+	echo -e ${red}暂不支持的架构 ${cyan}$(dpkg --print-architecture)${background}
+	exit
+esac
+
+echo -e ${green}正在安装 ${yellow}必要依赖${background}
+apt install -y tar gzip xz-utils tmux screen curl wget pv git redis-server jq fonts-wqy*
+echo -e ${green}安装完成${background}
+
+echo -e ${green}正在安装 ${yellow}Chromium${background}
+apt install -y chromium
+echo -e ${green}安装完成${background}

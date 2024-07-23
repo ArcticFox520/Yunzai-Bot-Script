@@ -20,6 +20,7 @@
     - [ ] CentOS 9-Stream
     - [ ] CentOS 8-Stream
   - [ ] Arch Linux
+  - [ ] Docker
 - 次要 Minor
   - [ ] Manjaro
   - [ ] Alpine Linux

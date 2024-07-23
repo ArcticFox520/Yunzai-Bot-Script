@@ -250,9 +250,14 @@ elif pm2 list 2>&1 | grep -q $1
 then
   StartSoftware=pm2
   return 3
-elif ps -ef 2>&1 | sed '/grep/d' | grep $1
+elif ps -ef 2>&1 | sed '/grep/d' | grep -q $1
 then
-  return 4
+  if ! $(ps -ef 2>&1 | sed '/grep/d' | grep -q $1 | grep -q whiptail || grep -q dialog)
+  then
+    return 0
+  else
+    return 4
+  fi
 else
   StartSoftware=tmux
   return 0

@@ -9,7 +9,7 @@ cyan="\033[36m"
 white="\033[37m"
 background="\033[0m"
 
-GithubMirror="https://mirror.ghproxy.com/"
+GithubMirror="https://gh.arcticfox.top/"
 
 if [ "$(uname -o)" = "Android" ]; then
 	echo "看来你是大聪明 加Q群获取帮助吧 596660282"

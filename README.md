@@ -7,6 +7,7 @@
 > 本项目会尽可能原生适配多种系统，但我更推荐使用容器化解决方法。
 ---
 > 适配进度
+---
 - 主要 Main
   - Ubuntu
     - [ ] Ubuntu 24.04 (Noble Numbat)
@@ -20,6 +21,7 @@
     - [ ] CentOS 9-Stream
     - [ ] CentOS 8-Stream
   - [ ] Arch Linux
+  - [x] MSYS2
   - [ ] Docker
 - 次要 Minor
   - [ ] Manjaro
@@ -27,7 +29,7 @@
   - [ ] OpenSUSE
   - [ ] Fedora
   - [ ] Kali Rolling
-  - [x] MSYS2
+---
 
 ## 功能 Function
 > 功能列表

@@ -1,0 +1,58 @@
+#!/bin/bash
+if grep -i -q "Ubuntu" /etc/os-release
+then
+  if ! bash AFYZ/Linux/Ubuntu
+  then
+    exit 1
+  fi
+elif grep -i -q "Debian" /etc/os-release
+then
+  if ! bash AFYZ/Linux/Debian
+  then
+    exit 1
+  fi
+elif grep -i -q "CentOS" /etc/os-release
+then
+  if ! bash AFYZ/Linux/CentOS
+  then
+    exit 1
+  fi
+elif grep -i -q "Arch" /etc/os-release
+then
+  if ! bash AFYZ/Linux/Arch
+  then
+    exit 1
+  fi
+elif grep -i -q "Manjaro" /etc/os-release
+then
+  if ! bash AFYZ/Linux/Manjaro
+  then
+    exit 1
+  fi
+elif grep -i -q "openSUSE" /etc/os-release
+then
+  if ! bash AFYZ/Linux/openSUSE
+  then
+    exit 1
+  fi
+elif grep -i -q "Fedora" /etc/os-release
+then
+  if ! bash AFYZ/Linux/Fedora
+  then
+    exit 1
+  fi
+elif grep -i -q "Kali" /etc/os-release
+then
+  if ! bash AFYZ/Linux/Kali
+  then
+    exit 1
+  fi
+elif grep -i -q "Alpine" /etc/os-release
+then
+  if ! bash AFYZ/Linux/Alpine
+  then
+    exit 1
+  fi
+fi
+
+

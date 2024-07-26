@@ -8,4 +8,133 @@ export cyan="\033[36m"
 export white="\033[37m"
 export background="\033[0m"
 
-if 
+function Download(){
+file="$1"
+URL="$2"
+local i=0
+if wget --help | grep -q show-progress 
+then
+  echo -e ${blue}[${green}*${blue}] ${cyan}正在下载 ${yellow}${file}${cyan}${background}
+  until wget -q --show-progress -O ${file} -c ${URL}
+  do
+    if [ ${i} == 3 ]
+    then
+      echo -e ${blue}[${red}*${blue}] ${cyan}错误次数过多 ${yellow}退出${background}
+      return 1
+    fi
+    i=$((${i}+1))
+    echo -e ${blue}[${red}*${blue}] ${cyan}下载失败 ${yellow}三秒后重试${background}
+    sleep 3s
+  done
+  echo -e ${blue}[${green}*${blue}] ${cyan}下载完成.${background}
+  return 0
+else
+  echo -e ${blue}[${green}*${blue}] ${cyan}正在下载 ${yellow}${file}${cyan}${background}
+  until wget -O ${file} -c ${URL}
+  do
+    if [ ${i} == 3 ]
+    then
+      echo -e ${blue}[${red}*${blue}] ${cyan}错误次数过多 ${yellow}退出${background}
+      return 1
+    fi
+    i=$((i+1))
+    echo -e ${blue}[${red}*${blue}] ${cyan}下载失败 ${yellow}三秒后重试${background}
+    sleep 3s
+  done
+  echo -e ${blue}[${green}*${blue}] ${cyan}下载完成.${background}
+  return 0
+fi
+}
+
+case `dpkg --print-architecture` in
+aarch64|arm64)
+	Arch="arm64"
+	;;
+x86_64|x64|amd64)
+	Arch="x64"
+	;;
+*)
+	echo -e ${red}暂不支持的架构 ${cyan}$(dpkg --print-architecture)${background}
+	exit
+esac
+
+URL="https://ipinfo.io"
+Address=$(curl -sL ${URL} | sed -n 's/.*"country": "\(.*\)",.*/\1/p')
+if [ ${Address} = "CN" ]
+then
+  Node_URL="https://mirrors.ustc.edu.cn/node/latest-iron/"
+else
+  Node_URL="https://nodejs.org/dist/latest-iron/"
+fi
+i=0
+until NodeVersion="$(curl ${Node_URL} | grep .pkg | awk -F 'node-|\.pkg' '{print $2}')"
+do
+  if [ ${i} == 3 ]
+  then
+    echo -e ${cyan}错误次数过多 ${yellow}退出${background}
+    exit
+  fi
+  i=$((${i}+1))
+  echo -e ${cyan}获取失败 ${yellow}三秒后重试${background}
+  sleep 3s
+done
+
+URL="https://ipinfo.io"
+Address=$(curl -sL ${URL} | sed -n 's/.*"country": "\(.*\)",.*/\1/p')
+if [ ${Address} = "CN" ]
+then
+  NodeJS_URL="https://registry.npmmirror.com/-/binary/node/latest-iron/node-${NodeVersion}-linux-${Arch}.tar.xz"
+  NPMMirror="https://registry.npmmirror.com"
+else
+  NodeJS_URL="https://nodejs.org/dist/latest-iron/node-${NodeVersion}-linux-${Arch}.tar.gz"
+  NPMMirror="https://registry.npmjs.org"
+fi
+
+Download NodeJS.tar.xz ${NodeJS_URL}
+
+mkdir NodeJS
+pv NodeJS.tar.xz | tar -Jxf - -C NodeJS
+rm -rf /usr/local/NodeJS > /dev/null 2>&1
+mv NodeJS/$(ls NodeJS) /usr/local/NodeJS
+rm -rf NodeJS.tar.xz NodeJS
+mkdir -p /root/.local/share/pnpm
+echo '
+#Node.JS
+export PATH=$PATH:/usr/local/Node/bin
+export PATH=$PATH:/root/.local/share/pnpm
+export PNPM_HOME=/root/.local/share/pnpm
+' >> /etc/profile
+
+echo -e ${green}NodeJS ${yellow}安装完成${background}
+
+export PATH=$PATH:/usr/local/Node/bin
+export PATH=$PATH:/root/.local/share/pnpm
+export PNPM_HOME=/root/.local/share/pnpm
+
+echo -e ${green}正在设置NPM ${yellow}默认仓库${background}
+npm config set registry ${NPMMirror}
+npm config set registry ${NPMMirror}
+npm install -g npm@latest
+echo -e ${green}已设置为 ${yellow}npmmirror${background}
+
+echo -e ${green}正在安装 ${yellow}PNPM${background}
+npm install -g pnpm
+echo -e ${green}正在设置PNPM ${yellow}默认仓库${background}
+pnpm config set registry ${NPMMirror}
+pnpm config set registry ${NPMMirror}
+echo -e ${green}已设置为 ${yellow}npmmirror${background}
+
+echo -e ${green}正在安装 ${yellow}PNM2${background}
+i=0
+until pnpm install -g pm2
+do
+  if [ ${i} == 3 ]
+  then
+    echo -e ${cyan}错误次数过多 ${yellow}退出${background}
+    exit
+  fi
+  i=$((${i}+1))
+  echo -e ${cyan}安装失败 ${yellow}三秒后重试${background}
+  sleep 3s
+done
+echo -e ${green}安装完成${background}

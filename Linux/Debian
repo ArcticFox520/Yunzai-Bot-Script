@@ -20,13 +20,54 @@ x86_64|x64|amd64)
 	;;
 *)
 	echo -e ${red}暂不支持的架构 ${cyan}$(dpkg --print-architecture)${background}
-	exit
+	exit 1
 esac
 
-echo -e ${green}正在安装 ${yellow}必要依赖${background}
-apt install -y tar gzip xz-utils tmux screen curl wget pv git redis-server
-echo -e ${green}安装完成${background}
+apt_update(){
+if [ "${apt_update}" != "apt_updated" ]
+then
+  echo -e ${green}正在更新 ${yellow}软件源${background}
+  if apt update -y
+  then
+    echo -e ${red}更新出错${background}
+    exit 1
+  fi
+  apt_update=apt_updated
+fi
+}
 
-echo -e ${green}正在安装 ${yellow}Chromium${background}
-apt install -y chromium
-echo -e ${green}安装完成${background}
+Package=("tar" "gzip" "xz-utils" "tmux" "screen" "wget" "curl" "pv" "git" "redis-server" "chromium")
+for PKG in ${Package[@]}
+do
+  if ! dpkg -s ${PKG} >/dev/null 2>&1
+  then
+    echo -e ${green}正在安装 ${yellow}git${background}
+    apt_update
+    until apt install -y ${PKG}
+    do
+      echo -e ${red}安装失败 3秒后重试${background}
+      sleep 3s
+    done
+    echo -e ${green}安装完成${background}
+  fi
+done
+
+Command(){
+i=0
+until bash AFYZ/Install/$1
+do
+  if [ ${i} -eq 3 ]
+    then
+      echo -e ${red}错误次数过多 退出${background}
+      exit 1
+  fi
+  i=$((${i}+1))
+  echo -en ${red}命令执行失败 ${green}3秒后重试${background}
+  sleep 3s
+done
+}
+
+for file in ("NodeJS" "FFmpeg" "yq")
+do
+  Command ${file}
+done

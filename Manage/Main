@@ -718,6 +718,15 @@ case ${Number} in
 esac
 }
 
+Install(){
+command_all=""
+for Command in ${command_all[@]}
+until bash Insatll $1
+do
+  
+done
+}
+
 MenuSize
 Number=$(whiptail \
 --title "AF-YZ" \

@@ -1,0 +1,81 @@
+#!/bin/env bash
+export red="\033[31m"
+export green="\033[32m"
+export yellow="\033[33m"
+export blue="\033[34m"
+export purple="\033[35m"
+export cyan="\033[36m"
+export white="\033[37m"
+export background="\033[0m"
+
+function Download(){
+file="$1"
+URL="$2"
+local i=0
+if wget --help | grep -q show-progress 
+then
+  echo -e ${blue}[${green}*${blue}] ${cyan}正在下载 ${yellow}${file}${cyan}${background}
+  until wget -q --show-progress -O ${file} -c ${URL}
+  do
+    if [ ${i} == 3 ]
+    then
+      echo -e ${blue}[${red}*${blue}] ${cyan}错误次数过多 ${yellow}退出${background}
+      return 1
+    fi
+    i=$((${i}+1))
+    echo -e ${blue}[${red}*${blue}] ${cyan}下载失败 ${yellow}三秒后重试${background}
+    sleep 3s
+  done
+  echo -e ${blue}[${green}*${blue}] ${cyan}下载完成.${background}
+  return 0
+else
+  echo -e ${blue}[${green}*${blue}] ${cyan}正在下载 ${yellow}${file}${cyan}${background}
+  until wget -O ${file} -c ${URL}
+  do
+    if [ ${i} == 3 ]
+    then
+      echo -e ${blue}[${red}*${blue}] ${cyan}错误次数过多 ${yellow}退出${background}
+      return 1
+    fi
+    i=$((i+1))
+    echo -e ${blue}[${red}*${blue}] ${cyan}下载失败 ${yellow}三秒后重试${background}
+    sleep 3s
+  done
+  echo -e ${blue}[${green}*${blue}] ${cyan}下载完成.${background}
+  return 0
+fi
+}
+
+case `dpkg --print-architecture` in
+aarch64|arm64)
+	Arch="arm64"
+	;;
+x86_64|x64|amd64)
+	Arch1="x64"
+	Arch2="amd64"
+	;;
+*)
+	echo -e ${red}暂不支持的架构 ${cyan}$(dpkg --print-architecture)${background}
+	exit
+esac
+
+URL="https://ipinfo.io"
+Address=$(curl -sL ${URL} | sed -n 's/.*"country": "\(.*\)",.*/\1/p')
+if [ ${Address} = "CN" ]
+then
+  ffmpeg_URL=https://registry.npmmirror.com/-/binary/ffmpeg-static/b6.0
+  Download ffmpeg ${ffmpeg_URL}/ffmpeg-linux-${ARCH1}
+  Download ffprobe ${ffmpeg_URL}/ffprobe-linux-${ARCH1}
+  chmod +x ffmpeg ffprobe
+  mv -f ffmpeg /usr/local/bin/ffmpeg
+  mv -f ffprobe /usr/local/bin/ffprobe
+else
+  ffmpegURL=https://johnvansickle.com/ffmpeg/releases/
+  ffmpegURL=${ffmpegURL}ffmpeg-release-${ARCH2}-static.tar.xz
+  Download ffmpeg.tar.xz ${ffmpegURL}
+  pv ffmpeg.tar.xz | tar -Jxf - -C ffmpeg
+  chmod +x ffmpeg/$(ls ffmpeg)/*
+  mv -f ffmpeg/$(ls ffmpeg)/ffmpeg /usr/local/bin/ffmpeg
+  mv -f ffmpeg/$(ls ffmpeg)/ffprobe /usr/local/bin/ffprobe
+  rm -rf ffmpeg*
+fi

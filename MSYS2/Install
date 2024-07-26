@@ -150,7 +150,7 @@ cat /etc/pacman.d/mirrorlist.msys
 echo -e ${green}修改完成${background}
 
 echo -e ${green}正在更新 ${yellow}MSYS2${background}
-pacman -Syyu --noconfirm
+pacman -Syyu --noconfirm --needed
 echo -e ${green}更新完成${background}
 
 echo -e ${green}正在安装 ${yellow}依赖软件${background}

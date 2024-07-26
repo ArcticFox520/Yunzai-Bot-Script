@@ -1,5 +1,5 @@
 # 🍥 ArcticFox Script
-> 这是一个适用于Miao-Yunzai和TRSS-Yunzai系统的自动化部署及管理。
+> 这是一个适用于Miao-Yunzai和TRSS-Yunzai自动化部署及管理脚本。
 ---
 > 宗旨: 化繁为简、轻装上阵。
 
@@ -20,12 +20,12 @@
   - CentOS
     - [ ] CentOS 9-Stream
     - [ ] CentOS 8-Stream
-  - [ ] Arch Linux
+  - [ ] Arch
   - [x] MSYS2
   - [ ] Docker
 - 次要 Minor
   - [ ] Manjaro
-  - [ ] Alpine Linux
+  - [ ] Alpine
   - [ ] OpenSUSE
   - [ ] Fedora
   - [ ] Kali Rolling

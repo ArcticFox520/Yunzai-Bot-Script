@@ -16,7 +16,7 @@ export PATH=$PATH:/root/.local/share/pnpm
 export PNPM_HOME=/root/.local/share/pnpm
 export PUPPETEER_SKIP_DOWNLOAD=true
 i=0
-until echo "Y" | pnpm install -P
+until echo "Y" | pnpm install
 do
     echo -e ${red}依赖安装失败 ${green}正在重试${background}
     if [ ! -d $HOME/.local/share/pnpm ];then
@@ -27,13 +27,11 @@ do
     export PNPM_HOME=/root/.local/share/pnpm
     if [ "${i}" == "3" ];then
         echo -e ${red}错误次数过多 退出${background}
-        exit 
+        exit
     fi
     pnpm setup
     source ~/.bashrc
     i=$((${i}+1))
-    pnpm uninstall sqlite3
-    pnpm install sqlite3@5.1.6
 done
 echo Y | pnpm install
 pnpm install puppeteer@19.4.0 -w

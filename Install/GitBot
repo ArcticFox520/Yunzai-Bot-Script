@@ -1,12 +1,13 @@
 #!/bin/env bash
-if ping -c 1 gitee.com > /dev/null 2>&1
+BotName="$1"
+
+URL="https://ipinfo.io"
+Address=$(curl -sL ${URL} | sed -n 's/.*"country": "\(.*\)",.*/\1/p')
+if [ ${Address} = "CN" ]
 then
   GitMirror="gitee.com"
-  URL="https://gitee.com/baihu433/Yunzai-Bot-Shell/raw/master/Manage"
-elif ping -c 1 github.com > /dev/null 2>&1
-then
+else
   GitMirror="github.com"
-  URL="https://raw.githubusercontent.com/baihu433/Yunzai-Bot-Shell/master/Manage"
 fi
 
 install_Bot(){
@@ -18,7 +19,8 @@ install_Bot(){
      Git=https://${GitMirror}/TimeRainStarSky/Yunzai.git
   fi
   echo -e ${cyan}正在克隆${BotName}${background}
-  if ! git clone --depth=1 ${Git} $HOME/${BotName};then
+  if ! git clone --depth=1 ${Git} $HOME/${BotName}
+  then
     echo -e ${red}克隆失败${background}
     exit
   fi
@@ -40,28 +42,26 @@ install_Genshin(){
   fi
 }
 if [ "${BotName}" == "Miao-Yunzai" ];then
-    if [ ! -e $HOME/${BotName}/package.json ];then
-        install_Bot
-    fi
-    if [ ! -e $HOME/${BotName}/plugins/miao-plugin/index.js ];then
-        install_Miao_Plugin
-    fi
-    if [ ! -d $HOME/${BotName}/node_modules ];then
-        cd $HOME/${BotName}
-        bash <(curl -sL ${URL}/BOT-PACKAGE.sh)
-    fi
+  if [ ! -e $HOME/${BotName}/package.json ];then
+    install_Bot
+  fi
+  if [ ! -e $HOME/${BotName}/plugins/miao-plugin/index.js ];then
+    install_Miao_Plugin
+  fi
+  if [ ! -d $HOME/${BotName}/node_modules ];then
+    cd $HOME/${BotName}
+  fi
 elif [ "${BotName}" == "TRSS-Yunzai" ];then
-    if [ ! -e $HOME/${BotName}/package.json ];then
-        install_Bot
-    fi
-    if [ ! -e $HOME/${BotName}/plugins/miao-plugin/index.js ];then
-        install_Miao_Plugin
-    fi
-    if [ ! -e $HOME/${BotName}/plugins/genshin/index.js ];then
-        install_Genshin
-    fi
-    if [ ! -d $HOME/${BotName}/node_modules ];then
-        cd $HOME/${BotName}
-        bash <(curl -sL ${URL}/BOT-PACKAGE.sh)
-    fi
+  if [ ! -e $HOME/${BotName}/package.json ];then
+    install_Bot
+  fi
+  if [ ! -e $HOME/${BotName}/plugins/miao-plugin/index.js ];then
+    install_Miao_Plugin
+  fi
+  if [ ! -e $HOME/${BotName}/plugins/genshin/index.js ];then
+    install_Genshin
+  fi
+  if [ ! -d $HOME/${BotName}/node_modules ];then
+    cd $HOME/${BotName}
+  fi
 fi

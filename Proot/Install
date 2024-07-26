@@ -247,3 +247,6 @@ mv -f ffmpeg /usr/local/bin/ffmpeg
 mv -f ffprobe /usr/local/bin/ffprobe
 echo -e ${green}安装完成${background}
 
+echo -e ${green}开始安装 ${yellow}ArcticFox Script${background}
+git clone --depth=1 ${GithubMirror}/https://github.com/ArcticFox520/Yunzai-Bot-Script ./AFYZ
+bash AFYZ/start

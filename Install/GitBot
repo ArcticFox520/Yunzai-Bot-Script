@@ -1,7 +1,8 @@
 #!/bin/env bash
-#
 BotName="$1"
-
+Path=$2
+AFHOME=$3
+cd ${Path}
 URL="https://ipinfo.io"
 Address=$(curl -sL ${URL} | sed -n 's/.*"country": "\(.*\)",.*/\1/p')
 if [ ${Address} = "CN" ]
@@ -42,7 +43,7 @@ install_Genshin(){
     exit
   fi
 }
-if [ "${BotName}" == "Miao-Yunzai" ];then
+if [ "${BotName}" = "Miao-Yunzai" ];then
   if [ ! -e $HOME/${BotName}/package.json ];then
     install_Bot
   fi
@@ -50,9 +51,10 @@ if [ "${BotName}" == "Miao-Yunzai" ];then
     install_Miao_Plugin
   fi
   if [ ! -d $HOME/${BotName}/node_modules ];then
-    cd $HOME/${BotName}
+    cd ${Path}/${BotName}
+    bash $AFHOME/Install/Package
   fi
-elif [ "${BotName}" == "TRSS-Yunzai" ];then
+elif [ "${BotName}" = "TRSS-Yunzai" ];then
   if [ ! -e $HOME/${BotName}/package.json ];then
     install_Bot
   fi
@@ -63,6 +65,7 @@ elif [ "${BotName}" == "TRSS-Yunzai" ];then
     install_Genshin
   fi
   if [ ! -d $HOME/${BotName}/node_modules ];then
-    cd $HOME/${BotName}
+    cd ${Path}/${BotName}
+    bash $AFHOME/Install/Package
   fi
 fi

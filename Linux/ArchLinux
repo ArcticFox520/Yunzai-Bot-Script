@@ -40,23 +40,3 @@ do
     echo -e ${green}安装完成${background}
   fi
 done
-
-Command(){
-i=0
-until bash AFYZ/Install/$1
-do
-  if [ ${i} -eq 3 ]
-    then
-      echo -e ${red}错误次数过多 退出${background}
-      exit 1
-  fi
-  i=$((${i}+1))
-  echo -en ${red}命令执行失败 ${green}3秒后重试${background}
-  sleep 3s
-done
-}
-
-for file in ("NodeJS" "FFmpeg" "yq")
-do
-  Command ${file}
-done

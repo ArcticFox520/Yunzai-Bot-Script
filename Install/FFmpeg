@@ -63,15 +63,16 @@ URL="https://ipinfo.io"
 Address=$(curl -sL ${URL} | sed -n 's/.*"country": "\(.*\)",.*/\1/p')
 if [ ${Address} = "CN" ]
 then
+  https://registry.npmmirror.com/-/binary/ffmpeg-static/b6.0/ffmpeg-linux-arm64
   ffmpeg_URL=https://registry.npmmirror.com/-/binary/ffmpeg-static/b6.0
-  Download ffmpeg ${ffmpeg_URL}/ffmpeg-linux-${ARCH1}
-  Download ffprobe ${ffmpeg_URL}/ffprobe-linux-${ARCH1}
+  Download ffmpeg ${ffmpeg_URL}/ffmpeg-linux-${Arch1}
+  Download ffprobe ${ffmpeg_URL}/ffprobe-linux-${Arch1}
   chmod +x ffmpeg ffprobe
   mv -f ffmpeg /usr/local/bin/ffmpeg
   mv -f ffprobe /usr/local/bin/ffprobe
 else
   ffmpegURL=https://johnvansickle.com/ffmpeg/releases/
-  ffmpegURL=${ffmpegURL}ffmpeg-release-${ARCH2}-static.tar.xz
+  ffmpegURL=${ffmpegURL}ffmpeg-release-${Arch2}-static.tar.xz
   Download ffmpeg.tar.xz ${ffmpegURL}
   pv ffmpeg.tar.xz | tar -Jxf - -C ffmpeg
   chmod +x ffmpeg/$(ls ffmpeg)/*

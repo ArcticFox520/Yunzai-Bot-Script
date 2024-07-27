@@ -99,9 +99,10 @@ Download NodeJS.tar.xz ${NodeJS_URL}
 
 mkdir NodeJS
 pv NodeJS.tar.xz | tar -Jxf - -C NodeJS
+rm -rvf NodeJS.tar.xz
 rm -rf /usr/local/NodeJS > /dev/null 2>&1
 mv NodeJS/$(ls NodeJS) /usr/local/NodeJS
-rm -rf NodeJS.tar.xz NodeJS
+rm -rf NodeJS
 mkdir -p /root/.local/share/pnpm
 echo '
 #Node.JS

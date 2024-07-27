@@ -730,6 +730,7 @@ do
   if bash ${Command}
   then
     echo -e ${red}出现错误${background}
+    break
     exit
   fi
 done

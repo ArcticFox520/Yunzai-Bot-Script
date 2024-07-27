@@ -2,55 +2,55 @@
 #
 if grep -i -q "Ubuntu" /etc/os-release
 then
-  if ! bash AFYZ/Linux/Ubuntu
+  if ! bash Linux/Ubuntu
   then
     exit 1
   fi
 elif grep -i -q "Debian" /etc/os-release
 then
-  if ! bash AFYZ/Linux/Debian
+  if ! bash Linux/Debian
   then
     exit 1
   fi
 elif grep -i -q "CentOS" /etc/os-release
 then
-  if ! bash AFYZ/Linux/CentOS
+  if ! bash Linux/CentOS
   then
     exit 1
   fi
 elif grep -i -q "Arch" /etc/os-release
 then
-  if ! bash AFYZ/Linux/Arch
+  if ! bash Linux/Arch
   then
     exit 1
   fi
 elif grep -i -q "Manjaro" /etc/os-release
 then
-  if ! bash AFYZ/Linux/Manjaro
+  if ! bash Linux/Manjaro
   then
     exit 1
   fi
 elif grep -i -q "openSUSE" /etc/os-release
 then
-  if ! bash AFYZ/Linux/openSUSE
+  if ! bash Linux/openSUSE
   then
     exit 1
   fi
 elif grep -i -q "Fedora" /etc/os-release
 then
-  if ! bash AFYZ/Linux/Fedora
+  if ! bash Linux/Fedora
   then
     exit 1
   fi
 elif grep -i -q "Kali" /etc/os-release
 then
-  if ! bash AFYZ/Linux/Kali
+  if ! bash Linux/Kali
   then
     exit 1
   fi
 elif grep -i -q "Alpine" /etc/os-release
 then
-  if ! bash AFYZ/Linux/Alpine
+  if ! bash Linux/Alpine
   then
     exit 1
   fi

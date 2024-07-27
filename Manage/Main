@@ -10,8 +10,6 @@ cyan="\033[36m"
 white="\033[37m"
 background="\033[0m"
 
-AFHOME=$1
-
 function MenuSize(){
 HEIGHT=$(($(tput lines) - 10))
 WIDTH=$(($(tput cols) - 10))

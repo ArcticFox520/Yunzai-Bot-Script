@@ -30,7 +30,7 @@ for PKG in ${Package[@]}
 do
   if ! dpkg -s ${PKG} >/dev/null 2>&1
   then
-    echo -e ${green}正在安装 ${yellow}git${background}
+    echo -e ${green}正在安装 ${yellow}${PKG}${background}
     apt_update
     until apt install -y ${PKG}
     do

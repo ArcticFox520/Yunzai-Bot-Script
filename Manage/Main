@@ -722,7 +722,6 @@ esac
 }
 
 Install(){
-Path=$(pwd)
 cd $AFHOME
 command_all=("Linux/Insatll" "Install/NodeJS" "Install/FFmpeg" "Install/yq")
 for Command in ${command_all[@]}

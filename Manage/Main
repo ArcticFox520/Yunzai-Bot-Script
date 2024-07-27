@@ -323,33 +323,36 @@ else
 fi
 }
 
-if echo $1 | grep -q '/'
+if [ -n $1 ]
 then
-  Path="$1/package.json"
-  if grep -q "miao-yunzai" ${Path}
+  if echo $1 | grep -q '/'
   then
-    BotName="Miao-Yunzai"
-    cd ${BotPath}/${BotName}
-  elif grep -q "trss-yunzai" ${Path}
-  then
-    BotName="Miao-Yunzai"
-    cd ${BotPath}/${BotName}
+    Path="$1/package.json"
+    if grep -q "miao-yunzai" ${Path}
+    then
+      BotName="Miao-Yunzai"
+      cd ${BotPath}/${BotName}
+    elif grep -q "trss-yunzai" ${Path}
+    then
+      BotName="Miao-Yunzai"
+      cd ${BotPath}/${BotName}
+    else
+      echo -e ${cyan}自定义路径: ${BotPath} ${red}判断失败${background}
+    fi
   else
-    echo -e ${cyan}自定义路径: ${BotPath} ${red}判断失败${background}
+    case $1 in
+    MZ|Miao-Yunzai)
+      BotName="Miao-Yunzai"
+      CheckPath ${BotName}
+      CheckStart ${BotName}
+      ;;
+    TZ|TRSS-Yunzai|Yunzai)
+      BotName="TRSS-Yunzai"
+      CheckPath ${BotName}
+      CheckStart ${BotName}
+      ;;
+    esac
   fi
-else
-  case $1 in
-  MZ|Miao-Yunzai)
-    BotName="Miao-Yunzai"
-    CheckPath ${BotName}
-    CheckStart ${BotName}
-    ;;
-  TZ|TRSS-Yunzai|Yunzai)
-    BotName="TRSS-Yunzai"
-    CheckPath ${BotName}
-    CheckStart ${BotName}
-    ;;
-  esac
 fi
 
 case $2 in

@@ -11,18 +11,6 @@ background="\033[0m"
 
 GithubMirror="https://gh.arcticfox.top"
 
-case `dpkg --print-architecture` in
-aarch64|arm64)
-	Arch="arm64"
-	;;
-x86_64|x64|amd64)
-	Arch="amd64"
-	;;
-*)
-	echo -e ${red}暂不支持的架构 ${cyan}$(dpkg --print-architecture)${background}
-	exit 1
-esac
-
 apt_update(){
 if [ "${apt_update}" != "apt_updated" ]
 then

@@ -11,45 +11,51 @@ background="\033[0m"
 
 GithubMirror="https://gh.arcticfox.top"
 
-case `dpkg --print-architecture` in
-aarch64|arm64)
-	Arch="arm64"
-	;;
-x86_64|x64|amd64)
-	Arch="amd64"
-	;;
-*)
-	echo -e ${red}暂不支持的架构 ${cyan}$(dpkg --print-architecture)${background}
-	exit
-esac
-
-echo -e ${green}正在更新 ${yellow}Pacman${background}
-until pacman -Syyu --noconfirm --needed
-do
-  if [ ${i} == 3 ]
+pacman_Syyu(){
+if [ "${pacman_Syyu}" != "pacman_Syyued" ]
+then
+  echo -e ${green}正在 ${yellow}更新${background}
+  if pacman -Syyu --noconfirm --needed
   then
-    echo -e ${cyan}错误次数过多 ${yellow}退出${background}
-    exit
+    echo -e ${red}更新出错${background}
+    exit 1
+  fi
+  pacman_Syyu=pacman_Syyued
+fi
+}
+
+Package=("tar" "gzip" "xz" "tmux" "screen" "wget" "curl" "pv" "git" "redis" "chromium")
+for PKG in ${Package[@]}
+do
+  if ! pacman -Q ${PKG} >/dev/null 2>&1
+  then
+    echo -e ${green}正在安装 ${yellow}git${background}
+    pacman_Syyu
+    until pacman -S --noconfirm --needed ${PKG}
+    do
+      echo -e ${red}安装失败 3秒后重试${background}
+      sleep 3s
+    done
+    echo -e ${green}安装完成${background}
+  fi
+done
+
+Command(){
+i=0
+until bash AFYZ/Install/$1
+do
+  if [ ${i} -eq 3 ]
+    then
+      echo -e ${red}错误次数过多 退出${background}
+      exit 1
   fi
   i=$((${i}+1))
-  echo -e ${cyan}获取失败 ${yellow}三秒后重试${background}
+  echo -en ${red}命令执行失败 ${green}3秒后重试${background}
   sleep 3s
 done
-echo -e ${green}更新完成${background}
+}
 
-echo -e ${green}正在安装 ${yellow}必要依赖${background}
-until pacman -S --needed --noconfirm tar gzip xz tmux curl wget pv git unzip chromium redis
+for file in ("NodeJS" "FFmpeg" "yq")
 do
-  if [ ${i} == 3 ]
-  then
-    echo -e ${cyan}错误次数过多 ${yellow}退出${background}
-    exit
-  fi
-  i=$((${i}+1))
-  echo -e ${cyan}获取失败 ${yellow}三秒后重试${background}
-  sleep 3s
+  Command ${file}
 done
-echo -e ${green}安装完成${background}
-
-
-

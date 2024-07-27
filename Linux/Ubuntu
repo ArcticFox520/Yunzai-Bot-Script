@@ -49,18 +49,6 @@ else
 fi
 }
 
-case `dpkg --print-architecture` in
-aarch64|arm64)
-	Arch="arm64"
-	;;
-x86_64|x64|amd64)
-	Arch="amd64"
-	;;
-*)
-	echo -e ${red}暂不支持的架构 ${cyan}$(dpkg --print-architecture)${background}
-	exit 1
-esac
-
 apt_update(){
 if [ "${apt_update}" != "apt_updated" ]
 then
@@ -90,17 +78,7 @@ do
   fi
 done
 
-if grep -q 20.04 /etc/os-release
-then
-  UbuntuVersion=""
-elif grep -q 22.04 /etc/os-release
-then
-  UbuntuVersion=""
-elif  grep -q 24.04 /etc/os-release
-then
-  UbuntuVersion=""
-fi
-
+ChromiumInstall(){
 # https://ppa.arcticfox.top/xtradeb/apps/ubuntu/pool/main/c/chromium/
 PPA_URL="https://ppa.arcticfox.top/xtradeb/apps/ubuntu/pool/main/c/chromium/"
 i=0
@@ -137,6 +115,60 @@ then
 fi
 rm -rf chromium*
 echo -e ${green}安装完成${background}
+}
+
+case `dpkg --print-architecture` in
+aarch64|arm64)
+  if grep -q 22.04 /etc/os-release
+  then
+    Arch="arm64"
+    UbuntuVersion="2204"
+    ChromiumInstall
+  elif  grep -q 24.04 /etc/os-release
+  then
+    Arch="arm64"
+    UbuntuVersion="2404"
+    ChromiumInstall
+  elif  grep -q 20.04 /etc/os-release
+  then
+    bash <(curl -sL https://gitee.com/baihu433/chromium/raw/master/chromium.sh)
+  else
+      echo -e ${red}出现错误${background}
+      exit 1
+  fi
+	;;
+x86_64|x64|amd64)
+	if apt install -y snap
+  then
+    if ! snap install chromium
+    then
+      if grep -q 22.04 /etc/os-release
+      then
+        Arch="amd64"
+        UbuntuVersion="2204"
+        ChromiumInstall
+      elif  grep -q 24.04 /etc/os-release
+      then
+        Arch="amd64"
+        UbuntuVersion="2404"
+        ChromiumInstall
+      elif  grep -q 20.04 /etc/os-release
+      then
+        bash <(curl -sL https://gitee.com/baihu433/chromium/raw/master/chromium.sh)
+      else
+          echo -e ${red}出现错误${background}
+          exit 1
+      fi
+    fi
+  else
+    echo -e ${red}出现错误${background}
+    exit 1
+  fi
+	;;
+*)
+	echo -e ${red}暂不支持的架构 ${cyan}$(dpkg --print-architecture)${background}
+	exit 1
+esac
 
 Command(){
 i=0

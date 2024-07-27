@@ -91,6 +91,15 @@ else
     echo -e ${red}程序终止!! 脚本停止运行${background}
 fi
 
+read yn
+if [ "${yn}" = "同意安装" ];then
+    echo -e ${green}3秒后开始安装${background}
+else
+    echo -e ${red}程序终止 脚本停止运行${background}
+fi
+
+
+
 
 
 

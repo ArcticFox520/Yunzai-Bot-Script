@@ -10,13 +10,13 @@
 ---
 - 主要 Main
   - Ubuntu
-    - [ ] Ubuntu 24.04 (Noble Numbat)
+    - [x] Ubuntu 24.04 (Noble Numbat)
     - [x] Ubuntu 22.04 (Jammy Jellyfish)
-    - [ ] Ubuntu 20.04 (Focal Fossa)
+    - [x] Ubuntu 20.04 (Focal Fossa)
   - Debian
-    - [ ] Debian (Sid)
-    - [ ] Debian 12 (Bookworm)
-    - [ ] Debian 11 (Bullseye)
+    - [x] Debian (Sid)
+    - [x] Debian 12 (Bookworm)
+    - [x] Debian 11 (Bullseye)
   - CentOS
     - [ ] CentOS 9-Stream
     - [ ] CentOS 8-Stream

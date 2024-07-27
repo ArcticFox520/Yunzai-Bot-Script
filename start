@@ -80,7 +80,7 @@ echo -e ${cyan}用户协议链接: ${background}
 echo -e ${cyan}https://raw.githubusercontent.com/ArcticFox520/Yunzai-Bot-Script/main/用户协议.txt${background}
 echo -e ${white}"=========================="${background}
 echo -en ${green}请输入:${background};read yn
-if [  "${yn}" == "同意安装" ]
+if [  "${yn}" = "同意安装" ]
 then
     echo -e ${green}3秒后开始安装${background}
     sleep 2s

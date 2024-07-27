@@ -9,6 +9,6 @@ cyan="\033[36m"
 white="\033[37m"
 background="\033[0m"
 
-AFHOME="AF_HOME_Path"
+exprot AFHOME="AF_HOME_Path"
 cd ${AFHOME}/Manage
 bash Main

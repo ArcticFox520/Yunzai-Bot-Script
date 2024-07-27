@@ -1,1 +1,159 @@
 #!/bin/env bash
+black="\e[30m"
+red="\033[31m"
+green="\033[32m"
+yellow="\033[33m"
+blue="\033[34m"
+purple="\033[35m"
+cyan="\033[36m"
+white="\033[37m"
+background="\033[0m"
+
+GithubMirror="https://gh.arcticfox.top"
+
+function Download(){
+file="$1"
+URL="$2"
+local i=0
+if wget --help | grep -q show-progress 
+then
+  echo -e ${blue}[${green}*${blue}] ${cyan}正在下载 ${yellow}${file}${cyan}${background}
+  until wget -q --show-progress -O ${file} -c ${URL}
+  do
+    if [ ${i} == 3 ]
+    then
+      echo -e ${blue}[${red}*${blue}] ${cyan}错误次数过多 ${yellow}退出${background}
+      return 1
+    fi
+    i=$((${i}+1))
+    echo -e ${blue}[${red}*${blue}] ${cyan}下载失败 ${yellow}三秒后重试${background}
+    sleep 3s
+  done
+  echo -e ${blue}[${green}*${blue}] ${cyan}下载完成.${background}
+  return 0
+else
+  echo -e ${blue}[${green}*${blue}] ${cyan}正在下载 ${yellow}${file}${cyan}${background}
+  until wget -O ${file} -c ${URL}
+  do
+    if [ ${i} == 3 ]
+    then
+      echo -e ${blue}[${red}*${blue}] ${cyan}错误次数过多 ${yellow}退出${background}
+      return 1
+    fi
+    i=$((i+1))
+    echo -e ${blue}[${red}*${blue}] ${cyan}下载失败 ${yellow}三秒后重试${background}
+    sleep 3s
+  done
+  echo -e ${blue}[${green}*${blue}] ${cyan}下载完成.${background}
+  return 0
+fi
+}
+
+case `dpkg --print-architecture` in
+aarch64|arm64)
+	Arch="arm64"
+	;;
+x86_64|x64|amd64)
+	Arch="amd64"
+	;;
+*)
+	echo -e ${red}暂不支持的架构 ${cyan}$(dpkg --print-architecture)${background}
+	exit 1
+esac
+
+apt_update(){
+if [ "${apt_update}" != "apt_updated" ]
+then
+  echo -e ${green}正在更新 ${yellow}软件源${background}
+  if apt update -y
+  then
+    echo -e ${red}更新出错${background}
+    exit 1
+  fi
+  apt_update=apt_updated
+fi
+}
+
+Package=("tar" "gzip" "xz-utils" "tmux" "screen" "wget" "curl" "pv" "git" "redis-server")
+for PKG in ${Package[@]}
+do
+  if ! dpkg -s ${PKG} >/dev/null 2>&1
+  then
+    echo -e ${green}正在安装 ${yellow}git${background}
+    apt_update
+    until apt install -y ${PKG}
+    do
+      echo -e ${red}安装失败 3秒后重试${background}
+      sleep 3s
+    done
+    echo -e ${green}安装完成${background}
+  fi
+done
+
+if grep -q 20.04 /etc/os-release
+then
+  UbuntuVersion=""
+elif grep -q 22.04 /etc/os-release
+then
+  UbuntuVersion=""
+elif  grep -q 24.04 /etc/os-release
+then
+  UbuntuVersion=""
+fi
+
+# https://ppa.arcticfox.top/xtradeb/apps/ubuntu/pool/main/c/chromium/
+PPA_URL="https://ppa.arcticfox.top/xtradeb/apps/ubuntu/pool/main/c/chromium/"
+i=0
+until FileName=$(curl ${PPA_URL} | grep ${UbuntuVersion} | grep ${Arch} | grep -oP '(?<=<a href=")[^"]+(?=">)')
+do
+  if [ ${i} == 3 ]
+  then
+    echo -e ${cyan}错误次数过多 ${yellow}退出${background}
+    exit
+  fi
+  i=$((${i}+1))
+  echo -e ${cyan}获取失败 ${yellow}三秒后重试${background}
+  sleep 3s
+done
+FileName=$(echo ${FileName})
+echo -e ${green}正在下载 ${yellow}Chromium及其依赖${background}
+for DownloadName in ${FileName[@]}
+do
+  DownloadURL="${PPA_URL}${DownloadName}"
+  echo -e $DownloadURL
+  if ! Download ${DownloadName} ${DownloadURL}
+  then
+    exit
+  fi
+done
+echo -e ${green}下载完成${background}
+
+echo -e ${green}开始安装 ${yellow}Chromium${background}
+if ! apt install -y ./chromium*
+then
+  apt install -y
+  echo -e ${red}出现错误${background}
+  exit 1
+fi
+rm -rf chromium*
+echo -e ${green}安装完成${background}
+
+Command(){
+i=0
+until bash AFYZ/Install/$1
+do
+  if [ ${i} -eq 3 ]
+    then
+      echo -e ${red}错误次数过多 退出${background}
+      exit 1
+  fi
+  i=$((${i}+1))
+  echo -en ${red}命令执行失败 ${green}3秒后重试${background}
+  sleep 3s
+done
+}
+
+for file in ("NodeJS" "FFmpeg" "yq")
+do
+  Command ${file}
+done

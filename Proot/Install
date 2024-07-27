@@ -107,10 +107,6 @@ aarch64|arm64)
 	;;
 x86_64|x64|amd64)
 	Arch="amd64"
-	;;
-arm|armel|armhf|armhfp|armv7|armv7l|armv7a|armv8l)
-  echo -e ${yellow}注意 ${cyan} Arm架构仅作保留,但不完全适配.${background}
-  Arch="armhf"
   ;;
 *)
 	echo -e ${red}暂不支持的架构 ${cyan}$(dpkg --print-architecture)${background}
@@ -147,6 +143,8 @@ echo -e ${green}开始安装 ${yellow}Chromium${background}
 if ! apt install -y ./chromium*
 then
   apt install -y
+  echo -e ${red}出现错误${background}
+  exit
 fi
 rm -rf chromium*
 echo -e ${green}安装完成${background}

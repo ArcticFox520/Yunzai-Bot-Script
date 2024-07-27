@@ -17,8 +17,8 @@ then
 else
   unset GithubMirror
 fi
-git clone --depth=1 ${GithubMirror}/https://github.com/ArcticFox520/Yunzai-Bot-Script ./AF
-cd AF
+git clone --depth=1 ${GithubMirror}/https://github.com/ArcticFox520/Yunzai-Bot-Script ./AFYZ
+cd AFYZ
 chmod +x afyz
 AF_HOME_Path="${pwd}"
 sed -i 's|AF_HOME_Path|${AF_HOME_Path}|g' afyz

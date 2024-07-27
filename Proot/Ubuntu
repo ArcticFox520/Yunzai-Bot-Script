@@ -1,4 +1,5 @@
 #!/bin/env bash
+#
 # 此脚本欢迎各位脚本作者借鉴,但请勿删除作者标识
 # 此脚本作者 ArcticFox Q群 705226976
 cd $HOME

@@ -9,4 +9,4 @@ ArcticFox Script 使用协议
 8.如果您在使用本项目时遇到任何问题或需要帮助，请通过本项目作者(ArcticFox520)提供的联系方式与其取得联系。本项目作者(ArcticFox520)将尽力为您提供帮助和支持。
 9.本项目的用户协议可能会随时更新和修改。继续使用本项目，即表示您同意受到更新和修改后的协议的约束。
 10.对于本项目的最终所有权和解释权归本项目的唯一作者(ArcticFox520)（https://github.com/ArcticFox520）所有。
-最后，感谢您对 ArcticFox Script 项目的信任与支持！
+最后，感谢您对 ArcticFox Script 项目的信任与支持!

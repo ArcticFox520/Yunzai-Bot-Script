@@ -1,4 +1,5 @@
 #!/bin/env bash
+#
 # 设置颜色变量
 black="\e[30m"
 red="\033[31m"

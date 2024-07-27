@@ -1,4 +1,5 @@
 #!/bin/env bash
+#
 BotName="$1"
 
 URL="https://ipinfo.io"

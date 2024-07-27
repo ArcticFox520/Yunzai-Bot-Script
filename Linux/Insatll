@@ -1,4 +1,5 @@
 #!/bin/bash
+#
 if grep -i -q "Ubuntu" /etc/os-release
 then
   if ! bash AFYZ/Linux/Ubuntu

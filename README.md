@@ -20,7 +20,7 @@
   - CentOS
     - [ ] CentOS 9-Stream
     - [ ] CentOS 8-Stream
-  - [ ] Arch
+  - [x] Arch
   - [x] MSYS2
   - [ ] Docker
 - 次要 Minor

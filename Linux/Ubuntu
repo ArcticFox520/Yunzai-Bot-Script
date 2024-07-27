@@ -118,7 +118,7 @@ rm -rf chromium*
 echo -e ${green}安装完成${background}
 }
 
-if which chromium || which chromium-browser
+if which chromium >/dev/null 2>&1 || which chromium-browser >/dev/null 2>&1
 then
   exit 0
 fi

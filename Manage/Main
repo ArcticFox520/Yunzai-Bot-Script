@@ -726,7 +726,7 @@ cd $AFHOME
 command_all=("Linux/Insatll" "Install/NodeJS" "Install/FFmpeg" "Install/yq")
 for Command in ${command_all[@]}
 do
-  if bash ${Command}
+  if ! bash ${Command}
   then
     echo -e ${red}出现错误${background}
     break

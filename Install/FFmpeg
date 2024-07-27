@@ -47,7 +47,8 @@ fi
 
 case `dpkg --print-architecture` in
 aarch64|arm64)
-	Arch="arm64"
+	Arch1="arm64"
+	Arch2="arm64"
 	;;
 x86_64|x64|amd64)
 	Arch1="x64"

@@ -9,6 +9,43 @@ cyan="\033[36m"
 white="\033[37m"
 background="\033[0m"
 
+if ! [ "$(uname)" == "Linux" ];then
+    echo -e ${red}请使用linux!${background}
+    exit
+fi
+
+if [ "$(id -u)" != "0" ]; then
+    echo -e ${red} 请使用root用户!${background}
+    exit
+fi
+
+function Dependency(){
+InstallDependency(){
+echo -e ${green}正在安装必要依赖 dialog${background}
+if [ $(command -v apt) ];then
+    apt install -y dialog
+elif [ $(command -v dnf) ];then
+    dnf install -y dialog
+elif [ $(command -v yum) ];then
+    yum install -y dialog
+elif [ $(command -v pacman) ];then
+    pacman -S --noconfirm --needed dialog
+fi
+}
+if [ -x "$(command -v whiptail)" ];then
+    dialog_whiptail=whiptail
+elif [ -x "$(command -v dialog)" ];then
+    dialog_whiptail=dialog
+else
+    dialog_whiptail=dialog
+    InstallDependency
+fi
+if [ ! -x "$(command -v curl)" ];then
+    InstallDependency
+fi
+}
+
+Install(){
 URL="https://ipinfo.io"
 Address=$(curl -sL ${URL} | sed -n 's/.*"country": "\(.*\)",.*/\1/p')
 if [ "${Address}" = "CN" ]
@@ -25,8 +62,36 @@ fi
 cd AFYZ
 chmod +x afyz
 AF_HOME_Path="${pwd}"
-sed -i 's|AF_HOME_Path|${AF_HOME_Path}|g' afyz
+sed -i "s|AF_HOME_Path|${AF_HOME_Path}|g" afyz
 mv -f afyz /usr/local/bin/afyz
 
 echo -e ${yellow} - ${yellow}安装成功${background}
 echo -e ${yellow} - ${cyan}请使用 ${green}afyz ${cyan}命令 打开脚本${background}
+}
+
+echo -e ${white}"====="${green}白狐-Script${white}"====="${background}
+echo -e ${cyan}白狐 Script ${green}是完全可信的。${background}
+echo -e ${cyan}白狐 Script ${yellow}不会执行任何恶意命令${background}
+echo -e ${cyan}白狐 Script ${yellow}不会执行任何恶意命令${background}
+echo -e ${cyan}白狐 Script ${yellow}不会执行任何恶意命令${background}
+echo -e ${cyan}如果您同意安装 请输入 ${green}同意安装${background}
+echo -e ${cyan}注意：同意安装即同意本项目的用户协议${background}
+echo -e ${cyan}用户协议链接: ${background}
+echo -e ${cyan}https://raw.githubusercontent.com/ArcticFox520/Yunzai-Bot-Script/main/用户协议.txt${background}
+echo -e ${white}"=========================="${background}
+echo -en ${green}请输入:${background};read yn
+if [  "${yn}" == "同意安装" ]
+then
+    echo -e ${green}3秒后开始安装${background}
+    sleep 2s
+    Dependency
+    echo
+    Install
+else
+    echo -e ${red}程序终止!! 脚本停止运行${background}
+fi
+
+
+
+
+

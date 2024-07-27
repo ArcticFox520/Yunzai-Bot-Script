@@ -734,11 +734,12 @@ do
   fi
 done
 
-if bash Install/GitBot $1 ${Path} $AFHOME
+if ! bash Install/GitBot $1 ${Path} $AFHOME
 then
   echo -e ${red}出现错误${background}
   exit
 fi
+BotManage $1
 }
 
 MenuSize

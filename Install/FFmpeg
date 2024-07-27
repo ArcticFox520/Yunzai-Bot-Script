@@ -63,7 +63,6 @@ URL="https://ipinfo.io"
 Address=$(curl -sL ${URL} | sed -n 's/.*"country": "\(.*\)",.*/\1/p')
 if [ ${Address} = "CN" ]
 then
-  https://registry.npmmirror.com/-/binary/ffmpeg-static/b6.0/ffmpeg-linux-arm64
   ffmpeg_URL=https://registry.npmmirror.com/-/binary/ffmpeg-static/b6.0
   Download ffmpeg ${ffmpeg_URL}/ffmpeg-linux-${Arch1}
   Download ffprobe ${ffmpeg_URL}/ffprobe-linux-${Arch1}

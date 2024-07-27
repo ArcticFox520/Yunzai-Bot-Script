@@ -20,28 +20,51 @@ if [ "$(id -u)" != "0" ]; then
 fi
 
 function Dependency(){
+apt_update(){
+if [ "${apt_update}" != "apt_updated" ]
+then
+  echo -e ${green}正在更新 ${yellow}软件源${background}
+  if apt update -y
+  then
+    echo -e ${red}更新出错${background}
+    exit 1
+  fi
+  apt_update=apt_updated
+fi
+}
+pacman_Syyu(){
+if [ "${pacman_Syyu}" != "pacman_Syyued" ]
+then
+  echo -e ${green}正在 ${yellow}更新${background}
+  if pacman -Syyu --noconfirm --needed
+  then
+    echo -e ${red}更新出错${background}
+    exit 1
+  fi
+  pacman_Syyu=pacman_Syyued
+fi
+}
 InstallDependency(){
-echo -e ${green}正在安装必要依赖 dialog${background}
+echo -e ${green}正在安装必要依赖 $1${background}
 if [ $(command -v apt) ];then
-    apt install -y dialog
-elif [ $(command -v dnf) ];then
-    dnf install -y dialog
-elif [ $(command -v yum) ];then
-    yum install -y dialog
+  apt_update
+  apt install -y $1
 elif [ $(command -v pacman) ];then
-    pacman -S --noconfirm --needed dialog
+  pacman_Syyu
+  pacman -S --noconfirm --needed dialog
 fi
 }
 if [ -x "$(command -v whiptail)" ];then
-    dialog_whiptail=whiptail
+  TUISoftware=whiptail
 elif [ -x "$(command -v dialog)" ];then
-    dialog_whiptail=dialog
+  TUISoftware=dialog
 else
-    dialog_whiptail=dialog
-    InstallDependency
+  TUISoftware=dialog
+  InstallDependency dialog
 fi
-if [ ! -x "$(command -v curl)" ];then
-    InstallDependency
+
+if [ ! -x "$(command -v git)" ];then
+  InstallDependency git
 fi
 }
 

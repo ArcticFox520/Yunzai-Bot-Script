@@ -16,7 +16,7 @@ apt_update(){
 if [ "${apt_update}" != "apt_updated" ]
 then
   echo -e ${green}正在更新 ${yellow}软件源${background}
-  if apt update -y
+  if ! apt update -y
   then
     echo -e ${red}更新出错${background}
     exit 1

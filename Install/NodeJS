@@ -100,14 +100,14 @@ rm -rf NodeJS.tar.xz NodeJS
 mkdir -p /root/.local/share/pnpm
 echo '
 #Node.JS
-export PATH=$PATH:/usr/local/Node/bin
+export PATH=$PATH:/usr/local/NodeJS/bin
 export PATH=$PATH:/root/.local/share/pnpm
 export PNPM_HOME=/root/.local/share/pnpm
 ' >> /etc/profile
 
 echo -e ${green}NodeJS ${yellow}安装完成${background}
 
-export PATH=$PATH:/usr/local/Node/bin
+export PATH=$PATH:/usr/local/NodeJS/bin
 export PATH=$PATH:/root/.local/share/pnpm
 export PNPM_HOME=/root/.local/share/pnpm
 

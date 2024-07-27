@@ -350,6 +350,18 @@ then
       CheckStart ${BotName}
       ;;
     esac
+    case $1 in
+    mz)
+    CheckPath Miao-Yunzai
+    exec bash -i
+    exit
+    ;;
+    tz)
+    CheckPath TRSS-Yunzai
+    exec bash -i
+    exit
+    ;;
+    esac
   fi
 fi
 

@@ -19,8 +19,8 @@ fi
 
 Update(){
 VersionURL="https://gh.arcticfox.top/https://raw.githubusercontent.com/ArcticFox520/Yunzai-Bot-Script/main/version"
-LocalVersion=$(grep $AFHOME/version | sed '/date/d' | sed 's|version:||g')
-CloudVersion=$(curl -s ${VersionURL} | sed '/date/d' | sed 's|version:||g')
+LocalVersion=$(grep version $AFHOME/version | sed 's|version: ||g')
+CloudVersion=$(curl -s ${VersionURL} | sed '/date/d' | sed 's|version: ||g')
 if [ "${LocalVersion}" != "${CloudVersion}" ]
 then
   cd $AFHOME
@@ -31,7 +31,10 @@ fi
 }
 if [ "$1" != "dp" ]
 then
-  Update
+  if ping -c 1 1.1.1.1 > /dev/null 2>&1
+  then
+    Update
+  fi
 fi
 
 function MenuSize(){

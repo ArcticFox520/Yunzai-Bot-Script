@@ -14,6 +14,11 @@ if ! [ "$(uname)" == "Linux" ];then
     exit
 fi
 
+if ! [ "$(uname -o)" == "Android" ];then
+    echo -e ${red}请使用termux!${background}
+    exit
+fi
+
 if [ "$(id -u)" != "0" ]; then
     echo -e ${red} 请使用root用户!${background}
     exit

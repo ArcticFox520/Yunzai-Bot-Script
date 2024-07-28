@@ -10,6 +10,30 @@ cyan="\033[36m"
 white="\033[37m"
 background="\033[0m"
 
+if [ -d /usr/local/NodeJS/bin ]
+then
+  export PATH=$PATH:/usr/local/NodeJS/bin
+  export PATH=$PATH:/root/.local/share/pnpm
+  export PNPM_HOME=/root/.local/share/pnpm
+fi
+
+Update(){
+VersionURL="https://gh.arcticfox.top/https://raw.githubusercontent.com/ArcticFox520/Yunzai-Bot-Script/main/version"
+LocalVersion=$(grep $AFHOME/version | sed '/date/d' | sed 's|version:||g')
+CloudVersion=$(curl -s ${VersionURL} | sed '/date/d' | sed 's|version:||g')
+if [ "${LocalVersion}" != "${CloudVersion}" ]
+then
+  cd $AFHOME
+  git fetch --all
+  git reset --hard main
+  git pull
+fi
+}
+if [ "$1" != "dp" ]
+then
+  Update
+fi
+
 function MenuSize(){
 HEIGHT=$(($(tput lines) - 10))
 WIDTH=$(($(tput cols) - 10))
@@ -250,14 +274,9 @@ elif pm2 list 2>&1 | grep -q $1
 then
   StartSoftware=pm2
   return 3
-elif ps -ef 2>&1 | sed '/grep/d' | grep -q $1
+elif ps all | sed '/grep/d' | grep $2
 then
-  if ! $(ps -ef 2>&1 | sed '/grep/d' | grep -q $1 | grep -q whiptail || grep -q dialog)
-  then
-    return 0
-  else
-    return 4
-  fi
+  return 4
 else
   StartSoftware=tmux
   return 0
@@ -340,14 +359,12 @@ then
   else
     case $1 in
     MZ|Miao-Yunzai)
-      BotName="Miao-Yunzai"
-      CheckPath ${BotName}
-      CheckStart ${BotName}
+      CheckPath Miao-Yunzai Miao-Yun
+      CheckStart Miao-Yunzai Miao-Yun
       ;;
     TZ|TRSS-Yunzai|Yunzai)
-      BotName="TRSS-Yunzai"
-      CheckPath ${BotName}
-      CheckStart ${BotName}
+      CheckPath TRSS-Yunzai "TRSS Yunzai"
+      CheckStart TRSS-Yunzai "TRSS Yunzai"
       ;;
     esac
     case $1 in
@@ -769,7 +786,16 @@ case ${Number} in
   then
     BotManage Miao-Yunzai
   else
-    Install Miao-Yunzai
+    MsgboxSize
+    if whiptail --title "AF-YZ"  \
+    --yes-button "安装" \
+    --no-button "返回" \
+    --yesno "Miao-Yunzai未安装 是否安装?" \
+    ${HEIGHT} ${WIDTH} \
+    3>&1 1>&2 2>&3
+    then
+      Install Miao-Yunzai
+    fi
   fi
   ;;
 2)
@@ -777,7 +803,16 @@ case ${Number} in
   then
     BotManage TRSS-Yunzai
   else
-    Install TRSS-Yunzai
+    MsgboxSize
+    if whiptail --title "AF-YZ"  \
+    --yes-button "安装" \
+    --no-button "返回" \
+    --yesno "TRSS-Yunzai未安装 是否安装?" \
+    ${HEIGHT} ${WIDTH} \
+    3>&1 1>&2 2>&3
+    then
+      Install TRSS-Yunzai
+    fi
   fi
   ;;
 0)

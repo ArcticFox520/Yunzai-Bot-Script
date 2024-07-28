@@ -73,11 +73,11 @@ URL="https://ipinfo.io"
 Address=$(curl -sL ${URL} | sed -n 's/.*"country": "\(.*\)",.*/\1/p')
 if [ "${Address}" = "CN" ]
 then
-  GithubMirror="https://gh.arcticfox.top"
+  GithubMirror="https://gh.arcticfox.top/"
 else
   unset GithubMirror
 fi
-if ! git clone --depth=1 ${GithubMirror}/https://github.com/ArcticFox520/Yunzai-Bot-Script ./AFYZ
+if ! git clone --depth=1 https://github.com/ArcticFox520/Yunzai-Bot-Script ./AFYZ
 then
   echo -e ${red} - ${yellow}出现错误${background}
   exit

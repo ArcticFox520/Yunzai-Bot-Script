@@ -252,10 +252,6 @@ Number=$(${TUISoftware} \
 ${HEIGHT} ${WIDTH} ${OPTION} \
 "1" "源码直连" \
 "2" "Git网页链接" \
-"3" "Git仓库" \
-"4" "Download文件夹" \
-"5" "QQ文件夹"
-"6" "JS文件写入"
 "0" "返回/退出" \
 3>&1 1>&2 2>&3)
 case ${Number} in
@@ -267,6 +263,8 @@ case ${Number} in
     echo -en ${cyan}回车返回${background};read
   fi
   curl -sL ${JSURL} > plugins/example/${JSFile}
+  echo -en ${cyan}安装完成 回车返回${background};read
+  Main
 ;;
 2)
   echo -en ${green}请输入链接: ${background};read JSURL
@@ -281,29 +279,54 @@ case ${Number} in
     then
         JSURL=$(echo ${JSURL} | sed 's|blob|raw|g')
         curl -sL ${JSURL} > plugins/example/${JSFile}
+        echo -en ${cyan}安装完成 回车返回${background};read
+        Main
     fi
   else
     echo -e ${red}错误 链接不来至于Git仓库${background}
     echo -en ${cyan}回车返回${background};read
+    Main
   fi
-;;
-3)
-  
-;;
-4)
-  
-;;
-5)
-  
-;;
-6)
-  
-;;
-0)
-  
 ;;
 esac
 }
+UpdateGitPlugin(){
+git_pull(){
+echo -e ${yellow}正在更新 ${folder}${background}
+if ! git pull -f
+then
+  echo -en ${red}${folder}更新失败 ${yellow}是否强制更新 [Y/N]${background};read YN
+  case ${YN} in
+  Y|y)
+    remote=$(grep 'remote =' .git/config | sed 's/remote =//g')
+    remote=$(echo ${remote})
+    branch=$(grep branch .git/config | sed "s/\[branch \"//g" | sed 's/"//g' | sed "s/\]//g")
+    branch=$(echo ${branch})
+    git fetch --all
+    git reset --hard ${remote}/${branch}
+    git_pull
+  esac
+fi
+}
+folder=${BotName}
+git_pull
+for folder in $(ls plugins)
+do
+  if [ -d plugins/${folder}/.git ];then
+    cd plugins/${folder}
+    git_pull ${folder}
+    cd ../../
+  fi
+done
+echo -e ${yellow}正在更新NPM${background}
+npm install -g npm@latest
+echo -e ${yellow}正在更新PNPM${background}
+pnpm install -g pnpm@latest
+echo -en ${cyan}更新完成 回车返回${background};read
+Main
+}
+
+
 function Main(){
 MenuSize
 Number=$(${TUISoftware} \

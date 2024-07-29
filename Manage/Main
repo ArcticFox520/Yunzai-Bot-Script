@@ -27,6 +27,8 @@ then
   git fetch --all
   git reset --hard main
   git pull
+  afyz
+  exit 0
 fi
 }
 if [ "$1" != "dp" ]
@@ -573,6 +575,7 @@ case ${Number} in
 esac
 }
 BotName="$1"
+COMMAND="$2"
 MenuSize
 Number=$(whiptail \
 --title "AF-YZ" \
@@ -590,7 +593,7 @@ ${HEIGHT} ${WIDTH} ${OPTION} \
 3>&1 1>&2 2>&3)
 case ${Number} in
 1)
-  if CheckStart ${BotName}
+  if CheckStart ${BotName} ${COMMAND}
   then
     RedisServerStart
     if Error=$(BotRun ${StartSoftware} start ${BotName} "afyz ${BotName} start")
@@ -624,7 +627,7 @@ case ${Number} in
   fi
 ;;
 2)
-  if CheckStart ${BotName}
+  if CheckStart ${BotName} ${COMMAND}
   then
     afyz ${BotName} start
     BotManage
@@ -633,7 +636,7 @@ case ${Number} in
   fi
 ;;
 3)
-  if CheckStart ${BotName}
+  if CheckStart ${BotName} ${COMMAND}
   then
     MsgboxSize
     whiptail --title "AF-YZ" \
@@ -658,7 +661,7 @@ case ${Number} in
   fi
 ;;
 4)
-  if CheckStart ${BotName}
+  if CheckStart ${BotName} ${COMMAND}
   then
     MsgboxSize
     whiptail --title "AF-YZ" \
@@ -683,7 +686,7 @@ case ${Number} in
   fi
 ;;
 5)
-  if CheckStart ${BotName}
+  if CheckStart ${BotName} ${COMMAND}
   then
     MsgboxSize
     whiptail --title "AF-YZ" \
@@ -708,7 +711,7 @@ case ${Number} in
   fi
 ;;
 6)
-  curl -sL ${GithubMirror}https://raw.githubusercontent.com/ArcticFox520/Yunzai-Bot-Script/main/Manage/Plugin | bash
+  bash <(curl -sL https://gh.arcticfox.top/https://raw.githubusercontent.com/ArcticFox520/Yunzai-Bot-Script/main/Manage/Plugin)
   BotManage
 ;;
 7)
@@ -787,7 +790,7 @@ case ${Number} in
 1)
   if CheckPath Miao-Yunzai
   then
-    BotManage Miao-Yunzai
+    BotManage Miao-Yunzai Miao-Yun
   else
     MsgboxSize
     if whiptail --title "AF-YZ"  \
@@ -804,7 +807,7 @@ case ${Number} in
 2)
   if CheckPath TRSS-Yunzai
   then
-    BotManage TRSS-Yunzai
+    BotManage TRSS-Yunzai "TRSS Yunzai"
   else
     MsgboxSize
     if whiptail --title "AF-YZ"  \

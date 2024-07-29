@@ -72,4 +72,5 @@ echo -e ${green}正在安装 ${yellow}yq${background}
 URL="${GithubMirror}/https://github.com/mikefarah/yq/releases/download/v4.44.2/yq_linux_${Arch}"
 Download yq ${URL}
 mv -f yq /usr/local/bin/yq
+chmod +x /usr/local/bin/yq
 echo -e ${green}安装完成${background}

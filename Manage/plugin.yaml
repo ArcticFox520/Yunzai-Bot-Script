@@ -54,7 +54,7 @@ xiaoyao-cvs-plugin:
   Author: "逍遥"
   Introduction: "逍遥自行制作的原神图鉴。"
   Repository:
-    - Gitee: https://gitee.com/Ctrlcvs/xiaoyao-cvs-plugin.git
+    - Gitee: No
     - Github: https://github.com/Ctrlcvs/xiaoyao-cvs-plugin.git
   PackageName: No
 
@@ -113,7 +113,7 @@ waves-plugin:
     - Gitee: No
     - Github: https://github.com/erzaozi/waves-plugin
   PackageName: waves-plugin
-  
+
 arknights-plugin:
   Author: "gxy12345"
   Introduction: "提供明日方舟森空岛社区自动签到、干员练度查询、公招查询、MAA远程控制终端。"

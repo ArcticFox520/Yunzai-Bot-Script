@@ -1,5 +1,4 @@
 #!/bin/env bash
-#
 black="\e[30m"
 red="\033[31m"
 green="\033[32m"
@@ -10,8 +9,8 @@ cyan="\033[36m"
 white="\033[37m"
 background="\033[0m"
 
-GithubMirror="https://gh.arcticfox.top"
-
+GithubMirrorSource="https://gh.arcticfox.top"
+GithubMirror="https://mirrors.chenby.cn"
 function MenuSize(){
 HEIGHT=$(($(tput lines) - 10))
 WIDTH=$(($(tput cols) - 10))
@@ -47,6 +46,7 @@ fi
 }
 
 InstallGitPlugin(){
+unset InstalledPlugin Options PackageNameLocal GitLocal PluginFolderCloud
 MsgboxSize
 if (${TUISoftware} --title "AF-BOT"  \
 --yes-button "GhMirror" \
@@ -56,14 +56,14 @@ ${HEIGHT} ${WIDTH} \
 3>&1 1>&2 2>&3)
 then
   echo -e ${cyan}正在缓存 ${yellow}plugin.yaml${background}
-  PluginURl="${GithubMirror}/https://raw.githubusercontent.com/ArcticFox520/Yunzai-Bot-Script/main/Manage/plugin.yaml"
-  GitSite=gitee
+  PluginURl="${GithubMirrorSource}/https://raw.githubusercontent.com/ArcticFox520/Yunzai-Bot-Script/main/Manage/plugin.yaml"
+  GitSite=Gitee
   curl -sL ${PluginURl} > plugin.yaml
 else
   echo -e ${cyan}正在缓存 ${yellow}plugin.yaml${background}
   PluginURl="https://raw.githubusercontent.com/ArcticFox520/Yunzai-Bot-Script/main/Manage/plugin.yaml"
   curl -sL ${PluginURl} > plugin.yaml
-  GitSite=github
+  GitSite=Github
 fi
 
 MsgboxSize
@@ -76,8 +76,7 @@ ${HEIGHT} ${WIDTH})
 then
   MultipleChoice=false
   ChecklistMenu=menu
-  OFF=
-  tips=
+  unset OFF tips
 else
   MultipleChoice=true
   ChecklistMenu=checklist
@@ -105,8 +104,12 @@ do
   GitLocal="${GitLocal} ${Git}"
 done
 
+unset i
+i=0
 for PluginFolderCloud in ${GitPlugin}
 do
+  i=$((${i}+1))
+  echo -en '\r'${yellow}正在处理插件数据 ${green}已处理 ${cyan}${i} 项${background}
   PackageName=$(yq .${PluginFolderCloud}.PackageName plugin.yaml)
   PackageName=$(echo ${PackageName})
   Git=$(yq .${PluginFolderCloud}.Repository plugin.yaml)
@@ -128,6 +131,7 @@ do
   fi
   Options="${Options} ${PluginFolderCloud} ${InstallationStatus} ${OFF}"
 done
+echo -e '\n'
 MenuSize
 PluginName=$(${TUISoftware} \
 --title "AF-YZ" \
@@ -137,9 +141,11 @@ ${HEIGHT} ${WIDTH} ${OPTION} ${Options} \
 
 if [ -z "${PluginName}" ]
 then
+  Main
   return
 fi
-
+GitRepositoryCheck(){
+Plugin=$1
 if [ "$(yq .${Plugin}.Repository[0] plugin.yaml)" != "No" ] && [ "$(yq .${Plugin}.Repository[1] plugin.yaml)" != "No" ]
 then
   if [ "${GitSite}" == "Gitee" ]
@@ -164,19 +170,22 @@ else
     GroupNumber=1
     Git="Github:"
     PNPMMirror="https://registry.npmjs.org"
-    if [ "${Git}" == "Gitee" ]
+    if [ "${GitSite}" == "Gitee" ]
     then
       GhMirror="${GithubMirror}/"
-    elif [ "${Git}" == "Github" ]
+    elif [ "${GitSite}" == "Github" ]
     then
       unset GhMirror 
-    fi 
+    fi
   fi
 fi
+}
+
 if [ ${MultipleChoice} == true ]
 then
-  for Plugin in ${PluginName}
+  for Plugin in ${PluginName[@]}
   do
+    GitRepositoryCheck ${Plugin}
     GitURL=$(yq .${Plugin}.Repository[${GroupNumber}] plugin.yaml | sed "s|${Git}||g")
     Author=$(yq .${Plugin}.Author plugin.yaml)
     if ! echo ${InstalledPlugin} | grep -q ${Plugin}
@@ -206,20 +215,22 @@ then
     fi
   done
   echo -en ${cyan}所有插件 ${green}安装完成 ${cyan}回车返回${background};read
+  Main
 elif [ ${MultipleChoice} == false ]
 then
+  GitRepositoryCheck ${PluginName}
   GitURL=$(yq .${PluginName}.Repository[${GroupNumber}] plugin.yaml | sed "s|${Git}||g")
   Author=$(yq .${PluginName}.Author plugin.yaml)
-  if ! echo ${InstalledPlugin} | grep -q ${Plugin}
+  if ! echo ${InstalledPlugin} | grep -q ${PluginName}
   then
     echo -e ${white}==================================${background}
     echo -e ${cyan}正在安装: ${yellow}${PluginName} ${cyan}稍安勿躁~${background}
-    echo -e ${cyan}作者: ${yellow}${Author}${background}
+    echo -e ${cyan}插件作者: ${yellow}${Author}${background}
     echo -e ${white}==================================${background}
     echo -e ${cyan}正在克隆插件${background}
-    if git clone --depth=1 ${GhMirror}${GitURL} ./plugins/${Plugin}
+    if git clone --depth=1 ${GhMirror}${GitURL} ./plugins/${PluginName}
     then
-      if [ -e ./plugins/${Plugin}/package.json ]
+      if [ -e ./plugins/${PluginName}/package.json ]
       then
         echo -e ${cyan}正在安装依赖${background}
         if pnpm install --registry=${PNPMMirror}
@@ -234,6 +245,7 @@ then
     else
       echo -e ${cyan}插件克隆 ${red}失败${background}
       echo -en ${cyan}回车返回${background};read
+      Main
     fi
   else
     MsgboxSize
@@ -250,38 +262,39 @@ Number=$(${TUISoftware} \
 --title "AF-YZ" \
 --menu "JS插件安装" \
 ${HEIGHT} ${WIDTH} ${OPTION} \
-"1" "源码直连" \
+"1" "源码直链" \
 "2" "Git网页链接" \
 "0" "返回/退出" \
 3>&1 1>&2 2>&3)
 case ${Number} in
 1)
   echo -en ${green}请输入链接: ${background};read JSURL
-  JSFile=`echo $js | awk -F/ '{print $NF}'`
-  if [[ ${js} != https://* ]] || [[ ${js} != *.js ]];then
+  if [[ ${JSURL} != https://* ]] && [[ ${JSURL} != *.js ]];then
     echo -e ${red}输入错误${background}
     echo -en ${cyan}回车返回${background};read
+    return
   fi
+  JSFile=`echo ${JSURL} | awk -F/ '{print $NF}'`
   curl -sL ${JSURL} > plugins/example/${JSFile}
   echo -en ${cyan}安装完成 回车返回${background};read
   Main
 ;;
 2)
   echo -en ${green}请输入链接: ${background};read JSURL
-  JSFile=`echo $js | awk -F/ '{print $NF}'`
-  if [[ ${JSURL} = *git* ]] && [[ ${JSURL} = *.js]]
+  if [[ ${JSURL} == *git* ]] && [[ ${JSURL} == *.js ]]
   then
-    if  [[ ${JSURL} = *github* ]]
+  JSFile=`echo ${JSURL} | awk -F/ '{print $NF}'`
+    if [[ ${JSURL} = *github* ]]
     then
       JSURL=$(echo ${JSURL} | sed "s|blob/||g" | sed "s|github|raw.githubusercontent|g")
       curl -sL ${GitHubMirror}/${JSURL} > plugins/example/${JSFile}
-    elif  [[ ${JSURL} = *gitee* ]]
+    elif [[ ${JSURL} = *gitee* ]]
     then
-        JSURL=$(echo ${JSURL} | sed 's|blob|raw|g')
-        curl -sL ${JSURL} > plugins/example/${JSFile}
-        echo -en ${cyan}安装完成 回车返回${background};read
-        Main
+      JSURL=$(echo ${JSURL} | sed 's|blob|raw|g')
+      curl -sL ${JSURL} > plugins/example/${JSFile}
     fi
+    echo -en ${cyan}安装完成 回车返回${background};read
+    Main
   else
     echo -e ${red}错误 链接不来至于Git仓库${background}
     echo -en ${cyan}回车返回${background};read
@@ -326,6 +339,131 @@ echo -en ${cyan}更新完成 回车返回${background};read
 Main
 }
 
+DeleteGitPlugin(){
+unset PluginName Options PluginList
+MsgboxSize
+if (${TUISoftware} \
+--title "AF-BOT" \
+--yes-button "单选" \
+--no-button "多选" \
+--yesno "请选择Git插件删除方式" \
+${HEIGHT} ${WIDTH})
+then
+  MultipleChoice=false
+  ChecklistMenu=menu
+  unset OFF tips
+else
+  MultipleChoice=true
+  ChecklistMenu=checklist
+  OFF=OFF
+  tips="[空格选择 回车确定 空选取消]"
+fi
+PluginFolder=$(ls -I example -I bin -I other -I system -I genshin plugins/)
+for i in ${PluginFolder[@]}
+do
+  Options="${Options} ${i} 🍥 ${OFF}"
+done
+MenuSize 
+PluginList=$(${TUISoftware} \
+--title "AF-YZ" \
+--${ChecklistMenu} "插件删除 ${tips}" \
+${HEIGHT} ${WIDTH} ${OPTION} ${Options} \
+3>&1 1>&2 2>&3)
+if [ -z "${PluginList}" ]
+then
+  Main
+  return
+fi
+if [ "${MultipleChoice}" == "false" ]
+then
+  if (${TUISoftware} \
+  --title "AF-BOT" \
+  --yes-button "删除" \
+  --no-button "返回" \
+  --yesno "是否删除 ${PluginList}" \
+  ${HEIGHT} ${WIDTH})
+  then
+    echo -e ${yellow}正在删除 ${cyan}${PluginList}${background}
+    rm -rf plugins/${PluginList}
+  else
+    return
+  fi
+else
+  for i in ${PluginList[@]}
+  do
+    echo -e ${yellow}正在删除 ${cyan}${i}${background}
+    rm -rf plugins/${i} > /dev/null 2>&1
+    rm -rf plugins/${i} > /dev/null 2>&1
+  done
+  echo -e ${yellow}删除任务 ${green}执行完成${background}
+fi
+echo -en ${cyan}命令执行完成 回车返回${background};read
+Main
+}
+
+DeleteJSPlugin(){
+unset PluginName Options PluginList
+MsgboxSize
+if (${TUISoftware} \
+--title "AF-BOT" \
+--yes-button "单选" \
+--no-button "多选" \
+--yesno "请选择JS插件删除方式" \
+${HEIGHT} ${WIDTH})
+then
+  MultipleChoice=false
+  ChecklistMenu=menu
+  unset OFF tips
+else
+  MultipleChoice=true
+  ChecklistMenu=checklist
+  OFF=OFF
+  tips="[空格选择 回车确定 空选取消]"
+fi
+PluginFolder=$(ls plugins/example/)
+for i in ${PluginFolder[@]}
+do
+  Options="${Options} ${i} 🍥 ${OFF}"
+done
+MenuSize 
+PluginList=$(${TUISoftware} \
+--title "AF-YZ" \
+--${ChecklistMenu} "插件删除 ${tips}" \
+${HEIGHT} ${WIDTH} ${OPTION} ${Options} \
+3>&1 1>&2 2>&3)
+if [ -z "${PluginList}" ]
+then
+  Main
+  return
+fi
+if [ "${MultipleChoice}" == "true" ]
+then
+  if (${TUISoftware} \
+  --title "AF-BOT" \
+  --yes-button "删除" \
+  --no-button "返回" \
+  --yesno "是否删除 ${PluginList}" \
+  ${HEIGHT} ${WIDTH})
+  then
+    echo -e ${yellow}正在删除 ${cyan}${PluginList}${background}
+    rm -rf plugins/example/${PluginList}
+  else
+    Main
+    return
+  fi
+else
+  for i in ${PluginList[@]}
+  do
+    echo -e ${yellow}正在删除 ${cyan}${i}${background}
+    rm -rf plugins/example/${i} > /dev/null 2>&1
+    rm -rf plugins/example/${i} > /dev/null 2>&1
+  done
+  echo -e ${yellow}删除任务 ${green}执行完成${background}
+fi
+echo -en ${cyan}命令执行完成 回车返回${background};read
+Main
+}
+
 
 function Main(){
 MenuSize
@@ -340,6 +478,10 @@ ${HEIGHT} ${WIDTH} ${OPTION} \
 "5" "删除JS插件" \
 "0" "返回/退出" \
 3>&1 1>&2 2>&3)
+if [ "$?" = "1" ]
+  then
+    exit
+fi
 case ${Number} in
 1)
   InstallGitPlugin
@@ -386,6 +528,9 @@ else
   ;;
   2)
     BotName="TRSS-Yunzai"
+  ;;
+  3)
+    exit 0
   ;;
   esac
   if [ -d "/root/${BotName}/node_modules" ];then
@@ -513,3 +658,14 @@ else
     CheckPath
     Main
 fi
+function MainWhile(){
+while true
+do
+  Main
+  if [ "$?" = "1" ]
+  then
+    break
+  fi
+done
+}
+MainWhile

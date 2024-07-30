@@ -14,11 +14,6 @@ if ! [ "$(uname)" == "Linux" ];then
     exit
 fi
 
-if ! [ "$(uname -o)" == "Android" ];then
-    echo -e ${red}请使用termux!${background}
-    exit
-fi
-
 if [ "$(id -u)" != "0" ]; then
     echo -e ${red} 请使用root用户!${background}
     exit
@@ -26,7 +21,7 @@ fi
 
 function Dependency(){
 apt_update(){
-if [ "${apt_update}" != "apt_updated" ]
+if [ -z ${apt_update} ]
 then
   echo -e ${green}正在更新 ${yellow}软件源${background}
   if ! apt update -y
@@ -38,7 +33,7 @@ then
 fi
 }
 pacman_Syyu(){
-if [ "${pacman_Syyu}" != "pacman_Syyued" ]
+if [ -z ${pacman_Syyu} ]
 then
   echo -e ${green}正在 ${yellow}更新${background}
   if ! pacman -Syyu --noconfirm --needed

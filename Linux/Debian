@@ -12,16 +12,16 @@ background="\033[0m"
 
 GithubMirror="https://gh.arcticfox.top"
 
-apt_update(){
-if [ "${apt_update}" != "apt_updated" ]
+pacman_Syyu(){
+if [ -z ${pacman_Syyu} ]
 then
-  echo -e ${green}正在更新 ${yellow}软件源${background}
-  if ! apt update -y
+  echo -e ${green}正在 ${yellow}更新${background}
+  if ! pacman -Syyu --noconfirm --needed
   then
     echo -e ${red}更新出错${background}
     exit 1
   fi
-  apt_update=apt_updated
+  pacman_Syyu=pacman_Syyued
 fi
 }
 

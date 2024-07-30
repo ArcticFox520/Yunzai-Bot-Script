@@ -1,0 +1,52 @@
+#!/bin/env bash
+# 设置颜色变量
+black="\e[30m"
+red="\033[31m"
+green="\033[32m"
+yellow="\033[33m"
+blue="\033[34m"
+purple="\033[35m"
+cyan="\033[36m"
+white="\033[37m"
+background="\033[0m"
+
+function MenuSize(){
+HEIGHT=$(($(tput lines) - 10))
+WIDTH=$(($(tput cols) - 10))
+OPTION=$((${HEIGHT} - 8))
+if (( $HEIGHT <= 8 ));then
+  echo -e ${blue}[${red}*${blue}] ${cyan}您的屏幕高度过低.${background}
+  exit
+fi
+if (( $WIDTH <= 0 ));then
+  echo -e ${blue}[${red}*${blue}] ${cyan}您的屏幕宽度度过窄.${background}
+  exit
+fi
+}
+
+function MsgboxSize(){
+HEIGHT=$(($(tput lines) - 30))
+WIDTH=$(($(tput cols) - 10))
+if (( $HEIGHT <= 0 ));then
+  echo -e ${blue}[${red}*${blue}] ${cyan}您的屏幕高度过低.${background}
+  exit
+fi
+if (( $WIDTH <= 0 ));then
+  echo -e ${blue}[${red}*${blue}] ${cyan}您的屏幕宽度度过窄.${background}
+  exit
+fi
+}
+
+
+
+
+MenuSize
+Number=$(whiptail \
+--title "AF-Lagrange" \
+--menu "" \
+${HEIGHT} ${WIDTH} ${OPTION} \
+"1" "部署Lagrange" \
+"2" "更新Lagrange" \
+"3" "启动Lagrange" \
+"0" "退出" \
+3>&1 1>&2 2>&3)

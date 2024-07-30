@@ -13,7 +13,7 @@ background="\033[0m"
 GithubMirror="https://gh.arcticfox.top"
 
 pacman_Syyu(){
-if [ "${pacman_Syyu}" != "pacman_Syyued" ]
+if [ -z ${pacman_Syyu} ]
 then
   echo -e ${green}正在 ${yellow}更新${background}
   if ! pacman -Syyu --noconfirm --needed

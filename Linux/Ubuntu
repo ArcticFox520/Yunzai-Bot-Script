@@ -51,7 +51,7 @@ fi
 }
 
 apt_update(){
-if [ "${apt_update}" != "apt_updated" ]
+if [ -z ${apt_update} ]
 then
   echo -e ${green}正在更新 ${yellow}软件源${background}
   if ! apt update -y

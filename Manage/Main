@@ -446,6 +446,54 @@ Master)
   echo -e ${cyan}主人账号已修改为: ${green}$3${background}
   exit
 ;;
+delete)
+  if [ -d plugins/$3 ]
+  then
+    echo -e ${cyan}正在删除 ${yellow}$3${background}
+    rm -rf plugins/$3 > /dev/null 2>&1
+    rm -rf plugins/$3 > /dev/null 2>&1
+    echo -e ${cyan}删除完成${background}
+    exit
+  else
+    PackageNameLocal=$(ls plugins/)
+    for i in ${PackageNameLocal[@]}
+    do
+      if [ -e plugins/${i}/package.json ]
+      then
+        if yq .name -q plugins/${i}/package.json | grep -q $3
+        then
+          PluginName=$(yq .name -q plugins/${i}/package.json)
+          PluginPath="plugins/${i}"
+        fi
+      elif [ -e plugins/${i}/index.js ]
+      then
+        if grep -q $3 plugins/${i}/index.js
+        then
+          PluginName=$(plugins/${i})
+          PluginPath="plugins/${i}"
+        fi
+      elif [ -e plugins/${i}/.git/config ]
+      then
+        if grep -q $3 plugins/${i}/.git/config
+        then
+          PluginName=$(plugins/${i})
+          PluginPath="plugins/${i}"
+        fi
+      else
+        echo -e ${red}未找到 ${cyan}$3 ${background}
+        exit
+      fi
+    done
+    if [ -n ${PluginPath} ]
+    then
+      echo -e ${cyan}正在删除 ${yellow}$3${background}
+      rm -rf plugins/$3 > /dev/null 2>&1
+      rm -rf plugins/$3 > /dev/null 2>&1
+      echo -e ${cyan}删除完成${background}
+      exit
+    fi
+  fi
+;;
 esac
 
 BotManage(){

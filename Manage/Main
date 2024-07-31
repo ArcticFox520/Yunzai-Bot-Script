@@ -456,8 +456,12 @@ delete)
     exit
   else
     PackageNameLocal=$(ls plugins/)
+    unset a
     for i in ${PackageNameLocal[@]}
     do
+      a=$((${a}+1))
+      echo -e ${cyan}正在查找 $3${background}
+      echo -e '\r'${cyan}已比对${a}项${background}
       if [ -e plugins/${i}/package.json ]
       then
         if yq .name -q plugins/${i}/package.json | grep -q $3

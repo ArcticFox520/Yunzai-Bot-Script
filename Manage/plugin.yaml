@@ -12,6 +12,8 @@ GitPlugin:
   liangshi-calc
   Atlas
   Guoba-Plugin
+  ws-plugin
+  logier-plugin
   miaoyu-plugin
   egg-plugin
   bililivePush-plugin
@@ -41,7 +43,7 @@ GitPlugin:
   Shiranai-Plugin
   Cookie-plugin
   xianyu-plugin
- 
+  
 miao-plugin:
   Author: "喵喵"
   Introduction: "提供包括角色面板、角色查询等角色相关功能。"
@@ -55,7 +57,7 @@ xiaoyao-cvs-plugin:
   Introduction: "逍遥自行制作的原神图鉴。"
   Repository:
     - Gitee: No
-    - Github: https://github.com/Ctrlcvs/xiaoyao-cvs-plugin.git
+    - Github: https://github.com/Ctrlcvs/xiaoyao-cvs-plugin
   PackageName: No
 
 liangshi-calc:
@@ -81,6 +83,22 @@ Guoba-Plugin:
     - Gitee: https://gitee.com/guoba-yunzai/guoba-plugin
     - Github: https://github.com/guoba-yunzai/guoba-plugin
   PackageName: guoba-plugin
+
+ws-plugin:
+  Author: "小叶"
+  Introduction: "提供ws协议连接。"
+  Repository:
+    - Gitee: https://gitee.com/xiaoye12123/ws-plugin
+    - Github: https://github.com/XasYer/ws-plugin
+  PackageName: ws-plugin
+
+logier-plugin:
+  Author: "logier"
+  Introduction: "今日系列、表情包系列和定时系列合计。"
+  Repository:
+    - Gitee: https://gitee.com/logier/logier-plugins
+    - Github: https://github.com/logier/logier-plugins
+  PackageName: No
 
 miaoyu-plugin:
   Author: "小狐狸空空酱"

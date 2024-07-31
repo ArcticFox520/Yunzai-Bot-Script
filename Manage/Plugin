@@ -146,7 +146,7 @@ then
 fi
 GitRepositoryCheck(){
 Plugin=$1
-if [ "$(yq .${Plugin}.Repository[0] plugin.yaml)" != "No" ] && [ "$(yq .${Plugin}.Repository[1] plugin.yaml)" != "No" ]
+if [ "$(yq .${Plugin}.Repository[0].Git* plugin.yaml)" != "No" ] && [ "$(yq .${Plugin}.Repository[1].Git* plugin.yaml)" != "No" ]
 then
   if [ "${GitSite}" == "Gitee" ]
   then

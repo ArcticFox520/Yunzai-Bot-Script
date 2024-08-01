@@ -48,11 +48,11 @@ fi
 case `dpkg --print-architecture` in
 aarch64|arm64)
 	Arch1="arm64"
-	Arch2="arm64"
+	Arch2="linuxarm64"
 	;;
 x86_64|x64|amd64)
 	Arch1="x64"
-	Arch2="amd64"
+	Arch2="linux64"
 	;;
 *)
 	echo -e ${red}暂不支持的架构 ${cyan}$(dpkg --print-architecture)${background}
@@ -70,12 +70,11 @@ then
   mv -f ffmpeg /usr/local/bin/ffmpeg
   mv -f ffprobe /usr/local/bin/ffprobe
 else
-  ffmpegURL=https://johnvansickle.com/ffmpeg/releases/
-  ffmpegURL=${ffmpegURL}ffmpeg-release-${Arch2}-static.tar.xz
-  Download ffmpeg.tar.xz ${ffmpegURL}
+  FFmpegURL="https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-${Arch2}-gpl.tar.xz"
+  Download ffmpeg.tar.xz ${FFmpegURL}
+  mkdir ffmpeg
   pv ffmpeg.tar.xz | tar -Jxf - -C ffmpeg
   chmod +x ffmpeg/$(ls ffmpeg)/*
-  mv -f ffmpeg/$(ls ffmpeg)/ffmpeg /usr/local/bin/ffmpeg
-  mv -f ffmpeg/$(ls ffmpeg)/ffprobe /usr/local/bin/ffprobe
+  mv -f ffmpeg/$(ls ffmpeg)/bin/ff* /usr/local/bin/
   rm -rf ffmpeg*
 fi

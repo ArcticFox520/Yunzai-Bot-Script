@@ -170,7 +170,7 @@ fi
 start=start-${Linux}-${Version}.sh
 rm $HOME/.bashrc
 touch $HOME/.bashrc
-sed -i "1i\exec -c $HOME/AF-Proot/$HOME/AF-Proot/start-${Linux}-${Version}.sh" $HOME/.bashrc
+echo "exec -c $HOME/AF-Proot/start-${Linux}-${Version}.sh" $HOME/.bashrc
 cat > $start <<- FOX
 #!/bin/bash
 echo -e "${blue}[${yellow}*${blue}] ${cyan}正在启动 ${Linux}-${Version}${background}"
@@ -235,3 +235,4 @@ FOX
 chmod +x "$HOME/AF-Proot/start-${Linux}-${Version}.sh"
 neofetch --ascii_distro ${Linux}
 exec $HOME/AF-Proot/start-ubuntu-jammy.sh 'bash Install'
+$HOME/AF-Proot/start-ubuntu-jammy.sh

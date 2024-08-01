@@ -1,0 +1,3 @@
+1. 一键卸载
+2. 一键迁移(脚本和miao)
+3. afyz mz delete log/logs/data里面的数据

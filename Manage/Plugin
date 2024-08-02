@@ -139,8 +139,7 @@ PluginName=$(${TUISoftware} \
 ${HEIGHT} ${WIDTH} ${OPTION} ${Options} \
 3>&1 1>&2 2>&3)
 
-PluginName=$(echo ${PluginName})
-PluginName=$(echo ${PluginName})
+PluginName=$(echo ${PluginName} | sed "s|'||g" | sed 's|"||g')
 
 if [ -z "${PluginName}" ]
 then
@@ -231,6 +230,7 @@ then
     echo -e ${cyan}插件作者: ${yellow}${Author}${background}
     echo -e ${white}==================================${background}
     echo -e ${cyan}正在克隆插件${background}
+    echo git clone --depth=1 ${GhMirror}${GitURL} ./plugins/${PluginName}
     if git clone --depth=1 ${GhMirror}${GitURL} ./plugins/${PluginName}
     then
       if [ -e ./plugins/${PluginName}/package.json ]

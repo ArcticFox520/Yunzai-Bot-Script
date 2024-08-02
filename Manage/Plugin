@@ -10,7 +10,7 @@ white="\033[37m"
 background="\033[0m"
 
 GithubMirrorSource="https://gh.arcticfox.top"
-GithubMirror="https://mirrors.chenby.cn"
+
 function MenuSize(){
 HEIGHT=$(($(tput lines) - 10))
 WIDTH=$(($(tput cols) - 10))
@@ -174,7 +174,7 @@ else
     PNPMMirror="https://registry.npmjs.org"
     if [ "${GitSite}" == "Gitee" ]
     then
-      GhMirror="${GithubMirror}/"
+      GhMirror="https://mirrors.chenby.cn/"
     elif [ "${GitSite}" == "Github" ]
     then
       unset GhMirror 

@@ -14,6 +14,7 @@ GitPlugin:
   Guoba-Plugin
   ws-plugin
   logier-plugin
+  yenai-plugin
   miaoyu-plugin
   egg-plugin
   bililivePush-plugin
@@ -99,6 +100,14 @@ logier-plugin:
     - Gitee: https://gitee.com/logier/logier-plugins
     - Github: https://github.com/logier/logier-plugins
   PackageName: No
+
+yenai-plugin:
+  Author: "椰羊"
+  Introduction: "提供对Bot的一些便捷操作。"
+  Repository:
+    - Gitee: https://gitee.com/yeyang52/yenai-plugin
+    - Github: https://github.com/yeyang52/yenai-plugin
+  PackageName: yenai-plguin
 
 miaoyu-plugin:
   Author: "小狐狸空空酱"

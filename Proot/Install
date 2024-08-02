@@ -255,16 +255,14 @@ then
 else
   unset GithubMirror
 fi
-if ! git clone --depth=1 ${GithubMirror}https://github.com/ArcticFox520/Yunzai-Bot-Script ./AFYZ
-then
-  echo -e ${red} - ${yellow}出现错误${background}
-  exit
-fi
+until git clone --depth=1 ${GithubMirror}https://github.com/ArcticFox520/Yunzai-Bot-Script ./AFYZ
+do
+  echo -e ${red} - ${red}克隆错误 ${cyan}3秒后重试${background}
+  sleep 3s
+done
 cd AFYZ
 chmod +x afyz
 AF_HOME_Path="$(pwd)"
 sed -i "s|AF_HOME_Path|${AF_HOME_Path}|g" afyz
 mv -f afyz /usr/local/bin/afyz
-echo afyz > .bashrc
 echo -e ${yellow} - ${yellow}安装成功${background}
-echo -e ${yellow} - ${cyan}请使用 ${green}afyz ${cyan}命令 打开脚本${background}

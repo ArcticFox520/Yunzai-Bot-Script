@@ -153,12 +153,10 @@ then
   if [ "${GitSite}" == "Gitee" ]
   then
     GroupNumber=0
-    Git="Gitee:"
     PNPMMirror="https://registry.npmmirror.com"
   elif [ "${GitSite}" == "Github" ]
   then
     GroupNumber=1
-    Git="Github:"
     PNPMMirror="https://registry.npmjs.org"
   fi
 else
@@ -170,7 +168,6 @@ else
   elif [ "$(yq .${Plugin}.Repository[1].Git* plugin.yaml)" != "No" ]
   then
     GroupNumber=1
-    Git="Github:"
     PNPMMirror="https://registry.npmjs.org"
     if [ "${GitSite}" == "Gitee" ]
     then
@@ -188,7 +185,7 @@ then
   for Plugin in ${PluginName[@]}
   do
     GitRepositoryCheck ${Plugin}
-    GitURL=$(yq .${Plugin}.Repository[${GroupNumber}] plugin.yaml | sed "s|${Git}||g")
+    GitURL=$(yq .${PluginName}.Repository[${GroupNumber}].Git* plugin.yaml)
     Author=$(yq .${Plugin}.Author plugin.yaml)
     if ! echo ${InstalledPlugin} | grep -q ${Plugin}
     then
@@ -221,7 +218,7 @@ then
 elif [ ${MultipleChoice} == false ]
 then
   GitRepositoryCheck ${PluginName}
-  GitURL=$(yq .${PluginName}.Repository[${GroupNumber}] plugin.yaml | sed "s|${Git}||g")
+  GitURL=$(yq .${PluginName}.Repository[${GroupNumber}].Git* plugin.yaml)
   Author=$(yq .${PluginName}.Author plugin.yaml)
   if ! echo ${InstalledPlugin} | grep -q ${PluginName}
   then

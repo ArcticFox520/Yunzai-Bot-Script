@@ -61,7 +61,7 @@ esac
 
 URL="https://ipinfo.io"
 Address=$(curl -sL ${URL} | sed -n 's/.*"country": "\(.*\)",.*/\1/p')
-if [ ${Address} = "CN" ]
+if [ "${Address}" = "CN" ]
 then
   GithubMirror="https://gh.arcticfox.top"
 else

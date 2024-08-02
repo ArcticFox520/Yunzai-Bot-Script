@@ -65,7 +65,7 @@ fi
 
 URL="https://ipinfo.io"
 Address=$(curl -sL ${URL} | sed -n 's/.*"country": "\(.*\)",.*/\1/p')
-if [ ${Address} = "CN" ]
+if [ "${Address}" = "CN" ]
 then
   Node_URL="https://mirrors.ustc.edu.cn/node/latest-iron/"
 else
@@ -86,7 +86,7 @@ done
 
 URL="https://ipinfo.io"
 Address=$(curl -sL ${URL} | sed -n 's/.*"country": "\(.*\)",.*/\1/p')
-if [ ${Address} = "CN" ]
+if [ "${Address}" = "CN" ]
 then
   NodeJS_URL="https://registry.npmmirror.com/-/binary/node/latest-iron/node-${NodeVersion}-linux-${Arch}.tar.xz"
   NPMMirror="https://registry.npmmirror.com"

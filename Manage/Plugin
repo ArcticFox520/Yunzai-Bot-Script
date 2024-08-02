@@ -139,6 +139,9 @@ PluginName=$(${TUISoftware} \
 ${HEIGHT} ${WIDTH} ${OPTION} ${Options} \
 3>&1 1>&2 2>&3)
 
+PluginName=$(echo ${PluginName})
+PluginName=$(echo ${PluginName})
+
 if [ -z "${PluginName}" ]
 then
   Main
@@ -160,12 +163,12 @@ then
     PNPMMirror="https://registry.npmjs.org"
   fi
 else
-  if [ "$(yq .${Plugin}.Repository[0] plugin.yaml)" != "No" ]
+  if [ "$(yq .${Plugin}.Repository[0].Git* plugin.yaml)" != "No" ]
   then
     GroupNumber=0
     Git="Gitee:"
     PNPMMirror="https://registry.npmmirror.com"
-  elif [ "$(yq .${Plugin}.Repository[1] plugin.yaml)" != "No" ]
+  elif [ "$(yq .${Plugin}.Repository[1].Git* plugin.yaml)" != "No" ]
   then
     GroupNumber=1
     Git="Github:"

@@ -230,7 +230,6 @@ then
     echo -e ${cyan}插件作者: ${yellow}${Author}${background}
     echo -e ${white}==================================${background}
     echo -e ${cyan}正在克隆插件${background}
-    echo git clone --depth=1 ${GhMirror}${GitURL} ./plugins/${PluginName}
     if git clone --depth=1 ${GhMirror}${GitURL} ./plugins/${PluginName}
     then
       if [ -e ./plugins/${PluginName}/package.json ]

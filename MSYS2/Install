@@ -1,5 +1,4 @@
 #!/bin/env bash
-#
 black="\e[30m"
 red="\033[31m"
 green="\033[32m"
@@ -164,6 +163,7 @@ Download chromium.zip ${ChromiumURL}
 echo -e ${green}正在解压 ${yellow}chromium.zip${background}
 if unzip -q chromium.zip
 then
+  rm chromium.zip
   echo -e ${green}解压完成${background}
 else
   echo -e ${red}解压失败${background}
@@ -192,6 +192,7 @@ Download NodeJS.zip ${NodeJS_URL}
 echo -e ${green}正在解压 ${yellow}NodeJS.zip${background}
 if unzip -q NodeJS.zip -d Node
 then
+  rm NodeJS.zip
   echo -e ${green}解压完成${background}
   mv Node/$(ls Node) NodeJS
   rm -rf Node

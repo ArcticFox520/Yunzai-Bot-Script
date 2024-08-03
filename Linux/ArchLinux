@@ -25,7 +25,7 @@ then
 fi
 }
 
-Package=("tar" "gzip" "xz" "tmux" "screen" "wget" "curl" "pv" "git" "redis" "chromium")
+Package=("tar" "gzip" "xz" "tmux" "screen" "wget" "curl" "pv" "git" "redis" "chromium" "unzip")
 for PKG in ${Package[@]}
 do
   if ! pacman -Q ${PKG} >/dev/null 2>&1

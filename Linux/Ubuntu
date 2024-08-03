@@ -63,7 +63,7 @@ then
 fi
 }
 
-Package=("tar" "gzip" "xz-utils" "tmux" "screen" "wget" "curl" "pv" "git" "redis-server")
+Package=("tar" "gzip" "xz-utils" "tmux" "screen" "wget" "curl" "pv" "git" "redis-server" "gnupg" "jq" "unzip")
 for PKG in ${Package[@]}
 do
   if ! dpkg -s ${PKG} >/dev/null 2>&1
@@ -77,104 +77,51 @@ do
     done
     echo -e ${green}安装完成${background}
   fi
-done
-
-ChromiumInstall(){
-# https://ppa.arcticfox.top/xtradeb/apps/ubuntu/pool/main/c/chromium/
-PPA_URL="https://ppa.arcticfox.top/xtradeb/apps/ubuntu/pool/main/c/chromium/"
-i=0
-until FileName=$(curl ${PPA_URL} | grep ${UbuntuVersion} | grep ${Arch} | grep -oP '(?<=<a href=")[^"]+(?=">)')
-do
-  if [ ${i} == 3 ]
-  then
-    echo -e ${cyan}错误次数过多 ${yellow}退出${background}
-    exit
-  fi
-  i=$((${i}+1))
-  echo -e ${cyan}获取失败 ${yellow}三秒后重试${background}
-  sleep 3s
-done
-FileName=$(echo ${FileName})
-echo -e ${green}正在下载 ${yellow}Chromium及其依赖${background}
-for DownloadName in ${FileName[@]}
-do
-  DownloadURL="${PPA_URL}${DownloadName}"
-  echo -e $DownloadURL
-  if ! Download ${DownloadName} ${DownloadURL}
-  then
-    exit
-  fi
-done
-echo -e ${green}下载完成${background}
-
-echo -e ${green}开始安装 ${yellow}Chromium${background}
-if ! apt install -y ./chromium*
-then
-  apt install -y
-  echo -e ${red}出现错误${background}
-  exit 1
-fi
-rm -rf chromium*
-echo -e ${green}安装完成${background}
-}
+done 
 
 if which chromium >/dev/null 2>&1 || which chromium-browser >/dev/null 2>&1
 then
   exit 0
 fi
 
-case `dpkg --print-architecture` in
-aarch64|arm64)
-  if grep -q 22.04 /etc/os-release
-  then
-    Arch="arm64"
-    UbuntuVersion="2204"
-    ChromiumInstall
-  elif  grep -q 24.04 /etc/os-release
-  then
-    Arch="arm64"
-    UbuntuVersion="2404"
-    ChromiumInstall
-  elif  grep -q 20.04 /etc/os-release
-  then
-    echo -e ${green}开始安装 ${yellow}Chromium${background}
-    bash <(curl -sL https://gitee.com/baihu433/chromium/raw/master/chromium.sh)
-  else
-      echo -e ${red}出现错误${background}
-      exit 1
-  fi
-	;;
-x86_64|x64|amd64)
-	if apt install -y snap
-  then
-    if ! snap install chromium
-    then
-      if grep -q 22.04 /etc/os-release
-      then
-        Arch="amd64"
-        UbuntuVersion="2204"
-        ChromiumInstall
-      elif  grep -q 24.04 /etc/os-release
-      then
-        Arch="amd64"
-        UbuntuVersion="2404"
-        ChromiumInstall
-      elif  grep -q 20.04 /etc/os-release
-      then
-        echo -e ${green}开始安装 ${yellow}Chromium${background}
-        bash <(curl -sL https://gitee.com/baihu433/chromium/raw/master/chromium.sh)
-        exit 0
-      else
-          echo -e ${red}出现错误${background}
-          exit 1
-      fi
-    fi
-  else
-    echo -e ${red}出现错误${background}
-    exit 1
-  fi
-	;;
-*)
-	echo -e ${red}暂不支持的架构 ${cyan}$(dpkg --print-architecture)${background}
-	exit 1
-esac
+if [ ! -d /etc/apt/sources.list.d ]
+then
+  mkdir -p /etc/apt/sources.list.d
+fi
+
+touch /etc/apt/sources.list.d/ppa.sources.list
+
+if grep -q -i focal /etc/os-release
+then
+  UbuntuVersion="focal"
+elif grep -q -i jammy /etc/os-release
+then
+  UbuntuVersion="jammy"
+elif grep -q -i noble /etc/os-release
+then
+  UbuntuVersion="noble"
+else
+  echo -e ${red}不受支持的发行版${background}
+  exit 1
+fi
+
+echo -e ${green}正在写入 ${yellow}PPA仓库${background}
+PPA="deb https://ppa.arcticfox.top/xtradeb/apps/ubuntu ${UbuntuVersion} main"
+echo ${PPA} > /etc/apt/sources.list.d/ppa.sources.list
+
+echo -e ${green}正在获取 ${yellow}仓库密钥${background}
+SigningKeyFingerprintURL="https://launchpad.net/~xtradeb/+archive/ubuntu/apps"
+SigningKeyFingerprint=$(curl ${SigningKeyFingerprintURL} | grep "signing_key_fingerprint" | sed 's|<script id="json-cache-script">LP.cache =||g' | sed 's|;</script>||g' | jq .context.signing_key_fingerprint | sed 's|"||g')
+if [ -z ${SigningKeyFingerprint} ]
+then
+  SigningKeyFingerprint=5301FA4FD93244FBC6F6149982BB6851C64F6880
+fi
+
+echo -e ${green}正在导入 ${yellow}仓库密钥${background}
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ${SigningKeyFingerprint}
+apt update -y
+echo -e ${green}开始安装chromium${background}
+if apt install -y chromium
+then
+  echo -e ${green}安装完成${background}
+fi

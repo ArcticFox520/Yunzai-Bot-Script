@@ -810,7 +810,7 @@ esac
 
 Install(){
 cd $AFHOME
-command_all=("Linux/Insatll" "Install/NodeJS" "Install/FFmpeg" "Install/yq")
+command_all=("Linux/Insatll" "Install/NodeJS" "Install/FFmpeg" "Install/yq" "Install/Fonts")
 for Command in ${command_all[@]}
 do
   if ! bash ${Command}

@@ -1,0 +1,68 @@
+#!/bin/env bash
+export red="\033[31m"
+export green="\033[32m"
+export yellow="\033[33m"
+export blue="\033[34m"
+export purple="\033[35m"
+export cyan="\033[36m"
+export white="\033[37m"
+export background="\033[0m"
+
+function Download(){
+file="$1"
+URL="$2"
+local i=0
+if wget --help | grep -q show-progress 
+then
+  echo -e ${blue}[${green}*${blue}] ${cyan}正在下载 ${yellow}${file}${cyan}${background}
+  until wget -q --show-progress -O ${file} -c ${URL}
+  do
+    if [ ${i} == 3 ]
+    then
+      echo -e ${blue}[${red}*${blue}] ${cyan}错误次数过多 ${yellow}退出${background}
+      return 1
+    fi
+    i=$((${i}+1))
+    echo -e ${blue}[${red}*${blue}] ${cyan}下载失败 ${yellow}三秒后重试${background}
+    sleep 3s
+  done
+  echo -e ${blue}[${green}*${blue}] ${cyan}下载完成.${background}
+  return 0
+else
+  echo -e ${blue}[${green}*${blue}] ${cyan}正在下载 ${yellow}${file}${cyan}${background}
+  until wget -O ${file} -c ${URL}
+  do
+    if [ ${i} == 3 ]
+    then
+      echo -e ${blue}[${red}*${blue}] ${cyan}错误次数过多 ${yellow}退出${background}
+      return 1
+    fi
+    i=$((i+1))
+    echo -e ${blue}[${red}*${blue}] ${cyan}下载失败 ${yellow}三秒后重试${background}
+    sleep 3s
+  done
+  echo -e ${blue}[${green}*${blue}] ${cyan}下载完成.${background}
+  return 0
+fi
+}
+
+URL="https://ipinfo.io"
+Address=$(curl -sL ${URL} | sed -n 's/.*"country": "\(.*\)",.*/\1/p')
+if [ "${Address}" = "CN" ]
+then
+  FontsURL="https://mirrors.chenby.cn/https://github.com/lxgw/LxgwWenKai/releases/download/v1.330/lxgw-wenkai-v1.330.zip"
+else
+  FontsURL="https://github.com/lxgw/LxgwWenKai/releases/download/v1.330/lxgw-wenkai-v1.330.zip"
+fi
+
+Download 霞鹜文楷.zip ${FontsURL}
+
+unzip 霞鹜文楷.zip -d Fonts
+
+if [ ! -d /usr/share/fonts ]
+then
+  mkdir -p /usr/share/fonts
+fi
+mv -vf Fonts/$(ls Fonts) /usr/share/fonts/lxgw-wenkai
+rm -rvf 霞鹜文楷.zip
+fc-cache -f -v

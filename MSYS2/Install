@@ -12,6 +12,7 @@ background="\033[0m"
 GithubMirror="https://mirrors.chenby.cn/"
 
 if [ ! -d AFHOME ]
+then
   mkdir AFHOME
 fi
 cd AFHOME

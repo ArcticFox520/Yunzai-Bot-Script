@@ -77,8 +77,6 @@ Server = https://mirrors.bfsu.edu.cn/msys2/msys/$arch
 Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/msys/$arch
 Server = https://mirror.nju.edu.cn/msys2/msys/$arch
 Server = https://mirrors.aliyun.com/msys2/msys/$arch
-Server = https://mirror.msys2.org/msys/$arch
-Server = https://repo.msys2.org/msys/$arch
 ' > mirrorlist.msys
 
 cat > mirrorlist.mingw64 <<- FOX
@@ -90,10 +88,8 @@ cat > mirrorlist.mingw64 <<- FOX
 ## msys2.org
 Server = https://mirrors.bfsu.edu.cn/msys2/msys/x86_64
 Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/msys/x86_64
-Server = https://mirror.nju.edu.cn/msys2/msys2/msys/x86_64
+Server = https://mirror.nju.edu.cn/msys2/msys/x86_64
 Server = https://mirrors.aliyun.com/msys2/msys/x86_64
-Server = https://mirror.msys2.org/msys/x86_64
-Server = https://repo.msys2.org/msys/x86_64
 FOX
 
 cat > mirrorlist.mingw32 <<- FOX
@@ -107,8 +103,6 @@ Server = https://mirrors.bfsu.edu.cn/msys2/msys/i686
 Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/msys/i686
 Server = https://mirror.nju.edu.cn/msys2/msys/i686
 Server = https://mirrors.aliyun.com/msys2/msys/i686
-Server = https://mirror.msys2.org/msys/i686
-Server = https://repo.msys2.org/msys/i686
 FOX
 
 cat > mirrorlist.clang64 <<- FOX
@@ -117,8 +111,6 @@ Server = https://mirrors.bfsu.edu.cn/msys2/mingw/clang64
 Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/clang64
 Server = https://mirror.nju.edu.cn/msys2/mingw/clang64
 Server = https://mirrors.aliyun.com/msys2/mingw/clang64
-Server = https://mirror.msys2.org/mingw/clang64
-Server = https://repo.msys2.org/mingw/clang64
 FOX
 
 cat > mirrorlist.clang32 <<- FOX
@@ -127,8 +119,6 @@ Server = https://mirrors.bfsu.edu.cn/msys2/mingw/clang32
 Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/clang32
 Server = https://mirror.nju.edu.cn/msys2/mingw/clang32
 Server = https://mirrors.aliyun.com/msys2/mingw/clang32
-Server = https://mirror.msys2.org/mingw/clang32
-Server = https://repo.msys2.org/mingw/clang32
 FOX
 
 cat > mirrorlist.ucrt64 <<- FOX
@@ -137,8 +127,6 @@ Server = https://mirrors.bfsu.edu.cn/msys2/mingw/ucrt64
 Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/ucrt64
 Server = https://mirror.nju.edu.cn/msys2/mingw/ucrt64
 Server = https://mirrors.aliyun.com/msys2/mingw/ucrt64
-Server = https://mirror.msys2.org/mingw/ucrt64
-Server = https://repo.msys2.org/mingw/ucrt64
 FOX
 
 mv -f mirrorlist.msys /etc/pacman.d/mirrorlist.msys
@@ -155,7 +143,7 @@ pacman -Syyu --noconfirm --needed
 echo -e ${green}更新完成${background}
 
 echo -e ${green}正在安装 ${yellow}依赖软件${background}
-pacman -S --needed --noconfirm tar gzip xz tmux curl wget pv git unzip
+pacman -S --needed --noconfirm tar gzip xz tmux curl wget pv git unzip dialog
 echo -e ${green}安装完成${background}
 echo
 echo -e ${green}开始安装 ${yellow}chromium${background}
@@ -203,7 +191,7 @@ else
 fi
 
 echo -e ${green}开始安装 ${yellow}yq${background}
-URL="${GithubMirror}https://github.com/mikefarah/yq/releases/download/latest/yq_windows_amd64.exe"
+URL="${GithubMirror}https://github.com/mikefarah/yq/releases/latest/download/yq_windows_amd64.exe"
 Download yq.exe ${URL}
 echo -e ${green}安装完成${background}
 
@@ -213,24 +201,27 @@ Download ffmpeg.exe ${ffmpeg_URL}/ffmpeg-win32-x64
 Download ffprobe.exe ${ffmpeg_URL}/ffprobe-win32-x64
 echo -e ${green}安装完成${background}
 
-if ! grep -q "AFHOME" ../bashrc
+if ! grep -q "AFHOME" ../.bashrc
 then
-  echo 'PATH=$PATH:$HOME/AFHOME' >> ../bashrc
-  echo 'PATH=$PATH:$HOME/AFHOME/chrome-win' >> ../bashrc
-  echo 'PATH=$PATH:$HOME/AFHOME/NodeJS' >> ../bashrc
+  echo 'PATH=$PATH:$HOME/AFHOME' >> ../.bashrc
+  echo 'PATH=$PATH:$HOME/AFHOME/chrome-win' >> ../.bashrc
+  echo 'PATH=$PATH:$HOME/AFHOME/NodeJS' >> ../.bashrc
 fi
 
 echo -e ${green}开始安装ArcticFox Script${background}
-if ! git clone --depth=1 ${GithubMirror}https://github.com/ArcticFox520/Yunzai-Bot-Script ./AFYZ
+if ! git clone --depth=1 ${GithubMirror}https://github.com/ArcticFox520/Yunzai-Bot-Script ./AFYZ_
 then
   echo -e ${red} - ${yellow}出现错误${background}
   exit
 fi
-cd AFYZ
+cd AFYZ_
 chmod +x afyz
+mv -f afyz ../afyz
 AF_HOME_Path="$(pwd)"
-sed -i "s|AF_HOME_Path|${AF_HOME_Path}|g" afyz
-if ! grep -q "AFYZ" ../bashrc
+sed -i "s|AF_HOME_Path|${AF_HOME_Path}|g" ../afyz
+if ! grep -q "AFYZ" ../.bashrc
 then
-  echo 'PATH=$PATH:$HOME/AFHOME/AFYZ' >> ../bashrc 
+  echo 'PATH=$PATH:$HOME/AFHOME/AFYZ' >> ../.bashrc
+  echo 'afyz' >> ../.bashrc
 fi
+cd

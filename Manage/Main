@@ -292,25 +292,25 @@ CheckStart
 case $? in
 1)
   MsgboxSize
-  whiptail --title "AF-YZ" \
+  ${TUISoftware} --title "AF-YZ" \
   --msgbox "${BotName} 已在 [Tmux] 中启动" \
   ${HEIGHT} ${WIDTH}
 ;;
 2)
   MsgboxSize
-  whiptail --title "AF-YZ" \
+  ${TUISoftware} --title "AF-YZ" \
   --msgbox "${BotName} 已在 [Screen] 中启动" \
   ${HEIGHT} ${WIDTH}
 ;;
 3)
   MsgboxSize
-  whiptail --title "AF-YZ" \
+  ${TUISoftware} --title "AF-YZ" \
   --msgbox "${BotName} 已在 [Pm2] 中启动" \
   ${HEIGHT} ${WIDTH}
 ;;
 4)
   MsgboxSize
-  whiptail --title "AF-YZ" \
+  ${TUISoftware} --title "AF-YZ" \
   --msgbox "${BotName} 已在 [前台] 中启动" \
   ${HEIGHT} ${WIDTH}
   BotManage
@@ -503,7 +503,7 @@ esac
 BotManage(){
 OtherFunctions(){
 MenuSize
-Number=$(whiptail \
+Number=$(${TUISoftware} \
 --title "AF-YZ" \
 --menu "${BotName}管理" \
 ${HEIGHT} ${WIDTH} ${OPTION} \
@@ -520,7 +520,7 @@ case ${Number} in
     Miao-Yunai)
       ConfigFile="config/config/bot.yaml"
       MsgboxSize
-      if NewSignApiAddr=$(whiptail --title "AF-YZ"  \
+      if NewSignApiAddr=$(${TUISoftware} --title "AF-YZ"  \
       --yes-button "确认" \
       --no-button "返回" \
       --inputbox "请输入您的签名服务器链接" \
@@ -541,7 +541,7 @@ case ${Number} in
     TRSS-Yunzai)
       ConfigFile="config/ICQQ.yaml"
       MsgboxSize
-      if NewSignApiAddr=$(whiptail --title "AF-YZ"  \
+      if NewSignApiAddr=$(${TUISoftware} --title "AF-YZ"  \
       --yes-button "确认" \
       --no-button "返回" \
       --inputbox "请输入您的签名服务器链接" \
@@ -563,7 +563,7 @@ case ${Number} in
 2)
   ConfigFile="config/config/bot.yaml"
   MsgboxSize
-  if Master=$(whiptail --title "AF-YZ"  \
+  if Master=$(${TUISoftware} --title "AF-YZ"  \
   --yes-button "确认" \
   --no-button "返回" \
   --inputbox "请输入您的主人账号" \
@@ -594,7 +594,7 @@ case ${Number} in
 4)
   ConfigFile="config/config/bot.yaml"
   MsgboxSize
-  if NewAutoQuit=$(whiptail --title "AF-YZ"  \
+  if NewAutoQuit=$(${TUISoftware} --title "AF-YZ"  \
   --yes-button "确认" \
   --no-button "返回" \
   --inputbox "请输入自动退群人数" \
@@ -610,7 +610,7 @@ case ${Number} in
   fi
   ;;
 5)
-  if (whiptail --title "AF-YZ"  \
+  if (${TUISoftware} --title "AF-YZ"  \
   --yes-button "开启" \
   --no-button "关闭" \
   --yesno "设置好友申请自动同意" ${HEIGHT} ${WIDTH})
@@ -629,7 +629,7 @@ esac
 BotName="$1"
 COMMAND="$2"
 MenuSize
-Number=$(whiptail \
+Number=$(${TUISoftware} \
 --title "AF-YZ" \
 --menu "${BotName}管理" \
 ${HEIGHT} ${WIDTH} ${OPTION} \
@@ -651,7 +651,7 @@ case ${Number} in
     if Error=$(BotRun ${StartSoftware} start ${BotName} "afyz ${BotName} start")
     then
       MsgboxSize
-      if whiptail --title "AF-YZ"  \
+      if ${TUISoftware} --title "AF-YZ"  \
       --yes-button "打开日志" \
       --no-button "返回菜单" \
       --yesno "${BotName} [已启动]" \
@@ -661,7 +661,7 @@ case ${Number} in
         if ! Error=$(BotRun ${StartSoftware} log ${BotName})
         then
           MsgboxSize
-          whiptail --title "AF-YZ" \
+          ${TUISoftware} --title "AF-YZ" \
           --msgbox "${BotName} 日志 [打开失败] \n原因: ${Error}" \
           ${HEIGHT} ${WIDTH}
         fi
@@ -670,7 +670,7 @@ case ${Number} in
       fi
     else
       MsgboxSize
-      whiptail --title "AF-YZ" \
+      ${TUISoftware} --title "AF-YZ" \
       --msgbox "${BotName} [未启动] \n原因: ${Error}" \
       ${HEIGHT} ${WIDTH}
     fi
@@ -691,7 +691,7 @@ case ${Number} in
   if CheckStart ${BotName} ${COMMAND}
   then
     MsgboxSize
-    whiptail --title "AF-YZ" \
+    ${TUISoftware} --title "AF-YZ" \
     --msgbox "${BotName} [未启动] 无需停止" \
     ${HEIGHT} ${WIDTH}
     BotManage
@@ -699,13 +699,13 @@ case ${Number} in
     if Error=$(BotRun ${StartSoftware} stop ${BotName})
     then
       MsgboxSize
-      whiptail --title "AF-YZ" \
+      ${TUISoftware} --title "AF-YZ" \
       --msgbox "${BotName} 停止 [成功]" \
       ${HEIGHT} ${WIDTH}
       BotManage
     else
       MsgboxSize
-      whiptail --title "AF-YZ" \
+      ${TUISoftware} --title "AF-YZ" \
       --msgbox "${BotName} 停止 [失败] \n原因: ${Error}" \
       ${HEIGHT} ${WIDTH}
       BotManage
@@ -716,7 +716,7 @@ case ${Number} in
   if CheckStart ${BotName} ${COMMAND}
   then
     MsgboxSize
-    whiptail --title "AF-YZ" \
+    ${TUISoftware} --title "AF-YZ" \
     --msgbox "${BotName} [未启动] 无需重启" \
     ${HEIGHT} ${WIDTH}
     BotManage
@@ -724,13 +724,13 @@ case ${Number} in
     if Error=$(BotRun ${StartSoftware} restart ${BotName})
     then
       MsgboxSize
-      whiptail --title "AF-YZ" \
+      ${TUISoftware} --title "AF-YZ" \
       --msgbox "${BotName} 重启 [成功]" \
       ${HEIGHT} ${WIDTH}
       BotManage
     else
       MsgboxSize
-      whiptail --title "AF-YZ" \
+      ${TUISoftware} --title "AF-YZ" \
       --msgbox "${BotName} 重启 [失败] \n原因: ${Error}" \
       ${HEIGHT} ${WIDTH}
       BotManage
@@ -741,7 +741,7 @@ case ${Number} in
   if CheckStart ${BotName} ${COMMAND}
   then
     MsgboxSize
-    whiptail --title "AF-YZ" \
+    ${TUISoftware} --title "AF-YZ" \
     --msgbox "${BotName} [未启动] 无法打开日志" \
     ${HEIGHT} ${WIDTH}
     BotManage
@@ -749,13 +749,13 @@ case ${Number} in
     if Error=$(BotRun ${StartSoftware} log ${BotName})
     then
       MsgboxSize
-      whiptail --title "AF-YZ" \
+      ${TUISoftware} --title "AF-YZ" \
       --msgbox "打开 ${BotName} 日志 [成功]" \
       ${HEIGHT} ${WIDTH}
       BotManage
     else
       MsgboxSize
-      whiptail --title "AF-YZ" \
+      ${TUISoftware} --title "AF-YZ" \
       --msgbox "打开 ${BotName} 日志 [失败] \n原因: ${Error}" \
       ${HEIGHT} ${WIDTH}
       BotManage
@@ -829,8 +829,17 @@ fi
 BotManage $1
 }
 
+if [ -x "$(command -v whiptail)" ];then
+  TUISoftware=whiptail
+elif [ -x "$(command -v dialog)" ];then
+  TUISoftware=dialog
+else
+  echo -e ${red}没有TUI软件${background}
+  exit 1
+fi
+
 MenuSize
-Number=$(whiptail \
+Number=$(${TUISoftware} \
 --title "AF-YZ" \
 --menu "请选择bot" \
 ${HEIGHT} ${WIDTH} ${OPTION} \
@@ -845,7 +854,7 @@ case ${Number} in
     BotManage Miao-Yunzai Miao-Yun
   else
     MsgboxSize
-    if whiptail --title "AF-YZ"  \
+    if ${TUISoftware} --title "AF-YZ"  \
     --yes-button "安装" \
     --no-button "返回" \
     --yesno "Miao-Yunzai未安装 是否安装?" \
@@ -862,7 +871,7 @@ case ${Number} in
     BotManage TRSS-Yunzai "TRSS Yunzai"
   else
     MsgboxSize
-    if whiptail --title "AF-YZ"  \
+    if ${TUISoftware} --title "AF-YZ"  \
     --yes-button "安装" \
     --no-button "返回" \
     --yesno "TRSS-Yunzai未安装 是否安装?" \

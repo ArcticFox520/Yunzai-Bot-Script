@@ -10,7 +10,7 @@ cyan="\033[36m"
 white="\033[37m"
 background="\033[0m"
 
-GithubMirror="https://gh.arcticfox.top"
+GithubMirror="https://mirrors.chenby.cn/"
 
 if [ ! -d AFHOME ]
   mkdir AFHOME
@@ -201,7 +201,7 @@ else
 fi
 
 echo -e ${green}开始安装 ${yellow}yq${background}
-URL="${GithubMirror}/https://github.com/mikefarah/yq/releases/download/v4.44.2/yq_windows_amd64.exe"
+URL="${GithubMirror}https://github.com/mikefarah/yq/releases/download/latest/yq_windows_amd64.exe"
 Download yq.exe ${URL}
 echo -e ${green}安装完成${background}
 
@@ -210,3 +210,25 @@ ffmpeg_URL=https://registry.npmmirror.com/-/binary/ffmpeg-static/b6.0
 Download ffmpeg.exe ${ffmpeg_URL}/ffmpeg-win32-x64
 Download ffprobe.exe ${ffmpeg_URL}/ffprobe-win32-x64
 echo -e ${green}安装完成${background}
+
+if ! grep -q "AFHOME" ../bashrc
+then
+  echo 'PATH=$PATH:$HOME/AFHOME' >> ../bashrc
+  echo 'PATH=$PATH:$HOME/AFHOME/chrome-win' >> ../bashrc
+  echo 'PATH=$PATH:$HOME/AFHOME/NodeJS' >> ../bashrc
+fi
+
+echo -e ${green}开始安装ArcticFox Script${background}
+if ! git clone --depth=1 ${GithubMirror}https://github.com/ArcticFox520/Yunzai-Bot-Script ./AFYZ
+then
+  echo -e ${red} - ${yellow}出现错误${background}
+  exit
+fi
+cd AFYZ
+chmod +x afyz
+AF_HOME_Path="$(pwd)"
+sed -i "s|AF_HOME_Path|${AF_HOME_Path}|g" afyz
+if ! grep -q "AFYZ" ../bashrc
+then
+  echo 'PATH=$PATH:$HOME/AFHOME/AFYZ' >> ../bashrc 
+fi

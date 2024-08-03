@@ -50,19 +50,17 @@ URL="https://ipinfo.io"
 Address=$(curl -sL ${URL} | sed -n 's/.*"country": "\(.*\)",.*/\1/p')
 if [ "${Address}" = "CN" ]
 then
-  FontsURL="https://mirrors.chenby.cn/https://github.com/lxgw/LxgwWenKai/releases/download/v1.330/lxgw-wenkai-v1.330.zip"
+  FontsURL="https://github.com/lxgw/LxgwWenKai-Screen/releases/download/v1.330/LXGWWenKaiScreen.ttf"
 else
-  FontsURL="https://github.com/lxgw/LxgwWenKai/releases/download/v1.330/lxgw-wenkai-v1.330.zip"
+  FontsURL="https://github.com/lxgw/LxgwWenKai-Screen/releases/download/v1.330/LXGWWenKaiScreen.ttf"
 fi
+echo -e ${green}正在安装 ${yellow}中文字体${background}
+Download LXGWWenKaiScreen.ttf ${FontsURL}
 
-Download 霞鹜文楷.zip ${FontsURL}
-
-unzip 霞鹜文楷.zip -d Fonts
-
-if [ ! -d /usr/share/fonts ]
+if [ ! -d /usr/share/fonts/lxgw-wenkai ]
 then
-  mkdir -p /usr/share/fonts
+  mkdir -p /usr/share/fonts/lxgw-wenkai
 fi
-mv -vf Fonts/$(ls Fonts) /usr/share/fonts/lxgw-wenkai
-rm -rvf 霞鹜文楷.zip
+mv -vf LXGWWenKaiScreen.ttf /usr/share/fonts/lxgw-wenkai/LXGWWenKaiScreen.ttf
 fc-cache -f -v
+echo -e ${yellow}完成${background}

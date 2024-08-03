@@ -63,7 +63,7 @@ then
 fi
 }
 
-Package=("tar" "gzip" "xz-utils" "tmux" "screen" "wget" "curl" "pv" "git" "redis-server" "gnupg" "jq" "unzip")
+Package=("tar" "gzip" "xz-utils" "tmux" "screen" "wget" "curl" "pv" "git" "redis-server" "gnupg" "jq")
 for PKG in ${Package[@]}
 do
   if ! dpkg -s ${PKG} >/dev/null 2>&1

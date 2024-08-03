@@ -110,7 +110,7 @@ PPA="deb https://ppa.arcticfox.top/xtradeb/apps/ubuntu ${UbuntuVersion} main"
 echo ${PPA} > /etc/apt/sources.list.d/ppa.sources.list
 
 echo -e ${green}正在获取 ${yellow}仓库密钥${background}
-SigningKeyFingerprintURL="https://launchpad.net/~xtradeb/+archive/ubuntu/apps"
+SigningKeyFingerprintURL="https://launchpad.arcticfox.top/~xtradeb/+archive/ubuntu/apps"
 SigningKeyFingerprint=$(curl ${SigningKeyFingerprintURL} | grep "signing_key_fingerprint" | sed 's|<script id="json-cache-script">LP.cache =||g' | sed 's|;</script>||g' | jq .context.signing_key_fingerprint | sed 's|"||g')
 if [ -z ${SigningKeyFingerprint} ]
 then

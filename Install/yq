@@ -47,6 +47,11 @@ else
 fi
 }
 
+if [ -e /usr/local/bin/yq ]
+then
+  exit 0
+fi
+
 case `dpkg --print-architecture` in
 aarch64|arm64)
 	Arch="arm64"

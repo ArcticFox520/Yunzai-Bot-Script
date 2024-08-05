@@ -46,6 +46,11 @@ else
 fi
 }
 
+if [ -e /usr/share/fonts/lxgw-wenkai/LXGWWenKaiScreen.ttf ]
+then
+  exit 0
+fi
+
 URL="https://ipinfo.io"
 Address=$(curl -sL ${URL} | sed -n 's/.*"country": "\(.*\)",.*/\1/p')
 if [ "${Address}" = "CN" ]

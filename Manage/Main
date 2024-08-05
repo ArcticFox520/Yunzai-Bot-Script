@@ -666,7 +666,7 @@ case ${Number} in
           ${HEIGHT} ${WIDTH}
         fi
       else
-        BotManage
+        BotManage ${BotName} ${COMMAND}
       fi
     else
       MsgboxSize
@@ -684,7 +684,7 @@ case ${Number} in
     afyz ${BotName} start
     BotManage
   else
-    BotManage
+    BotManage ${BotName} ${COMMAND}
   fi
 ;;
 3)
@@ -694,7 +694,7 @@ case ${Number} in
     ${TUISoftware} --title "AF-YZ" \
     --msgbox "${BotName} [未启动] 无需停止" \
     ${HEIGHT} ${WIDTH}
-    BotManage
+    BotManage ${BotName} ${COMMAND}
   else
     if Error=$(BotRun ${StartSoftware} stop ${BotName})
     then
@@ -702,13 +702,13 @@ case ${Number} in
       ${TUISoftware} --title "AF-YZ" \
       --msgbox "${BotName} 停止 [成功]" \
       ${HEIGHT} ${WIDTH}
-      BotManage
+      BotManage ${BotName} ${COMMAND}
     else
       MsgboxSize
       ${TUISoftware} --title "AF-YZ" \
       --msgbox "${BotName} 停止 [失败] \n原因: ${Error}" \
       ${HEIGHT} ${WIDTH}
-      BotManage
+      BotManage ${BotName} ${COMMAND}
     fi
   fi
 ;;
@@ -727,13 +727,13 @@ case ${Number} in
       ${TUISoftware} --title "AF-YZ" \
       --msgbox "${BotName} 重启 [成功]" \
       ${HEIGHT} ${WIDTH}
-      BotManage
+      BotManage ${BotName} ${COMMAND}
     else
       MsgboxSize
       ${TUISoftware} --title "AF-YZ" \
       --msgbox "${BotName} 重启 [失败] \n原因: ${Error}" \
       ${HEIGHT} ${WIDTH}
-      BotManage
+      BotManage ${BotName} ${COMMAND}
     fi
   fi
 ;;
@@ -744,7 +744,7 @@ case ${Number} in
     ${TUISoftware} --title "AF-YZ" \
     --msgbox "${BotName} [未启动] 无法打开日志" \
     ${HEIGHT} ${WIDTH}
-    BotManage
+    BotManage ${BotName} ${COMMAND}
   else
     if Error=$(BotRun ${StartSoftware} log ${BotName})
     then
@@ -752,19 +752,19 @@ case ${Number} in
       ${TUISoftware} --title "AF-YZ" \
       --msgbox "打开 ${BotName} 日志 [成功]" \
       ${HEIGHT} ${WIDTH}
-      BotManage
+      BotManage ${BotName} ${COMMAND}
     else
       MsgboxSize
       ${TUISoftware} --title "AF-YZ" \
       --msgbox "打开 ${BotName} 日志 [失败] \n原因: ${Error}" \
       ${HEIGHT} ${WIDTH}
-      BotManage
+      BotManage ${BotName} ${COMMAND}
     fi
   fi
 ;;
 6)
   bash <(curl -sL https://gh.arcticfox.top/https://raw.githubusercontent.com/ArcticFox520/Yunzai-Bot-Script/main/Manage/Plugin)
-  BotManage
+  BotManage ${BotName} ${COMMAND}
 ;;
 7)
   git_pull(){
@@ -803,7 +803,7 @@ case ${Number} in
 ;;
 8)
   OtherFunctions
-  BotManage
+  BotManage ${BotName} ${COMMAND}
 ;;
 esac
 }

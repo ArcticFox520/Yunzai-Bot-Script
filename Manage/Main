@@ -279,7 +279,7 @@ elif pm2 list 2>&1 | grep -q $1
 then
   StartSoftware=pm2
   return 3
-elif ps all | sed '/grep/d' | grep $2
+elif ps all | sed '/grep/d' | sed '/dialog/d' | sed '/whiptail/d' | grep -q $2
 then
   return 4
 else

@@ -201,6 +201,25 @@ Download ffmpeg.exe ${ffmpeg_URL}/ffmpeg-win32-x64
 Download ffprobe.exe ${ffmpeg_URL}/ffprobe-win32-x64
 echo -e ${green}安装完成${background}
 
+URL="https://ipinfo.io"
+Address=$(curl -sL ${URL} | sed -n 's/.*"country": "\(.*\)",.*/\1/p')
+if [ "${Address}" = "CN" ]
+then
+  FontsURL="https://mirrors.chenby.cn/https://github.com/lxgw/LxgwWenKai-Screen/releases/download/v1.330/LXGWWenKaiScreen.ttf"
+else
+  FontsURL="https://github.com/lxgw/LxgwWenKai-Screen/releases/download/v1.330/LXGWWenKaiScreen.ttf"
+fi
+echo -e ${green}正在安装 ${yellow}中文字体${background}
+Download LXGWWenKaiScreen.ttf ${FontsURL}
+
+if [ ! -d /usr/share/fonts/lxgw-wenkai ]
+then
+  mkdir -p /usr/share/fonts/lxgw-wenkai
+fi
+mv -vf LXGWWenKaiScreen.ttf /usr/share/fonts/lxgw-wenkai/LXGWWenKaiScreen.ttf
+fc-cache -f -v
+echo -e ${yellow}完成${background}
+
 if ! grep -q "AFHOME" ../.bashrc
 then
   echo 'PATH=$PATH:$HOME/AFHOME' >> ../.bashrc
@@ -224,4 +243,4 @@ then
   echo 'PATH=$PATH:$HOME/AFHOME/AFYZ' >> ../.bashrc
   echo 'afyz' >> ../.bashrc
 fi
-cd
+export AFHOME=${AF_HOME_Path}

@@ -77,16 +77,24 @@ then
 else
   unset GithubMirror
 fi
-if ! git clone --depth=1 ${GithubMirror}https://github.com/ArcticFox520/Yunzai-Bot-Script ./AFYZ
+if [ -d AFYZ ]
 then
-  echo -e ${red} - ${yellow}出现错误${background}
-  exit
+  cd $AFHOME
+  git fetch --all
+  git reset --hard main
+  git pull
+else
+  if ! git clone --depth=1 ${GithubMirror}https://github.com/ArcticFox520/Yunzai-Bot-Script ./AFYZ
+  then
+    echo -e ${red} - ${yellow}出现错误${background}
+    exit
+  fi
 fi
 cd AFYZ
 chmod +x afyz
 AF_HOME_Path="$(pwd)"
-sed -i "s|AF_HOME_Path|${AF_HOME_Path}|g" afyz
-mv -f afyz /usr/local/bin/afyz
+cp -f afyz /usr/local/bin/afyz
+sed -i "s|AF_HOME_Path|${AF_HOME_Path}|g" /usr/local/bin/afyz
 
 echo -e ${yellow} - ${yellow}安装成功${background}
 echo -e ${yellow} - ${cyan}请使用 ${green}afyz ${cyan}命令 打开脚本${background}

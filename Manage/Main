@@ -288,7 +288,7 @@ else
 fi
 }
 CheckStartSoftware(){
-CheckStart
+CheckStart $1 $2
 case $? in
 1)
   MsgboxSize
@@ -313,7 +313,7 @@ case $? in
   ${TUISoftware} --title "AF-YZ" \
   --msgbox "${BotName} 已在 [前台] 中启动" \
   ${HEIGHT} ${WIDTH}
-  BotManage
+  BotManage ${BotName} ${COMMAND}
   exit
 ;;
 esac
@@ -535,7 +535,7 @@ case ${Number} in
         echo -en ${cyan}SignApiAddr已修改为: ${green}${API}${background};read
       else
         OtherFunctions
-        BotManage
+        BotManage ${BotName} ${COMMAND}
       fi
     ;;
     TRSS-Yunzai)
@@ -555,7 +555,7 @@ case ${Number} in
         echo -en ${cyan}SignApiAddr已修改为: ${green}${API}${background};read
       else
         OtherFunctions
-        BotManage
+        BotManage ${BotName} ${COMMAND}
       fi
     ;;
   esac
@@ -574,7 +574,7 @@ case ${Number} in
     echo -en ${cyan}修改完成 ${green}回车返回${background};read
   else
     OtherFunctions
-    BotManage
+    BotManage ${BotName} ${COMMAND}
   fi
   ;;
 3)
@@ -606,7 +606,7 @@ case ${Number} in
     echo -en ${cyan}修改完成 ${green}回车返回${background};read
   else
     OtherFunctions
-    BotManage
+    BotManage ${BotName} ${COMMAND}
   fi
   ;;
 5)
@@ -675,15 +675,17 @@ case ${Number} in
       ${HEIGHT} ${WIDTH}
     fi
   else
-    BotManage
+    CheckStartSoftware ${BotName} ${COMMAND}
+    BotManage ${BotName} ${COMMAND}
   fi
 ;;
 2)
   if CheckStart ${BotName} ${COMMAND}
   then
     afyz ${BotName} start
-    BotManage
+    BotManage ${BotName} ${COMMAND}
   else
+    CheckStartSoftware ${BotName} ${COMMAND}
     BotManage ${BotName} ${COMMAND}
   fi
 ;;
@@ -719,7 +721,7 @@ case ${Number} in
     ${TUISoftware} --title "AF-YZ" \
     --msgbox "${BotName} [未启动] 无需重启" \
     ${HEIGHT} ${WIDTH}
-    BotManage
+    BotManage ${BotName} ${COMMAND}
   else
     if Error=$(BotRun ${StartSoftware} restart ${BotName})
     then
@@ -799,7 +801,7 @@ case ${Number} in
   echo -e ${yellow}正在更新PNPM${background}
   pnpm install -g pnpm@latest
   echo -en ${cyan}更新完成 回车返回${background};read
-  BotManage
+  BotManage ${BotName} ${COMMAND}
 ;;
 8)
   OtherFunctions
@@ -837,7 +839,7 @@ then
   echo -e ${red}出现错误${background}
   exit
 fi
-BotManage $1
+BotManage $1 $2
 }
 
 if [ -x "$(command -v whiptail)" ];then
@@ -872,7 +874,7 @@ case ${Number} in
     ${HEIGHT} ${WIDTH} \
     3>&1 1>&2 2>&3
     then
-      Install Miao-Yunzai
+      Install Miao-Yunzai Miao-Yun
     fi
   fi
   ;;
@@ -889,7 +891,7 @@ case ${Number} in
     ${HEIGHT} ${WIDTH} \
     3>&1 1>&2 2>&3
     then
-      Install TRSS-Yunzai
+      Install TRSS-Yunzai "TRSS Yunzai"
     fi
   fi
   ;;

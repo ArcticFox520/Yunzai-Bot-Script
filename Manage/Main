@@ -641,6 +641,7 @@ ${HEIGHT} ${WIDTH} ${OPTION} \
 "6" "插件管理" \
 "7" "全部更新" \
 "8" "其他功能" \
+"9" "进入bash" \
 "0" "  返回  " \
 3>&1 1>&2 2>&3)
 case ${Number} in
@@ -807,6 +808,9 @@ case ${Number} in
   OtherFunctions
   BotManage ${BotName} ${COMMAND}
 ;;
+9)
+  exec bash
+;;
 esac
 }
 
@@ -895,9 +899,6 @@ case ${Number} in
       Install TRSS-Yunzai "TRSS Yunzai"
     fi
   fi
-  ;;
-3)
-  exec bash
   ;;
 0)
   exit

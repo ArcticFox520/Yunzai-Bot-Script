@@ -858,6 +858,7 @@ Number=$(${TUISoftware} \
 ${HEIGHT} ${WIDTH} ${OPTION} \
 "1" "Miao-Yunzai" \
 "2" "TRSS-Yunzai" \
+"3" "进入BASH环境" \
 "0" "退出" \
 3>&1 1>&2 2>&3)
 case ${Number} in
@@ -894,6 +895,9 @@ case ${Number} in
       Install TRSS-Yunzai "TRSS Yunzai"
     fi
   fi
+  ;;
+3)
+  exac exec bash
   ;;
 0)
   exit
